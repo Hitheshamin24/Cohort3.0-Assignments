@@ -1,4 +1,4 @@
-# Insect 
+# Shinsei village 
 
 A modern SHINSEI VILLAGE landing page built using only HTML and CSS as part of my Cohort 3.0 assignment.
 
