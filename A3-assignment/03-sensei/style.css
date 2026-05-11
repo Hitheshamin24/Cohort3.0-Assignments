@@ -1,0 +1,319 @@
+@import url("[https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap]()");
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+background: #241d2f;
+font-family: "Montserrat", sans-serif;
+overflow-x: hidden;
+color: white;
+}
+
+.hero {
+position: relative;
+width: 100%;
+height: 400px;
+overflow: hidden;
+}
+
+.hero-bg {
+position: absolute;
+inset: 0;
+background: url("assets/background.png") center center/cover no-repeat;
+transform: scale(1.03);
+}
+
+.overlay {
+position: absolute;
+inset: 0;
+background: linear-gradient(
+to bottom,
+rgba(0, 0, 0, 0.28),
+rgba(0, 0, 0, 0.18),
+rgba(0, 0, 0, 0.42)
+);
+}
+
+.navbar {
+position: relative;
+z-index: 50;
+width: 100%;
+padding: 10px 40px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+
+.logo img {
+width: 65px;
+}
+
+.nav-links {
+display: flex;
+align-items: center;
+gap: 18px;
+list-style: none;
+}
+
+.nav-links li a {
+text-decoration: none;
+color: white;
+font-size: 11px;
+font-weight: 500;
+opacity: 0.9;
+transition: 0.3s;
+}
+
+.nav-links li a:hover {
+color: #e5c66b;
+}
+
+.nav-links .active {
+background: rgba(255, 255, 255, 0.1);
+padding: 10px 14px;
+}
+
+.social-icons {
+display: flex;
+gap: 10px;
+}
+
+.social-icons i {
+width: 30px;
+height: 30px;
+display: flex;
+align-items: center;
+justify-content: center;
+background: white;
+color: #111;
+border-radius: 6px;
+font-size: 16px;
+cursor: pointer;
+transition: 0.3s;
+}
+
+.social-icons i:hover {
+transform: translateY(-3px);
+}
+
+.hero-content {
+position: relative;
+z-index: 30;
+margin-top: 15px;
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.subtitle {
+font-size: 16px;
+font-weight: 500;
+margin-bottom: 4px;
+position: relative;
+right: 140px;
+top: 20px;
+}
+
+.hero-content h1 {
+font-size: 46px;
+line-height: 0.9;
+font-weight: 800;
+letter-spacing: 1px;
+position: relative;
+top: 10px;
+}
+
+.hero-content h1 span {
+margin-left: 12px;
+}
+
+.hero-content h3 {
+margin-top: 7px;
+font-size: 13px;
+font-weight: 600;
+position: relative;
+left: 140px;
+
+}
+
+.mint-btn {
+position: absolute;
+z-index: 100;
+left: 50%;
+top: 275px;
+transform: translateX(-50%);
+width: 150px;
+height: 40px;
+border: none;
+cursor: pointer;
+background: #e6ca73;
+color: #111;
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 3px;
+clip-path: polygon(
+6% 0,
+94% 0,
+100% 20%,
+100% 80%,
+94% 100%,
+6% 100%,
+0 80%,
+0 20%
+);
+transition: 0.3s;
+}
+
+.mint-btn:hover {
+transform: translateX(-50%) translateY(-3px);
+}
+
+.character {
+position: absolute;
+z-index: 40;
+width: 240px;
+left: 50%;
+top: 140px;
+transform: translateX(-50%);
+}
+
+.curve {
+position: absolute;
+z-index: 20;
+top: 100px;
+left: 50%;
+transform: translateX(-50%);
+width: 120%;
+height: 280px;
+background: transparent;
+border-radius: 50%;
+box-shadow: 0 400px 0 400px #241d2f;
+}
+
+.vision {
+position: relative;
+z-index: 10;
+background: #241d2f;
+padding: 0px 60px 20px;
+margin-top: 20px;
+}
+
+.vision h2 {
+text-align: center;
+font-size: 28px;
+font-weight: 800;
+letter-spacing: 4px;
+margin-bottom: 10px;
+}
+
+.divider {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+margin-bottom: 15px;
+}
+
+.divider span {
+width: 200px;
+height: 1px;
+background: #cfa963;
+}
+
+.diamond {
+width: 8px;
+height: 8px;
+background: #cfa963;
+transform: rotate(45deg);
+}
+
+.vision-content {
+display: flex;
+justify-content: center;
+gap: 30px;
+}
+
+.vision-content p {
+width: 35%;
+color: #d4cfdb;
+font-size: 11px;
+line-height: 1.5;
+font-weight: 400;
+}
+
+@media (max-width: 1100px) {
+.nav-links {
+display: none;
+}
+.hero-content h1 {
+font-size: 38px;
+}
+.character {
+width: 220px;
+}
+.vision-content {
+flex-direction: column;
+align-items: center;
+gap: 15px;
+}
+.vision-content p {
+width: 90%;
+text-align: center;
+}
+}
+
+@media (max-width: 768px) {
+.hero {
+height: 480px;
+}
+.navbar {
+padding: 15px 20px;
+}
+.hero-content {
+margin-top: 30px;
+padding: 0 20px;
+}
+.subtitle {
+font-size: 14px;
+}
+.hero-content h1 {
+font-size: 32px;
+text-align: center;
+}
+.hero-content h3 {
+font-size: 12px;
+text-align: center;
+}
+.character {
+width: 200px;
+top: 130px;
+}
+.mint-btn {
+width: 130px;
+height: 38px;
+top: 240px;
+font-size: 10px;
+}
+.curve {
+width: 150%;
+height: 200px;
+top: 280px;
+}
+.vision {
+padding: 0 25px 40px;
+margin-top: 0;
+}
+.vision h2 {
+font-size: 24px;
+}
+.divider span {
+width: 80px;
+}
+.vision-content p {
+font-size: 12px;
+}
+}
