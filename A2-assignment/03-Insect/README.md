@@ -1,6 +1,6 @@
 # Insect 
 
-A modern restaurant landing page built using only HTML and CSS as part of my Cohort 3.0 assignment.
+A modern insect landing page built using only HTML and CSS as part of my Cohort 3.0 assignment.
 
 ## Technologies Used
 - HTML5
