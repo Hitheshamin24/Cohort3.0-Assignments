@@ -1,4 +1,4 @@
-# Shinsei village 
+# Illustration
 
 A modern Illustration landing page built using only HTML and CSS as part of my Cohort 3.0 assignment.
 
@@ -7,4 +7,4 @@ A modern Illustration landing page built using only HTML and CSS as part of my C
 - CSS3
 
 ## Preview
-<img width="100%" alt="Insect Preview" src="./assets/output.png">
+<img width="100%" alt="output preview" src="./assets/output.png">
