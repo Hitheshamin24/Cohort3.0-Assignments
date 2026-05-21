@@ -1,0 +1,15 @@
+let name = "Hithesh";
+let num = 23;
+let bool = true;
+let nValue = null;
+let und;
+console.log("Name", name);
+console.log("type of Name", typeof name);
+console.log("Number", num);
+console.log("type of Number ", typeof num);
+console.log("Boolean", bool);
+console.log("type of bool", typeof bool);
+console.log("Null value", nValue);
+console.log("Type of Null value", typeof nValue);
+console.log("Undefined", und);
+console.log("type of Undefined", typeof und);

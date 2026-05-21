@@ -1,0 +1,10 @@
+let name = "Hithesh";
+let num = 23;
+let bool = true;
+let nValue = null;
+let und;
+console.log("Name", name);
+console.log("Number", num);
+console.log("Boolean", bool);
+console.log("Null value", nValue);
+console.log("Undefined", und);
