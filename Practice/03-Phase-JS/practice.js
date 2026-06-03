@@ -121,3 +121,95 @@ function countChar(str, char) {
   return count;
 }
 console.log("Q15 Output:", countChar("Javascript", "a"));
+
+// Q16. Find the largest number in an array.
+var arr = [10, 20, 30, 40, 50];
+function findMax(arr) {
+  let max = arr[0];
+  for (let i = 0; i < arr.length; i++) {
+    max = arr[i] > max ? arr[i] : max;
+  }
+  return max;
+}
+console.log("Q16 Output:", findMax(arr));
+
+// Q17. Find the smallest number in an array.
+var arr = [10, 20, 30, 40, 50];
+function findSmall(arr) {
+  let small = arr[0];
+  for (let i = 0; i < arr.length; i++) {
+    small = arr[i] < small ? arr[i] : small;
+  }
+  return small;
+}
+console.log("Q17 Output:", findSmall(arr));
+
+// Q18. Find the sum of all array elements.
+var arr = [1, 2, 3, 4, 5];
+function findSum(arr) {
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
+  }
+  return sum;
+}
+console.log("Q18 Output:", findSum(arr));
+
+// Q19. Return only even numbers from an array.
+var arr = [1, 2, 3, 4, 5, 6];
+function printEven(arr) {
+  let evenArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] % 2 == 0) evenArr.push(arr[i]);
+  }
+  return evenArr;
+}
+console.log("Q19 Output:", printEven(arr));
+
+// Q20. Remove duplicate values from an array.
+var arr = [1, 2, 2, 3, 4, 4, 5];
+function removeDuplicates(arr) {
+  let uniqueArr = [];
+  for (let i = 0; i < arr.length; i++) {
+    if (!uniqueArr.includes(arr[i])) uniqueArr.push(arr[i]);
+  }
+  return uniqueArr;
+}
+console.log("Q20 Output:", removeDuplicates(arr));
+
+// Build a Student Marks Calculator.
+var arr = [50, 60, 70, 80, 90];
+function highestMarks(arr) {
+  let highest = arr[0];
+  for (let i = 0; i < arr.length; i++) {
+    highest = highest < arr[i] ? arr[i] : highest;
+  }
+  return highest;
+}
+function lowestMarks(arr) {
+  let lowest = arr[0];
+  for (let i = 0; i < arr.length; i++) {
+    lowest = lowest > arr[i] ? arr[i] : lowest;
+  }
+  return lowest;
+}
+
+function averageMarks(arr) {
+  let total = 0;
+  for (let i = 0; i < arr.length; i++) {
+    total += arr[i];
+  }
+  return total / arr.length;
+}
+function totalMarks(arr) {
+  let total = 0;
+  for (let i = 0; i < arr.length; i++) {
+    total += arr[i];
+  }
+  return total;
+}
+
+console.log("Highest marks:", highestMarks(arr));
+console.log("Lowest marks:", lowestMarks(arr));
+console.log("Average marks:", averageMarks(arr));
+console.log("Total marks:", totalMarks(arr));
