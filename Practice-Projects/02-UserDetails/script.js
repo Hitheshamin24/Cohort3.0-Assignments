@@ -64,8 +64,7 @@ ui();
 let editIndex = -1;
 form.addEventListener("submit", (events) => {
   events.preventDefault();
-  // console.log(name.value);
-  // console.log(email.value);
+  
   let name = nameInp.value;
   let email = emailInp.value;
   let image = url.value;
@@ -82,13 +81,10 @@ form.addEventListener("submit", (events) => {
   ui();
 
   form.reset(); //to reset the input values
-  // alternate method
-  //   console.log(events.target[0].value);
-  // but use first method
+  
 });
 
-// add to array and display in ui
-// do it in other ways
+
 
 // delete
 function deleteCard(index) {
@@ -96,6 +92,7 @@ function deleteCard(index) {
   ui();
 }
 
+// /edit
 let editCard = (index) => {
   console.log(arr[index]);
   let name = arr[index].name;
