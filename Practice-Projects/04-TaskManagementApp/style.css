@@ -218,6 +218,9 @@ nav h1 {
 .demo input:focus {
   border-color: #4f46e5;
 }
+.demo p {
+  color: #888888;
+}
 
 .demoOutput {
   background: #f8fafc;
