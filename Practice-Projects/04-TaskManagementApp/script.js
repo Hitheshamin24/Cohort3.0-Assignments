@@ -4,7 +4,7 @@ const close = document.querySelector(".close");
 const form = document.querySelector("form");
 const task = document.querySelector(".task");
 
-const taskArray = JSON.parse(localStorage.getItem("tasks"))||[];
+const taskArray = JSON.parse(localStorage.getItem("tasks")) || [];
 let updateIndex = null;
 function displayForm() {
   formDiv.style.display = "flex";
@@ -32,11 +32,11 @@ function createTask() {
   if (updateIndex !== null) {
     obj.id = updateIndex;
     taskArray[updateIndex] = obj;
-    updateIndex=null
-    localStorage.setItem("tasks",JSON.stringify(taskArray))
-
-  } else {taskArray.push(obj);
-    localStorage.setItem("tasks",JSON.stringify(taskArray))
+    updateIndex = null;
+    localStorage.setItem("tasks", JSON.stringify(taskArray));
+  } else {
+    taskArray.push(obj);
+    localStorage.setItem("tasks", JSON.stringify(taskArray));
   }
   form.reset();
   closeForm();
@@ -90,7 +90,6 @@ function displayTasks() {
     updateBtn.dataset.index = index;
     deleteBtn.dataset.index = index;
     task.append(taskCard);
-    
   });
 }
 
@@ -103,7 +102,7 @@ function updateStatus(index) {
   } else {
     taskArray[index].status = "Pending";
   }
-  localStorage.setItem("tasks",JSON.stringify(taskArray))
+  localStorage.setItem("tasks", JSON.stringify(taskArray));
   displayTasks();
 }
 function updateTask(index) {
@@ -117,7 +116,7 @@ function updateTask(index) {
 }
 function deleteTask(index) {
   taskArray.splice(index, 1);
-  localStorage.setItem("tasks",JSON.stringify(taskArray))
+  localStorage.setItem("tasks", JSON.stringify(taskArray));
   displayTasks();
 }
 
@@ -144,52 +143,112 @@ task.addEventListener("click", (e) => {
   else if (action == "delete") deleteTask(index);
 });
 
-const attributeDemo =
-  document.querySelector("#attributeDemo");
+// theme
+const themeBtn = document.querySelector("#themeBtn");
+
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+
+  const theme = document.body.classList.contains("dark") ? "dark" : "light";
+
+  document.body.dataset.theme = theme;
+
+  document.body.setAttribute("data-theme", theme);
+
+  console.log("Current Theme:", document.body.dataset.theme);
+});
+const attributeDemo = document.querySelector("#attributeDemo");
 
 attributeDemo.addEventListener("click", () => {
   const div = document.createElement("div");
 
   div.setAttribute("data-role", "student");
 
-  console.log(
-    "getAttribute:",
-    div.getAttribute("data-role")
-  );
+  console.log("getAttribute:", div.getAttribute("data-role"));
 
-  console.log(
-    "hasAttribute:",
-    div.hasAttribute("data-role")
-  );
+  console.log("hasAttribute:", div.hasAttribute("data-role"));
 
   div.removeAttribute("data-role");
 
-  console.log(
-    "After remove:",
-    div.hasAttribute("data-role")
-  );
+  console.log("After remove:", div.hasAttribute("data-role"));
 
   div.setAttribute("data-role", "developer");
 
-  console.log(
-    "After set:",
-    div.getAttribute("data-role")
-  );
+  console.log("After set:", div.getAttribute("data-role"));
 });
-const propertyDemo =
-  document.querySelector("#propertyDemo");
+const propertyDemo = document.querySelector("#propertyDemo");
 
-const demoInput =
-  document.querySelector("#demoInput");
+const demoInput = document.querySelector("#demoInput");
 
 propertyDemo.addEventListener("click", () => {
-  console.log(
-    "Attribute:",
-    demoInput.getAttribute("value")
-  );
+  console.log("Attribute:", demoInput.getAttribute("value"));
 
-  console.log(
-    "Property:",
-    demoInput.value
-  );
+  console.log("Property:", demoInput.value);
+});
+
+const grandparent = document.querySelector("#grandparent");
+
+const parent = document.querySelector("#parent");
+
+const child = document.querySelector("#child");
+
+grandparent.addEventListener(
+  "click",
+  () => {
+    console.log("Grandparent Capture");
+  },
+  true,
+);
+
+parent.addEventListener(
+  "click",
+  () => {
+    console.log("Parent Capture");
+  },
+  true,
+);
+
+child.addEventListener(
+  "click",
+  () => {
+    console.log("Child Capture");
+  },
+  true,
+);
+
+// bubbling
+grandparent.addEventListener("click", () => {
+  console.log("Grandparent");
+});
+
+parent.addEventListener("click", () => {
+  console.log("Parent");
+});
+
+child.addEventListener("click", () => {
+  console.log("Child");
+});
+
+let demo = document.querySelector(".demo");
+document.querySelector("#domDemo").addEventListener("click", () => {
+  const box = document.createElement("div");
+
+  box.textContent = "Original Box";
+
+  demo.prepend(box);
+
+  box.before(document.createTextNode("Before "));
+
+  box.after(document.createTextNode(" After"));
+
+  const newBox = document.createElement("div");
+
+  newBox.textContent = "Replacement Box";
+
+  box.replaceWith(newBox);
+
+  setTimeout(() => {
+    newBox.remove();
+    console.log("prepend, before, after, replaceWith and remove demonstrated");
+  }, 2000);
 });

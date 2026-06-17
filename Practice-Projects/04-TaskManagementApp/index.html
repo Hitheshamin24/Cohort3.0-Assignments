@@ -11,6 +11,7 @@
       <nav>
         <h1>Task Manager</h1>
         <button class="btn" id="create">Create Task</button>
+        <button class="btn" id="themeBtn">Theme</button>
       </nav>
       <div class="task"></div>
 
@@ -52,8 +53,51 @@
 
       <button id="propertyDemo">Attributes vs Properties</button>
 
+      <button class="btn" id="domDemo">DOM Manipulation Demo</button>
       <input id="demoInput" value="Original Value" />
       <p>For answers You can check Console</p>
+    </section>
+    <section class="eventDemo">
+      <h2>Event Propagation Demo</h2>
+      <p>For answers You can check Console</p>
+      <div id="grandparent">
+        Grandparent
+
+        <div id="parent">
+          Parent
+
+          <button id="child">Child Button</button>
+        </div>
+      </div>
+    </section>
+    <section class="pipeline">
+      <h2>Browser Rendering Pipeline</h2>
+
+      <div class="step">HTML</div>
+      <div>↓</div>
+
+      <div class="step">Parsing</div>
+      <div>↓</div>
+
+      <div class="step">Tokenization</div>
+      <div>↓</div>
+
+      <div class="step">DOM Tree</div>
+      <div>↓</div>
+
+      <div class="step">CSSOM Tree</div>
+      <div>↓</div>
+
+      <div class="step">Render Tree</div>
+      <div>↓</div>
+
+      <div class="step">Layout</div>
+      <div>↓</div>
+
+      <div class="step">Paint</div>
+      <div>↓</div>
+
+      <div class="step">Screen</div>
     </section>
     <script src="script.js"></script>
   </body>
