@@ -4,7 +4,7 @@ const close = document.querySelector(".close");
 const form = document.querySelector("form");
 const task = document.querySelector(".task");
 
-const taskArray = [];
+const taskArray = JSON.parse(localStorage.getItem("tasks"))||[];
 let updateIndex = null;
 function displayForm() {
   formDiv.style.display = "flex";
@@ -33,8 +33,11 @@ function createTask() {
     obj.id = updateIndex;
     taskArray[updateIndex] = obj;
     updateIndex=null
-    
-  } else taskArray.push(obj);
+    localStorage.setItem("tasks",JSON.stringify(taskArray))
+
+  } else {taskArray.push(obj);
+    localStorage.setItem("tasks",JSON.stringify(taskArray))
+  }
   form.reset();
   closeForm();
   displayTasks();
@@ -100,6 +103,7 @@ function updateStatus(index) {
   } else {
     taskArray[index].status = "Pending";
   }
+  localStorage.setItem("tasks",JSON.stringify(taskArray))
   displayTasks();
 }
 function updateTask(index) {
@@ -113,6 +117,7 @@ function updateTask(index) {
 }
 function deleteTask(index) {
   taskArray.splice(index, 1);
+  localStorage.setItem("tasks",JSON.stringify(taskArray))
   displayTasks();
 }
 
