@@ -1,0 +1,281 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background: #fff;
+  color: #1d1c1d;
+}
+
+.navbar {
+  max-width: 1280px;
+  margin: auto;
+  height: 90px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+
+background-color: #fff;
+  padding: 0 30px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.nav-left {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 2rem;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.nav-right i {
+  font-size: 01.2rem;
+}
+
+.nav-right a {
+  text-decoration: none;
+  color: black;
+  font-size: 0.9rem;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+  font-weight: 400;
+}
+
+.search {
+  cursor: pointer;
+}
+
+.purple-btn {
+  background: #611f69;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 16px 28px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.outline-btn {
+  background: white;
+  color: #611f69;
+  border: 1.5px solid #611f69;
+  border-radius: 4px;
+  padding: 16px 28px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hero {
+  max-width: 1200px;
+  margin: auto;
+
+  text-align: center;
+
+  padding: 40px 20px 80px;
+  position: relative;
+  top: 100px;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  line-height: 1;
+  font-weight: 700;
+  max-width: 1000px;
+  margin: auto;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+.hero p {
+  margin-top: 25px;
+  font-size: 1.2rem;
+}
+
+.hero-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.hero-btn {
+  min-width: 280px;
+  height: 58px;
+}
+
+.companies {
+  margin-top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.companies span {
+  color: #6f6f6f;
+  font-size: 15px;
+  font-family:
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Open Sans",
+    "Helvetica Neue",
+    sans-serif;
+}
+
+.logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.logos img {
+  height: 25px;
+  object-fit: contain;
+}
+
+@media (max-width: 992px) {
+  .hero h1 {
+    font-size: 55px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  .companies {
+    flex-direction: column;
+  }
+  .logos {
+    width: 100%;
+  }
+}
+
+.workspace-showcase {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.workspace-container {
+  max-width: 900px;
+  margin: auto;
+  padding-top: 40px;
+}
+
+.workspace-container img {
+  width: 100%;
+  display: block;
+
+  border-radius: 8px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+}
+
+.chips {
+  margin-top: 40px;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  gap: 15px;
+  width: 50%;
+}
+
+.chips button {
+  border: 1px solid #ddd;
+  background: white;
+
+  padding: 12px 22px;
+
+  border-radius: 999px;
+
+  font-size: 18px;
+  font-weight: 600;
+
+  color: #611f69;
+
+  cursor: pointer;
+}
+
+.chips .active {
+  background: #611f69;
+  color: white;
+  border: none;
+}
