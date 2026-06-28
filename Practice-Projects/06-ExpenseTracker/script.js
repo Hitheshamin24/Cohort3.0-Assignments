@@ -10,6 +10,34 @@ let registerForm = $("#register-form");
 let loginForm = $("#login-form");
 let main = $(".main");
 
+let sideBtns = document.querySelectorAll(".side-btn");
+let dashboardBtn = $("#dashboard-btn");
+let settingBtn = $("#setting-btn");
+
+let mode = $(".toggle");
+let chart = $("#cashflow");
+let toggleKey = mode.querySelector(".round");
+let dashboardPage = $(".dashboard-page");
+let settingPage = $(".setting-page");
+let mainColumn = $(".main-columns");
+
+let transactionBtn = $("#transaction-btn");
+let transactionModal = $(".transaction-modal");
+let closeBtn=$('#close-btn')
+let theme = localStorage.getItem("theme") || "light";
+
+function applyTheme(theme) {
+  if (theme === "dark") {
+    mode.classList.add("active");
+    toggleKey.classList.add("active");
+    document.body.classList.add("dark");
+  } else {
+    mode.classList.remove("active");
+    toggleKey.classList.remove("active");
+    document.body.classList.remove("dark");
+  }
+}
+applyTheme(theme);
 let registeredUsers = getStorage("registeredUsers") || [];
 let user = getStorage("user");
 
@@ -19,14 +47,13 @@ function getStorage(key) {
 
 function displayUI() {
   if (user) {
-    main.innerHTML = `Hello ${user.username} <button onclick="logout()">Logout</button>
-`;
+
     loginCard.style.display = "none";
     registerCard.style.display = "none";
-    main.style.display = "flex";
+   document.querySelector("#dashboard-view").style.display='flex'
   } else {
-    main.style.display = "none";
     loginCard.style.display = "flex";
+    document.querySelector("#dashboard-view").style.display = "none"; 
   }
 }
 // handling login registration and logout
@@ -100,7 +127,7 @@ function getFormValues(form) {
 
 // function to clear form
 function clearForm(form) {
-  form.reset;
+  form.reset();
 }
 // event listener functions
 gotToRegister.addEventListener("click", () => {
@@ -126,3 +153,54 @@ loginBtn.addEventListener("click", (e) => {
 });
 
 displayUI();
+
+new Chart(chart, {
+  type: "bar",
+  data: {
+    labels: ["Income vs Expense"],
+    datasets: [
+      {
+        label: "income ",
+        data: [2500],
+        backgroundColor: "#277243",
+      },
+      {
+        label: "expense",
+        data: [1800],
+        backgroundColor: "#9d2323",
+      },
+    ],
+  },
+});
+
+// sideButton active functions
+sideBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    sideBtns.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+settingBtn.addEventListener("click", () => {
+  dashboardPage.style.display = "none";
+  mainColumn.style.display = "none";
+  settingPage.style.display = "block";
+});
+dashboardBtn.addEventListener("click", () => {
+  dashboardPage.style.display = "block";
+  mainColumn.style.display = "grid";
+  settingPage.style.display = "none";
+});
+
+mode.addEventListener("click", () => {
+  theme = theme === "dark" ? "light" : "dark";
+  localStorage.setItem("theme", theme);
+  applyTheme(theme);
+});
+
+transactionBtn.addEventListener("click", () => {
+  transactionModal.style.display = "flex";
+});
+closeBtn.addEventListener('click',()=>{
+  transactionModal.style.display="none"
+})
