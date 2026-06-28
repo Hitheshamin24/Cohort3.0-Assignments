@@ -1,0 +1,93 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: #f4f7f6;
+}
+.login-card,.register-card {
+  height: 100%;
+  width: 100%;
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+.register-card{
+  display: none;
+}
+.login-page ,.register-page{
+  width: 400px;
+  padding: 1.5rem 1rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 0.75rem;
+  border-radius: 2rem;
+  box-shadow: 0 0 10px #d1d3d2;
+}
+
+.login-page h1,.register-page h1 {
+  font-size: 1.5rem;
+}
+.login-page > p ,.register-page >p{
+  font-size: 1rem;
+}
+
+#login-form,#register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 2px 2rem;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.input-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.input-card input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #d6d6d6;
+  border-radius: 8px;
+  outline: none;
+  font-size: 15px;
+}
+
+#login-btn,#register-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+}
+#register-btn{
+  background-color: #28a745;
+}
+.login-card .goto,.register-card .goto {
+  font-size: 0.8rem;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+.login-card .goto  span ,.register-page .goto span{
+  color: #0056b3;
+  cursor: pointer;
+}
+.main{
+display: none;
+}
