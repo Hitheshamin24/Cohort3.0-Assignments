@@ -43,6 +43,9 @@ function register(username, password) {
   let obj = { username, password, currency };
   registeredUsers.push(obj);
   setToLocalStorage("registeredUsers", registeredUsers);
+  registerCard.style.display = "none";
+  loginCard.style.display = "flex";
+
   alert("Registration Successful ");
 }
 function login(username, password) {
@@ -95,7 +98,7 @@ function getFormValues(form) {
   };
 }
 
-// function to clear form 
+// function to clear form
 function clearForm(form) {
   form.reset;
 }
