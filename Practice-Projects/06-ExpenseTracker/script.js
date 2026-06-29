@@ -15,7 +15,6 @@ let dashboardBtn = $("#dashboard-btn");
 let settingBtn = $("#setting-btn");
 
 let mode = $(".toggle");
-let chart = $("#cashflow");
 let toggleKey = mode.querySelector(".round");
 let dashboardPage = $(".dashboard-page");
 let settingPage = $(".setting-page");
@@ -23,8 +22,44 @@ let mainColumn = $(".main-columns");
 
 let transactionBtn = $("#transaction-btn");
 let transactionModal = $(".transaction-modal");
-let closeBtn=$('#close-btn')
+let closeBtn = $("#close-btn");
 let theme = localStorage.getItem("theme") || "light";
+
+// transaction form and btn
+let transactionForm = $("#add-transaction");
+let saveTransactionBtn = $("#save-transaction");
+let transactionArr = [];
+
+// stat card budget allocate karne keliye
+let statCard = document.querySelectorAll(".card");
+
+function showTransactionCalculation() {
+  const result = calculateTransactionDetails();
+  statCard.forEach((card, index) => {
+    let h1 = card.querySelector("h1");
+    h1.textContent = result[index];
+  });
+}
+
+function displayTransactionModal() {
+  transactionModal.style.display = "flex";
+}
+function closeTransactionModal() {
+  transactionModal.style.display = "none";
+}
+
+// add transaction
+function addTransaction(obj) {
+  transactionArr.push(obj);
+}
+function generateId() {
+  let id = 0;
+  return () => {
+    id++;
+    return id;
+  };
+}
+let id = generateId();
 
 function applyTheme(theme) {
   if (theme === "dark") {
@@ -44,17 +79,57 @@ let user = getStorage("user");
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
+function calculateTransactionDetails() {
+  let currentBalance = transactionArr.reduce((acc, curr) => {
+    return curr.type === "Income" ? acc + curr.amount : acc - curr.amount;
+  }, 0);
+  let totalIncome = transactionArr
+    .filter((e) => e.type === "Income")
+    .reduce((acc, curr) => acc + curr.amount, 0);
+  let totalExpense = transactionArr
+    .filter((e) => e.type === "Expense")
+    .reduce((acc, curr) => acc + curr.amount, 0);
+  let totalTransaction = transactionArr.length;
+  return [currentBalance, totalIncome, totalExpense, totalTransaction];
+}
+let cashFlow=null
+function cashFlowAnalysis() {
+  let chart = $("#cashflow");
+
+  if(cashFlow) cashFlow.destroy()
+
+  let result = calculateTransactionDetails();
+ cashFlow= new Chart(chart, {
+    type: "bar",
+    data: {
+      labels: ["Income vs Expense"],
+      datasets: [
+        {
+          label: "income ",
+          data: [result[1]],
+          backgroundColor: "#277243",
+        },
+        {
+          label: "expense",
+          data: [result[2]],
+          backgroundColor: "#9d2323",
+        },
+      ],
+    },
+  });
+}
 
 function displayUI() {
   if (user) {
-
     loginCard.style.display = "none";
     registerCard.style.display = "none";
-   document.querySelector("#dashboard-view").style.display='flex'
+    document.querySelector("#dashboard-view").style.display = "flex";
   } else {
     loginCard.style.display = "flex";
-    document.querySelector("#dashboard-view").style.display = "none"; 
+    document.querySelector("#dashboard-view").style.display = "none";
   }
+  showTransactionCalculation();
+  cashFlowAnalysis();
 }
 // handling login registration and logout
 function register(username, password) {
@@ -154,25 +229,6 @@ loginBtn.addEventListener("click", (e) => {
 
 displayUI();
 
-new Chart(chart, {
-  type: "bar",
-  data: {
-    labels: ["Income vs Expense"],
-    datasets: [
-      {
-        label: "income ",
-        data: [2500],
-        backgroundColor: "#277243",
-      },
-      {
-        label: "expense",
-        data: [1800],
-        backgroundColor: "#9d2323",
-      },
-    ],
-  },
-});
-
 // sideButton active functions
 sideBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -199,8 +255,25 @@ mode.addEventListener("click", () => {
 });
 
 transactionBtn.addEventListener("click", () => {
-  transactionModal.style.display = "flex";
+  displayTransactionModal();
 });
-closeBtn.addEventListener('click',()=>{
-  transactionModal.style.display="none"
-})
+closeBtn.addEventListener("click", () => {
+  closeTransactionModal();
+});
+
+saveTransactionBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  let type = transactionForm[0].value;
+  let description = transactionForm[1].value;
+  let amount = parseFloat(transactionForm[2].value);
+  let date = transactionForm[3].value;
+  let category = transactionForm[4].value;
+
+  let obj = { id: id(), type, description, amount, date, category };
+  addTransaction(obj);
+  console.log(transactionArr);
+  displayUI()
+  showTransactionCalculation();
+  transactionForm.reset();
+  closeTransactionModal();
+});
