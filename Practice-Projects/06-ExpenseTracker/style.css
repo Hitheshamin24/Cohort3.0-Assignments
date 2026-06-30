@@ -13,7 +13,7 @@ body {
   background-color: #f4f7f6;
 }
 
-/* ================= AUTH PAGES ================= */
+/* Auth Pages */
 .login-card,
 .register-card {
   height: 100%;
@@ -104,7 +104,7 @@ body {
 #dashboard-view{
   display: none;
 }
-/* ================= LAYOUT & SIDEBAR ================= */
+/* Layout and sidebar */
 .main {
   display: flex;
   height: 100vh;
@@ -184,7 +184,7 @@ body {
   transform: scale(0.97);
 }
 
-/* ================= BLACK ACTION BUTTONS ================= */
+/* Black action buttons */
 #transaction-btn,
 #save,
 #save-transaction {
@@ -217,7 +217,7 @@ body {
   font-size: 0.95rem;
 }
 
-/* ================= MAIN CONTENT & NAVBAR ================= */
+/* Main content and navbar */
 .main .hero {
   flex: 1;
   margin-left: 250px;
@@ -278,7 +278,7 @@ body {
   font-size: 1rem;
 }
 
-/* ================= DASHBOARD & SETTINGS HEADERS ================= */
+/* Dashboard and settings headers */
 .dashboard-page,
 .setting-page {
   padding: 3rem 2rem;
@@ -307,7 +307,7 @@ body {
 .setting-page{
   display: none;
 }
-/* ================= CARDS & CONTAINERS ================= */
+/* Cards and containers */
 .stat-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -436,7 +436,7 @@ body {
  
 }
 
-/* ================= FORMS & INPUTS ================= */
+/* forms and inputs */
 .profile-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -470,7 +470,7 @@ body {
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-/* ================= SEARCH & TABLES ================= */
+/* search and tables */
 .search {
   display: flex;
   justify-content: space-between;
@@ -530,8 +530,14 @@ td i {
 .fa-trash {
   color: #dc2626;
 }
+table .income{
+  color: #277243
+}
+table .expense{
+  color: #b91c1c;
+}
 
-/* ================= MODAL & TOGGLES ================= */
+/*  MODAL & TOGGLES */
 .transaction-modal {
   position: fixed;
   inset: 0;
@@ -613,7 +619,7 @@ td i {
   right: 1px;
 }
 
-/* ================= DARK MODE ================= */
+/* DARK MODE */
 body.dark,
 body.dark .hero,
 body.dark .search .left,
@@ -702,6 +708,12 @@ body.dark .income h1 {
   color: #22c55e;
 }
 body.dark .expense h1 {
+  color: #ef4444;
+}
+body.dark table  .income  {
+  color: #22c55e;
+}
+body.dark table .expense  {
   color: #ef4444;
 }
 body.dark th {

@@ -41,7 +41,7 @@ let user = getStorage("user");
 let transaction_name = "";
 let transactionArr = [];
 let cashFlow = null;
-
+let updateIndex = null;
 // localstorage functions
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key));
@@ -145,7 +145,12 @@ function addTransaction(obj) {
     alert("Enter all the values ");
     return;
   }
-  transactionArr.push(obj);
+  if (updateIndex != null) {
+    transactionArr.splice(updateIndex, 1, obj);
+  } else {
+    transactionArr.push(obj);
+  }
+
   setToLocalStorage(transaction_name, transactionArr);
 }
 
@@ -165,19 +170,55 @@ function calculateTransactionDetails() {
 function showTransactionDetails() {
   tbody.innerHTML = "";
   transactionArr.forEach((transactions) => {
-    tbody.innerHTML += `<tr>
+    tbody.innerHTML += `
+                    <tr>
                     <td>${transactions.date}</td>
                     <td>${transactions.description}</td>
                     <td>${transactions.category}</td>
-                    <td>${transactions.amount}</td>
+                    <td class="${transactions.type === "Income" ? "income" : "expense"}">${transactions.type == "Income" ? "+" : "-"}${user.currency}${transactions.amount}</td>
                     <td>
-                      <i class="fa-solid fa-pencil" data-id="${transactions.id}"></i
-                      ><i class="fa-solid fa-trash" data-id="${transactions.id}"></i>
+                      <i class="fa-solid fa-pencil" data-id="${transactions.id}"></i>
+                      <i class="fa-solid fa-trash" data-id="${transactions.id}"></i>
                     </td>
                   </tr>`;
   });
 }
 
+function editTransaction(id) {
+  let transaction = transactionArr.find((t) => t.id == id);
+  updateIndex = transactionArr.findIndex((t) => t.id == id);
+  transactionForm.type.value = transaction.type;
+  transactionForm.description.value = transaction.description;
+  transactionForm.date.value = transaction.date;
+  transactionForm.amount.value = transaction.amount;
+  transactionForm.category.value = transaction.category;
+
+  displayTransactionModal();
+}
+
+function deleteTransaction(id) {
+  const deleteIndex = transactionArr.findIndex((t) => t.id == id);
+
+  const isConfirmed = confirm(
+    `${user.username}, are you sure you want to delete this transaction?`,
+  );
+  if (isConfirmed) {
+    transactionArr.splice(deleteIndex, 1);
+    setToLocalStorage(transaction_name, transactionArr);
+  }
+  showTransactionDetails();
+}
+
+function resetTransaction() {
+  let isConfirmed = confirm(
+    "WARNING: This will delete all your transaction data permanently!",
+  );
+  if (isConfirmed) {
+    transactionArr = [];
+    removeFromLocaleStorage(transaction_name);
+  }
+  displayUI();
+}
 // dashboard
 function showTransactionCalculation() {
   const result = calculateTransactionDetails();
@@ -314,8 +355,11 @@ saveTransactionBtn.addEventListener("click", (e) => {
   let amount = parseFloat(transactionForm.amount.value);
   let date = transactionForm.date.value || dateString;
   let category = transactionForm.category.value;
-
-  let obj = { id: Date.now(), type, description, amount, date, category };
+  let id = Date.now();
+  if (updateIndex != null) {
+    id = transactionArr[updateIndex].id;
+  }
+  let obj = { id, type, description, amount, date, category };
   addTransaction(obj);
   console.log(transactionArr);
   displayUI();
@@ -323,5 +367,13 @@ saveTransactionBtn.addEventListener("click", (e) => {
   closeTransactionModal();
 });
 
+tbody.addEventListener("click", (e) => {
+  if (e.target.classList.contains("fa-pencil")) {
+    editTransaction(e.target.dataset.id);
+  }
+  if (e.target.classList.contains("fa-trash")) {
+    deleteTransaction(e.target.dataset.id);
+  }
+});
 applyTheme(theme);
 displayUI();
