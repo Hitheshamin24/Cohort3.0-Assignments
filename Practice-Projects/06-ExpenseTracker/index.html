@@ -77,7 +77,11 @@
               </div>
             </div>
             <div class="sidebar-btns">
-              <button name="dashboard" id="dashboard-btn" class="side-btn active">
+              <button
+                name="dashboard"
+                id="dashboard-btn"
+                class="side-btn active"
+              >
                 <i class="ri-dashboard-line"></i> Dashboard
               </button>
               <button name="setting" id="setting-btn" class="side-btn">
@@ -94,7 +98,7 @@
             <div></div>
             <div class="right">
               <div class="divider"></div>
-              <p>pallavi</p>
+              <p>user</p>
               <button id="logout" onclick="logout()">
                 <i class="ri-logout-box-r-line"></i>
                 Logout
@@ -168,16 +172,7 @@
                       <th>ACTIONS</th>
                     </tr>
                   </thead>
-                  <tr>
-                    <td>2026-06-28</td>
-                    <td>10000</td>
-                    <td>Recharge and bills</td>
-                    <td>AMOUNT</td>
-                    <td>
-                      <i class="fa-solid fa-pencil"></i
-                      ><i class="fa-solid fa-trash"></i>
-                    </td>
-                  </tr>
+                  <tbody id="transaction-body"></tbody>
                 </table>
               </div>
             </div>
@@ -233,29 +228,38 @@
             <form id="add-transaction">
               <div class="input">
                 <label>Type</label>
-                <select>
+                <select name="type" required>
                   <option>Income</option>
                   <option>Expense</option>
                 </select>
               </div>
+
               <div class="input">
                 <label>Description</label>
-                <input type="text" placeholder="e.g. Amazon, Salary, Coffee" />
+                <input
+                  name="description"
+                  type="text"
+                  placeholder="e.g. Amazon, Salary, Coffee"
+                  required
+                />
               </div>
+
               <div class="row">
                 <div class="input">
                   <label>Amount</label>
-                  <input type="number" />
+                  <input name="amount" type="number" required />
                 </div>
+
                 <div class="input">
                   <label>Date</label>
-                  <input type="date" />
+                  <input name="date" type="date" />
                 </div>
               </div>
+
               <div class="input">
                 <label>Category</label>
-                <select>
-                  <option>Select a category</option>
+                <select name="category" required>
+                  <option value="">Select a category</option>
                   <option>Food & Dining</option>
                   <option>Shopping</option>
                   <option>Recharge & Bills</option>
@@ -266,6 +270,7 @@
                   <option>Others</option>
                 </select>
               </div>
+
               <button id="save-transaction">Save Transaction</button>
             </form>
           </div>

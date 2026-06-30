@@ -1,84 +1,154 @@
+// dom selectors
 const $ = (selector) => document.querySelector(selector);
 
-let loginCard = $(".login-card");
-let registerCard = $(".register-card");
-let gotToLogin = $("#gotoLogin");
-let gotToRegister = $("#gotoRegister");
-let registerBtn = $("#register-btn");
-let loginBtn = $("#login-btn");
-let registerForm = $("#register-form");
-let loginForm = $("#login-form");
-let main = $(".main");
+const loginCard = $(".login-card");
+const registerCard = $(".register-card");
+const gotToLogin = $("#gotoLogin");
+const gotToRegister = $("#gotoRegister");
+const registerBtn = $("#register-btn");
+const loginBtn = $("#login-btn");
+const registerForm = $("#register-form");
+const loginForm = $("#login-form");
+const main = $(".main");
 
-let sideBtns = document.querySelectorAll(".side-btn");
-let dashboardBtn = $("#dashboard-btn");
-let settingBtn = $("#setting-btn");
+const sideBtns = document.querySelectorAll(".side-btn");
+const dashboardBtn = $("#dashboard-btn");
+const settingBtn = $("#setting-btn");
 
-let mode = $(".toggle");
-let toggleKey = mode.querySelector(".round");
-let dashboardPage = $(".dashboard-page");
-let settingPage = $(".setting-page");
-let mainColumn = $(".main-columns");
+const mode = $(".toggle");
+const toggleKey = mode.querySelector(".round");
+const dashboardPage = $(".dashboard-page");
+const settingPage = $(".setting-page");
+const mainColumn = $(".main-columns");
 
-let transactionBtn = $("#transaction-btn");
-let transactionModal = $(".transaction-modal");
-let closeBtn = $("#close-btn");
-let theme = localStorage.getItem("theme") || "light";
+const transactionBtn = $("#transaction-btn");
+const transactionModal = $(".transaction-modal");
+const closeBtn = $("#close-btn");
+
+// navbar
+const navbar = $(".nav");
+const tbody = $("#transaction-body");
 
 // transaction form and btn
-let transactionForm = $("#add-transaction");
-let saveTransactionBtn = $("#save-transaction");
-let transactionArr = [];
-
+const transactionForm = $("#add-transaction");
+const saveTransactionBtn = $("#save-transaction");
 // stat card budget allocate karne keliye
-let statCard = document.querySelectorAll(".card");
+const statCard = document.querySelectorAll(".card");
 
-function showTransactionCalculation() {
-  const result = calculateTransactionDetails();
-  statCard.forEach((card, index) => {
-    let h1 = card.querySelector("h1");
-    h1.textContent = result[index];
-  });
-}
-
-function displayTransactionModal() {
-  transactionModal.style.display = "flex";
-}
-function closeTransactionModal() {
-  transactionModal.style.display = "none";
-}
-
-// add transaction
-function addTransaction(obj) {
-  transactionArr.push(obj);
-}
-function generateId() {
-  let id = 0;
-  return () => {
-    id++;
-    return id;
-  };
-}
-let id = generateId();
-
-function applyTheme(theme) {
-  if (theme === "dark") {
-    mode.classList.add("active");
-    toggleKey.classList.add("active");
-    document.body.classList.add("dark");
-  } else {
-    mode.classList.remove("active");
-    toggleKey.classList.remove("active");
-    document.body.classList.remove("dark");
-  }
-}
-applyTheme(theme);
+let theme = localStorage.getItem("theme") || "light";
 let registeredUsers = getStorage("registeredUsers") || [];
 let user = getStorage("user");
+let transaction_name = "";
+let transactionArr = [];
+let cashFlow = null;
 
+// localstorage functions
 function getStorage(key) {
   return JSON.parse(localStorage.getItem(key));
 }
+function setToLocalStorage(key, value) {
+  value = JSON.stringify(value);
+  localStorage.setItem(key, value);
+}
+function removeFromLocaleStorage(key) {
+  localStorage.removeItem(key);
+}
+
+// authentication
+function register(username, password) {
+  if (username.trim() === "" || password.trim() === "") return;
+  const exists = registeredUsers.find(
+    (user) => user.username.toLowerCase() === username.toLowerCase(),
+  );
+  if (exists) {
+    alert("Username already exists");
+    return;
+  }
+  let currency = "₹";
+  let obj = { username, password, currency };
+  registeredUsers.push(obj);
+  setToLocalStorage("registeredUsers", registeredUsers);
+  registerCard.style.display = "none";
+  loginCard.style.display = "flex";
+  alert("Registration Successful ");
+}
+
+function login(username, password) {
+  if (username.trim() === "" || password.trim() === "") return;
+
+  const currentUser = registeredUsers.find(
+    (user) => user.username.toLowerCase() === username.toLowerCase(),
+  );
+  if (!currentUser) {
+    alert(`Username ${username}  is not found`);
+    return;
+  }
+  if (currentUser.password !== password) {
+    alert("Incorrect Password");
+    return;
+  }
+
+  user = currentUser;
+  transaction_name = `Transaction_${user.username}`;
+  transactionArr = getStorage(transaction_name) || [];
+  setToLocalStorage("user", user);
+
+  displayUI();
+  alert("Login successful");
+  return;
+}
+function logout() {
+  if (!user) return;
+
+  const isConfirmed = confirm(
+    `${user.username}, are you sure you want to logout?`,
+  );
+
+  if (!isConfirmed) return;
+
+  removeFromLocaleStorage("user");
+  user = null;
+  transaction_name = "";
+  transactionArr = [];
+  displayUI();
+}
+
+function displayUI() {
+  if (user) {
+    transaction_name = `Transaction_${user.username}`;
+    transactionArr = getStorage(transaction_name) || [];
+
+    loginCard.style.display = "none";
+    registerCard.style.display = "none";
+    $("#dashboard-view").style.display = "flex";
+    showUserName();
+  } else {
+    loginCard.style.display = "flex";
+    $("#dashboard-view").style.display = "none";
+  }
+
+  showTransactionCalculation();
+  cashFlowAnalysis();
+  showTransactionDetails();
+}
+
+// transactions
+
+// add transaction
+function addTransaction(obj) {
+  if (
+    obj.type.trim() === "" ||
+    obj.description.trim() === "" ||
+    !obj.amount ||
+    obj.category.trim() === ""
+  ) {
+    alert("Enter all the values ");
+    return;
+  }
+  transactionArr.push(obj);
+  setToLocalStorage(transaction_name, transactionArr);
+}
+
 function calculateTransactionDetails() {
   let currentBalance = transactionArr.reduce((acc, curr) => {
     return curr.type === "Income" ? acc + curr.amount : acc - curr.amount;
@@ -92,14 +162,43 @@ function calculateTransactionDetails() {
   let totalTransaction = transactionArr.length;
   return [currentBalance, totalIncome, totalExpense, totalTransaction];
 }
-let cashFlow=null
+function showTransactionDetails() {
+  tbody.innerHTML = "";
+  transactionArr.forEach((transactions) => {
+    tbody.innerHTML += `<tr>
+                    <td>${transactions.date}</td>
+                    <td>${transactions.description}</td>
+                    <td>${transactions.category}</td>
+                    <td>${transactions.amount}</td>
+                    <td>
+                      <i class="fa-solid fa-pencil" data-id="${transactions.id}"></i
+                      ><i class="fa-solid fa-trash" data-id="${transactions.id}"></i>
+                    </td>
+                  </tr>`;
+  });
+}
+
+// dashboard
+function showTransactionCalculation() {
+  const result = calculateTransactionDetails();
+  statCard.forEach((card, index) => {
+    let h1 = card.querySelector("h1");
+    h1.textContent = result[index];
+  });
+}
+function showUserName() {
+  let p = navbar.querySelector("p");
+  p.textContent = user.username;
+}
+
+// charts
 function cashFlowAnalysis() {
   let chart = $("#cashflow");
 
-  if(cashFlow) cashFlow.destroy()
+  if (cashFlow) cashFlow.destroy();
 
   let result = calculateTransactionDetails();
- cashFlow= new Chart(chart, {
+  cashFlow = new Chart(chart, {
     type: "bar",
     data: {
       labels: ["Income vs Expense"],
@@ -119,80 +218,24 @@ function cashFlowAnalysis() {
   });
 }
 
-function displayUI() {
-  if (user) {
-    loginCard.style.display = "none";
-    registerCard.style.display = "none";
-    document.querySelector("#dashboard-view").style.display = "flex";
+// settings
+function applyTheme(theme) {
+  if (theme === "dark") {
+    mode.classList.add("active");
+    toggleKey.classList.add("active");
+    document.body.classList.add("dark");
   } else {
-    loginCard.style.display = "flex";
-    document.querySelector("#dashboard-view").style.display = "none";
+    mode.classList.remove("active");
+    toggleKey.classList.remove("active");
+    document.body.classList.remove("dark");
   }
-  showTransactionCalculation();
-  cashFlowAnalysis();
-}
-// handling login registration and logout
-function register(username, password) {
-  if (username.trim() === "" || password.trim() === "") return;
-  const exists = registeredUsers.find(
-    (user) => user.username.toLowerCase() === username.toLowerCase(),
-  );
-  if (exists) {
-    alert("Username already exists");
-    return;
-  }
-  let currency = "₹";
-  let obj = { username, password, currency };
-  registeredUsers.push(obj);
-  setToLocalStorage("registeredUsers", registeredUsers);
-  registerCard.style.display = "none";
-  loginCard.style.display = "flex";
-
-  alert("Registration Successful ");
-}
-function login(username, password) {
-  if (username.trim() === "" || password.trim() === "") return;
-
-  const currentUser = registeredUsers.find(
-    (user) => user.username.toLowerCase() === username.toLowerCase(),
-  );
-  if (!currentUser) {
-    alert(`Username ${username}  is not found`);
-    return;
-  }
-  if (currentUser.password !== password) {
-    alert("Incorrect Password");
-    return;
-  }
-
-  user = currentUser;
-  setToLocalStorage("user", user);
-  displayUI();
-  alert("Login successful");
-  return;
-}
-function logout() {
-  if (!user) return;
-
-  const isConfirmed = confirm(
-    `${user.username}, are you sure you want to logout?`,
-  );
-
-  if (!isConfirmed) return;
-
-  removeFromLocaleStorage("user");
-  user = null;
-  displayUI();
 }
 
-// functions to set get remove from the localStorage
-function removeFromLocaleStorage(key) {
-  localStorage.removeItem(key);
+// utilities
+function clearForm(form) {
+  form.reset();
 }
-function setToLocalStorage(key, value) {
-  value = JSON.stringify(value);
-  localStorage.setItem(key, value);
-}
+
 function getFormValues(form) {
   return {
     username: form.username.value.trim(),
@@ -200,10 +243,13 @@ function getFormValues(form) {
   };
 }
 
-// function to clear form
-function clearForm(form) {
-  form.reset();
+function displayTransactionModal() {
+  transactionModal.style.display = "flex";
 }
+function closeTransactionModal() {
+  transactionModal.style.display = "none";
+}
+
 // event listener functions
 gotToRegister.addEventListener("click", () => {
   registerCard.style.display = "flex";
@@ -226,8 +272,6 @@ loginBtn.addEventListener("click", (e) => {
   login(username, password);
   clearForm(loginForm);
 });
-
-displayUI();
 
 // sideButton active functions
 sideBtns.forEach((btn) => {
@@ -263,17 +307,21 @@ closeBtn.addEventListener("click", () => {
 
 saveTransactionBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  let type = transactionForm[0].value;
-  let description = transactionForm[1].value;
-  let amount = parseFloat(transactionForm[2].value);
-  let date = transactionForm[3].value;
-  let category = transactionForm[4].value;
 
-  let obj = { id: id(), type, description, amount, date, category };
+  let dateString = new Date().toISOString().split("T")[0];
+  let type = transactionForm.type.value;
+  let description = transactionForm.description.value;
+  let amount = parseFloat(transactionForm.amount.value);
+  let date = transactionForm.date.value || dateString;
+  let category = transactionForm.category.value;
+
+  let obj = { id: Date.now(), type, description, amount, date, category };
   addTransaction(obj);
   console.log(transactionArr);
-  displayUI()
-  showTransactionCalculation();
+  displayUI();
   transactionForm.reset();
   closeTransactionModal();
 });
+
+applyTheme(theme);
+displayUI();
