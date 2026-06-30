@@ -29,11 +29,15 @@ const closeBtn = $("#close-btn");
 const navbar = $(".nav");
 const tbody = $("#transaction-body");
 
+const search = $(".options");
 // transaction form and btn
 const transactionForm = $("#add-transaction");
 const saveTransactionBtn = $("#save-transaction");
 // stat card budget allocate karne keliye
 const statCard = document.querySelectorAll(".card");
+// setting form
+const settingForm = $(".profile-form");
+const editProfileBtn = $("#save");
 
 let theme = localStorage.getItem("theme") || "light";
 let registeredUsers = getStorage("registeredUsers") || [];
@@ -154,22 +158,23 @@ function addTransaction(obj) {
   setToLocalStorage(transaction_name, transactionArr);
 }
 
-function calculateTransactionDetails() {
-  let currentBalance = transactionArr.reduce((acc, curr) => {
+function calculateTransactionDetails(data = transactionArr) {
+  let currentBalance = data.reduce((acc, curr) => {
     return curr.type === "Income" ? acc + curr.amount : acc - curr.amount;
   }, 0);
-  let totalIncome = transactionArr
+  let totalIncome = data
     .filter((e) => e.type === "Income")
     .reduce((acc, curr) => acc + curr.amount, 0);
-  let totalExpense = transactionArr
+  let totalExpense = data
     .filter((e) => e.type === "Expense")
     .reduce((acc, curr) => acc + curr.amount, 0);
-  let totalTransaction = transactionArr.length;
+  let totalTransaction = data.length;
   return [currentBalance, totalIncome, totalExpense, totalTransaction];
 }
-function showTransactionDetails() {
+function showTransactionDetails(data = transactionArr) {
   tbody.innerHTML = "";
-  transactionArr.forEach((transactions) => {
+
+  data.forEach((transactions) => {
     tbody.innerHTML += `
                     <tr>
                     <td>${transactions.date}</td>
@@ -220,11 +225,14 @@ function resetTransaction() {
   displayUI();
 }
 // dashboard
-function showTransactionCalculation() {
-  const result = calculateTransactionDetails();
+function showTransactionCalculation(data = transactionArr) {
+  const result = calculateTransactionDetails(data);
   statCard.forEach((card, index) => {
     let h1 = card.querySelector("h1");
-    h1.textContent = result[index];
+    h1.innerHTML =
+      index == statCard.length - 1
+        ? result[index]
+        : `${user.currency}${result[index].toFixed(2)}`;
   });
 }
 function showUserName() {
@@ -233,12 +241,12 @@ function showUserName() {
 }
 
 // charts
-function cashFlowAnalysis() {
+function cashFlowAnalysis(data = transactionArr) {
   let chart = $("#cashflow");
 
   if (cashFlow) cashFlow.destroy();
 
-  let result = calculateTransactionDetails();
+  let result = calculateTransactionDetails(data);
   cashFlow = new Chart(chart, {
     type: "bar",
     data: {
@@ -257,6 +265,21 @@ function cashFlowAnalysis() {
       ],
     },
   });
+}
+// profile setting
+function profileSetting(username, currency) {
+  const index = registeredUsers.findIndex((u) => u.username === user.username);
+  user.username = username;
+  user.currency = currency;
+  registeredUsers[index] = user;
+  setToLocalStorage("user", user);
+  setToLocalStorage("registeredUsers", registeredUsers);
+  removeFromLocaleStorage(transaction_name);
+  transaction_name = `transaction_${user.username}`;
+  setToLocalStorage(transaction_name, transactionArr);
+  showUserName();
+
+  alert("Setting saved successfully!");
 }
 
 // settings
@@ -326,6 +349,8 @@ settingBtn.addEventListener("click", () => {
   dashboardPage.style.display = "none";
   mainColumn.style.display = "none";
   settingPage.style.display = "block";
+  settingForm.username.value = user.username;
+  settingForm.currency.value = user.currency;
 });
 dashboardBtn.addEventListener("click", () => {
   dashboardPage.style.display = "block";
@@ -361,7 +386,7 @@ saveTransactionBtn.addEventListener("click", (e) => {
   }
   let obj = { id, type, description, amount, date, category };
   addTransaction(obj);
-  console.log(transactionArr);
+  updateIndex = null;
   displayUI();
   transactionForm.reset();
   closeTransactionModal();
@@ -375,5 +400,25 @@ tbody.addEventListener("click", (e) => {
     deleteTransaction(e.target.dataset.id);
   }
 });
+
+editProfileBtn.addEventListener("click", () => {
+  console.log(user);
+  let username = settingForm.username.value;
+  let currency = settingForm.currency.value;
+  profileSetting(username, currency);
+});
+
+search.addEventListener("change", (e) => {
+  let filteredTransaction = transactionArr;
+  if (e.target.value === "income") {
+    filteredTransaction = transactionArr.filter((t) => t.type === "Income");
+  } else if (e.target.value === "expense") {
+    filteredTransaction = transactionArr.filter((t) => (t.type = "expense"));
+  }
+  showTransactionCalculation(filteredTransaction);
+  calculateTransactionDetails(filteredTransaction);
+  cashFlowAnalysis(filteredTransaction);
+});
+
 applyTheme(theme);
 displayUI();

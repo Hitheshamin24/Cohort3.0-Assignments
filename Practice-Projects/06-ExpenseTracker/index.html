@@ -96,7 +96,7 @@
         <div class="hero">
           <div class="nav">
             <div></div>
-            <div class="right">
+            <div class="right-nav">
               <div class="divider"></div>
               <p>user</p>
               <button id="logout" onclick="logout()">
@@ -151,11 +151,11 @@
                 <h1>All Transactions</h1>
                 <div class="search">
                   <div class="left">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" />
+                    <i  class="fa-solid fa-magnifying-glass"></i>
+                    <input class="search-input" name="search" placeholder="Search transaction..." type="text" />
                   </div>
                   <div class="right">
-                    <select name="" id="transaction-selection">
+                    <select class="options" name="options" id="transaction-selection">
                       <option value="allTypes">All Types</option>
                       <option value="income">Income Only</option>
                       <option value="expense">Expense Only</option>
@@ -199,22 +199,22 @@
             </div>
             <div class="setting-container">
               <h1>Profile Details</h1>
-              <div class="profile-form">
+              <form class="profile-form">
                 <div class="input">
                   <label for="name">Full Name</label>
-                  <input type="text" id="name" placeholder="Enter your name" />
+                  <input name="username" type="text" id="name" placeholder="Enter your name" />
                 </div>
                 <div class="input">
                   <label for="currency">Primary Currency</label>
-                  <select id="currency">
-                    <option value="USD">USD ($)</option>
-                    <option value="EUR">EUR (€)</option>
-                    <option value="GBP">GBP (£)</option>
-                    <option value="INR" selected>INR (₹)</option>
-                    <option value="JPY">JPY (¥)</option>
+                  <select name="currency" id="currency">
+                    <option value="$">USD ($)</option>
+                    <option value="€">EUR (€)</option>
+                    <option value="£">GBP (£)</option>
+                    <option value="₹">INR (₹)</option>
+                    <option value="¥">JPY (¥)</option>
                   </select>
                 </div>
-              </div>
+              </form>
               <button id="save">Save Changes</button>
             </div>
           </div>
