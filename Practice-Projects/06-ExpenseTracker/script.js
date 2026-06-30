@@ -30,6 +30,7 @@ const navbar = $(".nav");
 const tbody = $("#transaction-body");
 
 const search = $(".options");
+const searchInput = $(".search-input");
 // transaction form and btn
 const transactionForm = $("#add-transaction");
 const saveTransactionBtn = $("#save-transaction");
@@ -126,14 +127,13 @@ function displayUI() {
     registerCard.style.display = "none";
     $("#dashboard-view").style.display = "flex";
     showUserName();
+    showTransactionCalculation();
+    cashFlowAnalysis();
+    showTransactionDetails();
   } else {
     loginCard.style.display = "flex";
     $("#dashboard-view").style.display = "none";
   }
-
-  showTransactionCalculation();
-  cashFlowAnalysis();
-  showTransactionDetails();
 }
 
 // transactions
@@ -210,8 +210,8 @@ function deleteTransaction(id) {
   if (isConfirmed) {
     transactionArr.splice(deleteIndex, 1);
     setToLocalStorage(transaction_name, transactionArr);
+    displayUI();
   }
-  showTransactionDetails();
 }
 
 function resetTransaction() {
@@ -224,8 +224,30 @@ function resetTransaction() {
   }
   displayUI();
 }
+function applyFilters() {
+  let type = search.value;
+  let filteredTransaction = [...transactionArr];
+  if (type === "income") {
+    filteredTransaction = transactionArr.filter((t) => t.type === "Income");
+  }
+  if (type === "expense") {
+    filteredTransaction = transactionArr.filter((t) => t.type === "Expense");
+  }
+
+  let keyword = searchInput.value.toLowerCase().trim();
+  filteredTransaction = filteredTransaction.filter((t) => {
+    return (
+      t.description.toLowerCase().includes(keyword) ||
+      t.category.toLowerCase().includes(keyword)
+    );
+  });
+  showTransactionDetails(filteredTransaction);
+  cashFlowAnalysis(filteredTransaction);
+  showTransactionCalculation(filteredTransaction);
+}
 // dashboard
 function showTransactionCalculation(data = transactionArr) {
+  if (!user) return;
   const result = calculateTransactionDetails(data);
   statCard.forEach((card, index) => {
     let h1 = card.querySelector("h1");
@@ -268,15 +290,25 @@ function cashFlowAnalysis(data = transactionArr) {
 }
 // profile setting
 function profileSetting(username, currency) {
+  const exists = registeredUsers.find((u) => e.username === username);
+  if (exists) {
+    alert("Username already exists");
+    return;
+  }
+  if (!username.trim()) {
+    alert("Username cannot be empty");
+  }
   const index = registeredUsers.findIndex((u) => u.username === user.username);
   user.username = username;
   user.currency = currency;
   registeredUsers[index] = user;
   setToLocalStorage("user", user);
   setToLocalStorage("registeredUsers", registeredUsers);
-  removeFromLocaleStorage(transaction_name);
-  transaction_name = `transaction_${user.username}`;
+  let oldKey = transaction_name;
+  transaction_name = `Transaction_${user.username}`;
   setToLocalStorage(transaction_name, transactionArr);
+  removeFromLocaleStorage(oldKey);
+
   showUserName();
 
   alert("Setting saved successfully!");
@@ -402,23 +434,17 @@ tbody.addEventListener("click", (e) => {
 });
 
 editProfileBtn.addEventListener("click", () => {
-  console.log(user);
   let username = settingForm.username.value;
   let currency = settingForm.currency.value;
   profileSetting(username, currency);
 });
 
-search.addEventListener("change", (e) => {
-  let filteredTransaction = transactionArr;
-  if (e.target.value === "income") {
-    filteredTransaction = transactionArr.filter((t) => t.type === "Income");
-  } else if (e.target.value === "expense") {
-    filteredTransaction = transactionArr.filter((t) => (t.type = "expense"));
-  }
-  showTransactionCalculation(filteredTransaction);
-  calculateTransactionDetails(filteredTransaction);
-  cashFlowAnalysis(filteredTransaction);
+search.addEventListener("change", () => {
+  applyFilters();
 });
 
+searchInput.addEventListener("input", () => {
+  applyFilters();
+});
 applyTheme(theme);
 displayUI();
