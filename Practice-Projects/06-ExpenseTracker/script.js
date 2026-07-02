@@ -248,8 +248,9 @@ function applyFilters() {
 function showTransactionCalculation(data = transactionArr) {
   if (!user) return;
   const result = calculateTransactionDetails(data);
-  statCard.forEach((card, index) => {
-    let h1 = card.querySelector("h1");
+  const statValues = [...statCard].map((card) => card.querySelector("h1"));
+  statValues.forEach((h1, index) => {
+   
     h1.innerHTML =
       index == statCard.length - 1
         ? result[index]
@@ -267,7 +268,7 @@ function cashFlowAnalysis(data = transactionArr) {
 
   if (cashFlow) cashFlow.destroy();
 
-  let result = calculateTransactionDetails(data);
+  let [balance, income, expense, total] = calculateTransactionDetails(data);
   cashFlow = new Chart(chart, {
     type: "bar",
     data: {
@@ -275,12 +276,12 @@ function cashFlowAnalysis(data = transactionArr) {
       datasets: [
         {
           label: "income ",
-          data: [result[1]],
+          data: [income],
           backgroundColor: "#277243",
         },
         {
           label: "expense",
-          data: [result[2]],
+          data: [expense],
           backgroundColor: "#9d2323",
         },
       ],
@@ -300,6 +301,7 @@ function profileSetting(username, currency) {
   }
   if (!username.trim()) {
     alert("Username cannot be empty");
+    return
   }
   const index = registeredUsers.findIndex((u) => u.username === user.username);
   user.username = username;
@@ -319,15 +321,10 @@ function profileSetting(username, currency) {
 
 // settings
 function applyTheme(theme) {
-  if (theme === "dark") {
-    mode.classList.add("active");
-    toggleKey.classList.add("active");
-    document.body.classList.add("dark");
-  } else {
-    mode.classList.remove("active");
-    toggleKey.classList.remove("active");
-    document.body.classList.remove("dark");
-  }
+  const dark = theme === "dark";
+  mode.classList.toggle("active", dark);
+  toggleKey.classList.toggle("active", dark);
+  document.body.classList.toggle("dark", dark);
 }
 
 // utilities
