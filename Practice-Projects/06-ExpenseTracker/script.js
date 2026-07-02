@@ -94,13 +94,12 @@ function login(username, password) {
   }
 
   user = currentUser;
-  transaction_name = `Transaction_${user.username}`;
+  transaction_name = getTransactionKey();
   transactionArr = getStorage(transaction_name) || [];
   setToLocalStorage("user", user);
 
   displayUI();
   alert("Login successful");
-  return;
 }
 function logout() {
   if (!user) return;
@@ -120,7 +119,7 @@ function logout() {
 
 function displayUI() {
   if (user) {
-    transaction_name = `Transaction_${user.username}`;
+    transaction_name = getTransactionKey();
     transactionArr = getStorage(transaction_name) || [];
 
     loginCard.style.display = "none";
@@ -141,41 +140,40 @@ function displayUI() {
 // add transaction
 function addTransaction(obj) {
   if (
-    obj.type.trim() === "" ||
-    obj.description.trim() === "" ||
+    !obj.type.trim() ||
+    !obj.description.trim() ||
     !obj.amount ||
-    obj.category.trim() === ""
+    !obj.category.trim()
   ) {
     alert("Enter all the values ");
     return;
   }
-  if (updateIndex != null) {
-    transactionArr.splice(updateIndex, 1, obj);
-  } else {
-    transactionArr.push(obj);
-  }
+  updateIndex !== null
+    ? (transactionArr[updateIndex] = obj)
+    : transactionArr.push(obj);
 
   setToLocalStorage(transaction_name, transactionArr);
 }
 
 function calculateTransactionDetails(data = transactionArr) {
-  let currentBalance = data.reduce((acc, curr) => {
-    return curr.type === "Income" ? acc + curr.amount : acc - curr.amount;
-  }, 0);
-  let totalIncome = data
-    .filter((e) => e.type === "Income")
-    .reduce((acc, curr) => acc + curr.amount, 0);
-  let totalExpense = data
-    .filter((e) => e.type === "Expense")
-    .reduce((acc, curr) => acc + curr.amount, 0);
-  let totalTransaction = data.length;
-  return [currentBalance, totalIncome, totalExpense, totalTransaction];
+  let currentBalance = 0;
+  let totalIncome = 0;
+  let totalExpense = 0;
+  for (const t of data) {
+    if (t.type === "Income") {
+      totalIncome += t.amount;
+      currentBalance += t.amount;
+    } else {
+      totalExpense += t.amount;
+      currentBalance -= t.amount;
+    }
+  }
+  return [currentBalance, totalIncome, totalExpense, data.length];
 }
 function showTransactionDetails(data = transactionArr) {
-  tbody.innerHTML = "";
-
-  data.forEach((transactions) => {
-    tbody.innerHTML += `
+  tbody.innerHTML = data
+    .map(
+      (transactions) => `
                     <tr>
                     <td>${transactions.date}</td>
                     <td>${transactions.description}</td>
@@ -185,8 +183,9 @@ function showTransactionDetails(data = transactionArr) {
                       <i class="fa-solid fa-pencil" data-id="${transactions.id}"></i>
                       <i class="fa-solid fa-trash" data-id="${transactions.id}"></i>
                     </td>
-                  </tr>`;
-  });
+                  </tr>`,
+    )
+    .join("");
 }
 
 function editTransaction(id) {
@@ -290,7 +289,11 @@ function cashFlowAnalysis(data = transactionArr) {
 }
 // profile setting
 function profileSetting(username, currency) {
-  const exists = registeredUsers.find((u) => e.username === username);
+  const exists = registeredUsers.find(
+    (u) =>
+      u.username.toLowerCase() === username.toLowerCase() &&
+      u.username !== user.username,
+  );
   if (exists) {
     alert("Username already exists");
     return;
@@ -305,9 +308,9 @@ function profileSetting(username, currency) {
   setToLocalStorage("user", user);
   setToLocalStorage("registeredUsers", registeredUsers);
   let oldKey = transaction_name;
-  transaction_name = `Transaction_${user.username}`;
-  setToLocalStorage(transaction_name, transactionArr);
   removeFromLocaleStorage(oldKey);
+  transaction_name = getTransactionKey();
+  setToLocalStorage(transaction_name, transactionArr);
 
   showUserName();
 
@@ -345,6 +348,12 @@ function displayTransactionModal() {
 function closeTransactionModal() {
   transactionModal.style.display = "none";
 }
+function togglePage(showDashboard) {
+  dashboardPage.style.display = showDashboard ? "block" : "none";
+  mainColumn.style.display = showDashboard ? "grid" : "none";
+  settingPage.style.display = showDashboard ? "none" : "block";
+}
+const getTransactionKey = () => `Transaction_${user.username}`;
 
 // event listener functions
 gotToRegister.addEventListener("click", () => {
@@ -378,16 +387,12 @@ sideBtns.forEach((btn) => {
 });
 
 settingBtn.addEventListener("click", () => {
-  dashboardPage.style.display = "none";
-  mainColumn.style.display = "none";
-  settingPage.style.display = "block";
+  togglePage(false);
   settingForm.username.value = user.username;
   settingForm.currency.value = user.currency;
 });
 dashboardBtn.addEventListener("click", () => {
-  dashboardPage.style.display = "block";
-  mainColumn.style.display = "grid";
-  settingPage.style.display = "none";
+  togglePage(true);
 });
 
 mode.addEventListener("click", () => {
@@ -413,7 +418,7 @@ saveTransactionBtn.addEventListener("click", (e) => {
   let date = transactionForm.date.value || dateString;
   let category = transactionForm.category.value;
   let id = Date.now();
-  if (updateIndex != null) {
+  if (updateIndex !== null) {
     id = transactionArr[updateIndex].id;
   }
   let obj = { id, type, description, amount, date, category };
