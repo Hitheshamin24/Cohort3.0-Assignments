@@ -1,0 +1,148 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+.dashboard {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#dashboard-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.35),
+    rgba(0, 0, 0, 0.55)
+  );
+}
+
+.feature-view {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 60px 80px;
+  color: white;
+}
+
+/* Time */
+
+.time-display {
+  text-align: left;
+  margin-bottom: 60px;
+}
+
+.time-display h1 {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+.time-display h3 {
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: 300;
+  opacity: 0.9;
+}
+ #weather{
+    display: flex;
+    align-items: center;
+    
+ }
+/* Cards */
+
+.cards {
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+.card {
+  width: 180px;
+  height: 180px;
+
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+
+  transition: all 0.35s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-12px) scale(1.04);
+
+  background: rgba(255, 255, 255, 0.2);
+
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.35),
+    0 0 25px rgba(255, 255, 255, 0.15);
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+}
+
+.card-img img {
+  width: 70px;
+  height: 70px;
+
+  object-fit: cover;
+  border-radius: 50%;
+
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.15);
+
+  transition: all 0.35s ease;
+}
+
+.card:hover .card-img img {
+  transform: rotate(8deg) scale(1.08);
+}
+
+.card-img h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
