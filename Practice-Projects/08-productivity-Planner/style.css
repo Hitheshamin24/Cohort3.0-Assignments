@@ -27,10 +27,7 @@ body {
 .overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    rgba(0, 0, 0, 0.35),
-    rgba(0, 0, 0, 0.55)
-  );
+  background: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55));
 }
 
 .feature-view {
@@ -66,11 +63,10 @@ body {
   font-weight: 300;
   opacity: 0.9;
 }
- #weather{
-    display: flex;
-    align-items: center;
-    
- }
+#weather {
+  display: flex;
+  align-items: center;
+}
 /* Cards */
 
 .cards {
@@ -146,3 +142,72 @@ body {
   letter-spacing: 0.5px;
 }
 
+/* Motivation Card Container */
+.motivation-card-view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+/* Navigation */
+.motivation-card-view nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+/* Close Button */
+#close-motivation-card {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  outline: none;
+  border-radius: 999px;
+  background: rgba(29, 28, 28, 0.527);
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+  border: 1px solid rgba(230, 7, 7, 0.25);
+}
+
+#close-motivation-card:hover {
+  background: rgba(189, 5, 5, 0.719);
+  transform: translateY(-2px);
+}
+
+#close-motivation-card:active {
+  transform: scale(0.96);
+}
+/* Card */
+.motivation {
+  width: min(90%, 600px);
+  padding: 2rem;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+  text-align: center;
+  color: #fff;
+}
+
+.quotes h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.quotes p:first-of-type {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.quotes p:last-of-type {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
