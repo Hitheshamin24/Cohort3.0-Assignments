@@ -159,7 +159,8 @@ body {
 }
 
 /* Close Button */
-#close-motivation-card,#close-todo-card {
+#close-motivation-card,
+#close-todo-card {
   padding: 0.7rem 1.4rem;
   border: none;
   outline: none;
@@ -174,12 +175,14 @@ body {
   border: 1px solid rgba(230, 7, 7, 0.25);
 }
 
-#close-motivation-card:hover,#close-todo-card:hover {
+#close-motivation-card:hover,
+#close-todo-card:hover {
   background: rgba(189, 5, 5, 0.719);
   transform: translateY(-2px);
 }
 
-#close-motivation-card:active,#close-todo-card:active {
+#close-motivation-card:active,
+#close-todo-card:active {
   transform: scale(0.96);
 }
 /* Card */
@@ -295,13 +298,36 @@ body {
   align-items: center;
 }
 
-/* Task Title */
-.task-card h1 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: white;
+.task-info h1 {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  color: rgb(255, 255, 255);
+  font-size: 1.2rem;
 }
 
+.important-badge {
+  font-size: 0.6rem;
+  background: #ff9800;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-weight: bold;
+ 
+}
+.important-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #f39c12;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.important-btn:hover {
+  background: #d68910;
+}
 /* Status */
 .task-card span {
   padding: 8px 16px;

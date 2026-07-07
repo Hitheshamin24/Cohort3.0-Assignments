@@ -126,7 +126,9 @@ function hideTodoCardPopup() {
 }
 function addTasks(obj) {
   if (!obj.title.trim()) return;
-  const exists = tasks.some((task) => task.title.toLowerCase() === obj.title.toLowerCase());
+  const exists = tasks.some(
+    (task) => task.title.toLowerCase() === obj.title.toLowerCase(),
+  );
 
   if (exists) return;
   tasks.push(obj);
@@ -139,10 +141,16 @@ function displayTasks() {
     .map(
       (elem, idx) =>
         `    
-          <div class="task-card">
-            <h1>${elem.title}</h1>
-            <span onclick="updateStatus(${idx})" style= "background:${elem.status === "Completed" ? "#4c9b02" : "#b40505"} " class="status" data-id="${idx}">${elem.status}</span>
-            <button onclick="deleteTask(${idx})" id="delete-task">Delete Task</button>
+            <div class="task-card">
+            <div class="task-info">
+              <h1>
+                ${elem.title}
+               ${elem.isImp ? '<sup class="important-badge">IMP</sup>' : ""}
+              </h1>
+            </div>
+            <span onclick="updateStatus(${idx})" style="background:${elem.status === "Completed" ? "#4c9b02" : "#b40505"} " class="status">${elem.status}</span>
+            <button onclick="updateImportance(${idx})" class="important-btn">Important</button>
+            <button onclick="deleteTask(${idx})" class="delete-btn">Delete</button>
           </div>`,
     )
     .join("");
@@ -154,6 +162,13 @@ function updateStatus(idx) {
   } else {
     task.status = "Pending";
   }
+  setToLocalStorage("todoList", tasks);
+
+  displayTasks();
+}
+function updateImportance(idx) {
+  let task = tasks[idx];
+  task.isImp = task.isImp ? false : true;
   setToLocalStorage("todoList", tasks);
 
   displayTasks();
@@ -221,9 +236,11 @@ addTaskBtn.addEventListener("click", () => {
   const input = todoContainer.querySelector("input");
   let title = input.value;
   let status = "Pending";
+  let isImp = false;
   let obj = {
     title,
     status,
+    isImp,
   };
   addTasks(obj);
   input.value = "";
