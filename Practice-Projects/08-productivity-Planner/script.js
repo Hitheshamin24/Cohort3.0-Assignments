@@ -18,8 +18,15 @@ const closeTaskPopup = $("#close-todo-card");
 const taskContainer = $(".tasks");
 const addTaskBtn = $("#add-task");
 
+const plannerCard = $("#daily-planner");
+const plannerCardPopup = $(".daily-planner-view");
+const closePlannerPopup = $("#close-planner");
+const plannerContainer = $(".planner-container");
+const addPlanBtn = $("#save-plan");
+const plannerList = $(".planner-list");
 // variables
 let timer;
+let updateIndex = null;
 const morningImg =
   "https://images.unsplash.com/photo-1514241516423-6c0a5e031aa2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bW9ybmluZ2ltYWdlfGVufDB8fDB8fHww";
 const nightImg =
@@ -27,14 +34,14 @@ const nightImg =
 let currentPage = getLocalStorage("currentPage") || "";
 
 const tasks = getLocalStorage("todoList") || [];
-
-if (currentPage === "featureView") {
+const dailyPlans = getLocalStorage("dailyPlans") || [];
+if (currentPage == "motivationCard") showMotivationCardPopup();
+else if (currentPage === "todoCard") showTodoCardPopup();
+else if (currentPage === "plannerCard") showPlannerCardPopup();
+else {
   hideMotivationCardPopup();
   hideTodoCardPopup();
-} else if (currentPage == "motivationCard") {
-  showMotivationCardPopup();
-} else if (currentPage === "todoCard") {
-  showTodoCardPopup();
+  hidePlannerCardPopup();
 }
 
 function setToLocalStorage(key, value) {
@@ -118,12 +125,27 @@ function showTodoCardPopup() {
   currentPage = "todoCard";
   setToLocalStorage("currentPage", currentPage);
 }
+
 function hideTodoCardPopup() {
   todoCardPopup.style.display = "none";
   featureView.style.display = "flex";
   currentPage = "featureView";
   setToLocalStorage("currentPage", currentPage);
 }
+function showPlannerCardPopup() {
+  plannerCardPopup.style.display = "flex";
+  featureView.style.display = "none";
+  displayDailyPlans();
+  currentPage = "plannerCard";
+  setToLocalStorage("currentPage", currentPage);
+}
+function hidePlannerCardPopup() {
+  plannerCardPopup.style.display = "none";
+  featureView.style.display = "flex";
+  currentPage = "featureView";
+  setToLocalStorage("currentPage", currentPage);
+}
+
 function addTasks(obj) {
   if (!obj.title.trim()) return;
   const exists = tasks.some(
@@ -177,6 +199,76 @@ function deleteTask(idx) {
   tasks.splice(idx, 1);
   setToLocalStorage("todoList", tasks);
   displayTasks();
+}
+
+function displayDailyPlans() {
+  sortDailyPlans();
+  plannerList.innerHTML = dailyPlans
+    .map(
+      (elem, idx) =>
+        `<div class="planner-card">
+            <div class="planner-details">
+              <h3>${elem.time}</h3>
+              <p>${elem.plan}</p>
+            </div>
+
+            <div class="planner-actions">
+              <button onclick="editPlans(${idx})">Edit</button>
+              <button onclick="deletePlans(${idx})">Delete</button>
+            </div>
+          </div>`,
+    )
+    .join("");
+}
+function editPlans(idx) {
+  let planToEdit = dailyPlans[idx];
+
+  let [clock, period] = planToEdit.time.split(" ");
+  let [hour, minutes] = clock.split(":").map(Number);
+
+  if (period === "PM" && hour !== 12) hour += 12;
+  if (period === "AM" && hour === 12) hour = 0;
+
+  let time = `${String(hour).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+
+  plannerContainer.querySelector("#task-name").value = planToEdit.plan;
+  plannerContainer.querySelector("#task-time").value = time;
+  updateIndex = idx;
+}
+
+function addDailyPlans(obj) {
+  const exists = dailyPlans.some(
+    (plans) =>
+      plans.plan.toLowerCase().trim() === obj.plan.toLowerCase().trim() &&
+      plans.time === obj.time,
+  );
+  if (exists) return;
+  if (!obj.plan.trim()) return;
+  updateIndex !== null ? (dailyPlans[updateIndex] = obj) : dailyPlans.push(obj);
+  updateIndex = null;
+  setToLocalStorage("dailyPlans", dailyPlans);
+  displayDailyPlans();
+}
+function sortDailyPlans() {
+  dailyPlans.sort((a, b) => {
+    const toMinutes = (time) => {
+      let [clock, period] = time.split(" ");
+      let [hour, minutes] = clock.split(":").map(Number);
+      if (period === "PM" && hour !== 12) {
+        hour += 12;
+      }
+      if (period === "AM" && hour === 12) {
+        hour = 0;
+      }
+      return hour * 60 + minutes;
+    };
+    return toMinutes(a.time) - toMinutes(b.time);
+  });
+}
+function deletePlans(idx) {
+  dailyPlans.splice(idx, 1);
+  setToLocalStorage("dailyPlans", dailyPlans);
+  displayDailyPlans()
 }
 // api functions
 async function getWeather(city) {
@@ -232,6 +324,13 @@ todoListCard.addEventListener("click", () => {
 closeTaskPopup.addEventListener("click", () => {
   hideTodoCardPopup();
 });
+plannerCard.addEventListener("click", () => {
+  showPlannerCardPopup();
+});
+closePlannerPopup.addEventListener("click", () => {
+  hidePlannerCardPopup();
+});
+
 addTaskBtn.addEventListener("click", () => {
   const input = todoContainer.querySelector("input");
   let title = input.value;
@@ -246,4 +345,31 @@ addTaskBtn.addEventListener("click", () => {
   input.value = "";
 });
 
+addPlanBtn.addEventListener("click", () => {
+  let plan = plannerContainer.querySelector("#task-name").value;
+  let planTime = plannerContainer.querySelector("#task-time").value;
+
+  let hour, minutes;
+
+  if (planTime.trim()) {
+    [hour, minutes] = planTime.split(":").map(Number);
+  } else {
+    const now = new Date();
+    hour = now.getHours();
+    minutes = now.getMinutes();
+  }
+
+  const suffix = hour >= 12 ? "PM" : "AM";
+  hour = hour % 12 || 12;
+
+  const time = `${hour}:${String(minutes).padStart(2, "0")} ${suffix}`;
+
+  const planObj = {
+    time,
+    plan,
+  };
+  plannerContainer.querySelector("#task-name").value=""
+  plannerContainer.querySelector("#task-time").value=""
+  addDailyPlans(planObj);
+});
 displayUI();

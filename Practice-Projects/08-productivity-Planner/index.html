@@ -30,7 +30,7 @@
               <h4>To Do list</h4>
             </div>
           </div>
-          <div class="card">
+          <div id="daily-planner" class="card">
             <div class="card-img">
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT41rjJo5N01YgFt3jPtu0gaFG65S0Cdb0dm517AoO5AA&s=10"
@@ -80,9 +80,7 @@
           <button id="add-task">Add Task</button>
         </div>
 
-        <div class="tasks">
-        
-        </div>
+        <div class="tasks"></div>
       </div>
     </div>
 
@@ -99,6 +97,28 @@
           </p>
           <p id="author">- Winston Churchill</p>
         </div>
+      </div>
+    </div>
+    <div class="daily-planner-view">
+      <nav>
+        <button id="close-planner">Close</button>
+      </nav>
+
+      <div class="planner-container">
+        <h2>Daily Planner</h2>
+
+        <div class="planner-form">
+          <input name="task-time" type="time" id="task-time" />
+          <input
+            name="plan"
+            type="text"
+            id="task-name"
+            placeholder="Enter your task"
+          />
+          <button id="save-plan">Add Plan</button>
+        </div>
+
+        <div class="planner-list"></div>
       </div>
     </div>
 

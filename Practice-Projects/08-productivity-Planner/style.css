@@ -160,7 +160,7 @@ body {
 
 /* Close Button */
 #close-motivation-card,
-#close-todo-card {
+#close-todo-card ,#close-planner{
   padding: 0.7rem 1.4rem;
   border: none;
   outline: none;
@@ -176,13 +176,13 @@ body {
 }
 
 #close-motivation-card:hover,
-#close-todo-card:hover {
+#close-todo-card:hover,#close-planner:hover {
   background: rgba(189, 5, 5, 0.719);
   transform: translateY(-2px);
 }
 
 #close-motivation-card:active,
-#close-todo-card:active {
+#close-todo-card:active,#close-planner:active {
   transform: scale(0.96);
 }
 /* Card */
@@ -273,7 +273,9 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
-
+.input button:active{
+  transform: scale(0.9);
+}
 .input button:hover {
   background: #27ae60;
 }
@@ -324,10 +326,14 @@ body {
   cursor: pointer;
   transition: 0.3s;
 }
+.important-btn:active,.task-card button:active{
+  transform: scale(0.90);
+}
 
 .important-btn:hover {
   background: #d68910;
 }
+
 /* Status */
 .task-card span {
   padding: 8px 16px;
@@ -363,4 +369,140 @@ body {
 .tasks::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.4);
   border-radius: 10px;
+}
+
+/* Popup */
+
+.daily-planner-view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.daily-planner-view nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.daily-planner-view nav button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #ff5c5c;
+  color: white;
+  cursor: pointer;
+}
+
+.planner-container {
+  width: 750px;
+  height: 550px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.planner-container h2 {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+}
+
+/* Form */
+
+.planner-form {
+  display: grid;
+  grid-template-columns: 150px 1fr 120px;
+  gap: 15px;
+}
+
+.planner-form input {
+  padding: 14px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.planner-form button {
+  border: none;
+  border-radius: 10px;
+  background: #2ecc71;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: .3s;
+}
+
+.planner-form button:hover {
+  background: #27ae60;
+}
+
+/* Planner List */
+
+.planner-list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto;
+}
+
+.planner-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.planner-list::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.35);
+  border-radius: 20px;
+}
+
+/* Planner Card */
+
+.planner-card {
+  background: rgba(255,255,255,.15);
+  border-radius: 15px;
+  padding: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.planner-details h3 {
+  color: white;
+  margin-bottom: 6px;
+}
+
+.planner-details p {
+  color: #eee;
+}
+
+.planner-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.planner-actions button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  color: white;
+  cursor: pointer;
+}
+.planner-actions button:active,.planner-form button:active{
+   transform: scale(0.9);
+}
+.planner-actions button:first-child {
+  background: #3498db;
+}
+
+.planner-actions button:last-child {
+  background: #e74c3c;
 }
