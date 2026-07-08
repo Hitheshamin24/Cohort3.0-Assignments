@@ -32,6 +32,8 @@ const pomodoroTimer = $("#pomodoro-timer");
 const pomodoroStart = $("#start-timer");
 const pomodoroPause = $("#pause-timer");
 const pomodoroReset = $("#reset-timer");
+const sessionCount = $("#session-count");
+const completedCount = $("#completed-count");
 // variables
 let timer;
 let updateIndex = null;
@@ -43,34 +45,49 @@ let currentPage = getLocalStorage("currentPage") || "";
 
 const defaultTime = 25 * 60;
 let remainingTime = defaultTime;
+let session = getLocalStorage("sessionCount") || 0;
+let completed = getLocalStorage("completedCount") || 0;
 const tasks = getLocalStorage("todoList") || [];
 const dailyPlans = getLocalStorage("dailyPlans") || [];
-if (currentPage == "motivationCard") showMotivationCardPopup();
-else if (currentPage === "todoCard") showTodoCardPopup();
-else if (currentPage === "plannerCard") showPlannerCardPopup();
-else if (currentPage === "pomodoroCard") showPomodoroCardPopup();
-else {
-  hidePopup(motivationCardPopup);
-  hidePopup(todoCardPopup);
-  hidePopup(plannerCardPopup);
-  hidePopup(pomodoroCardPopup);
-}
 
 function setToLocalStorage(key, value) {
   value = JSON.stringify(value);
   localStorage.setItem(key, value);
 }
 function getLocalStorage(key) {
-  return JSON.parse(localStorage.getItem(key));
+  try {
+    return JSON.parse(localStorage.getItem(key));
+  } catch {
+    return null;
+  }
 }
 
 // display fun
+
 function displayUI() {
   displayBackground();
+
+  setInterval(displayBackground, 60000);
   displayTimer();
   displayWeather();
 }
+function restoreCurrentPage() {
+  if (currentPage == "motivationCard") showMotivationCardPopup();
+  else if (currentPage === "todoCard") showTodoCardPopup();
+  else if (currentPage === "plannerCard") showPlannerCardPopup();
+  else if (currentPage === "pomodoroCard") showPomodoroCardPopup();
+  else {
+    hidePopup(motivationCardPopup);
+    hidePopup(todoCardPopup);
+    hidePopup(plannerCardPopup);
+    hidePopup(pomodoroCardPopup);
+  }
+}
 
+function initializeApp() {
+  restoreCurrentPage();
+  displayUI();
+}
 // ui functions
 function displayBackground() {
   dashboardImg.setAttribute("src", getBackground());
@@ -86,19 +103,32 @@ function displayTimer() {
 }
 
 async function displayWeather() {
-  const data = await getWeather("Mangalore");
+  navigator.geolocation.getCurrentPosition(
+    async (position) => {
+      const { latitude, longitude } = position.coords;
+      const data = await getWeather(latitude, longitude);
+      showWeather(data);
+    },
 
-  if (data.cod !== 200 || data.cod === "404") {
-    weather.innerHTML = `
-    Unable to fetch weather data `;
+    async () => {
+      const data = await getWeatherByCity("Bhopal");
+      showWeather(data);
+    },
+  );
+}
+function showWeather(data) {
+  if (!data || data.cod !== 200) {
+    weather.textContent = "Unable to fetch weather";
     return;
   }
-  const icon = data.weather[0].icon;
-  const iconUrl = `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
+  const iconUrl = `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+  const cityName = data.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
   weather.innerHTML = `
-    <img src="${iconUrl}" alt="Weather Icon" width="40">
-    ${data.name}: ${Math.round(data.main.temp)}°C, ${data.weather[0].main}
-  `;
+        <img src="${iconUrl}" alt="Weather Icon" width="40">
+        ${cityName}: ${Math.round(data.main.temp)}°C, ${data.weather[0].main}
+      `;
 }
 async function showMotivationCardPopup() {
   showPopup(motivationCardPopup, "motivationCard");
@@ -110,7 +140,7 @@ async function showMotivationCardPopup() {
   author.textContent = "";
   try {
     const data = await getQuotes();
-    if (!data[0] || !data.length) {
+    if (!data || !data.length) {
       quote.textContent = "Unable to fetch quote.";
       author.textContent = "";
       return;
@@ -135,6 +165,8 @@ function showPlannerCardPopup() {
 }
 
 function showPomodoroCardPopup() {
+  sessionCount.textContent = session;
+  completedCount.textContent = completed;
   showPopup(pomodoroCardPopup, "pomodoroCard");
 }
 
@@ -153,12 +185,19 @@ function hidePopup(popup) {
 }
 
 function addTasks(obj) {
-  if (!obj.title.trim()) return;
+  if (!obj.title.trim()) {
+    alert("Task cannot be empty");
+    return;
+  }
   const exists = tasks.some(
-    (task) => task.title.toLowerCase() === obj.title.toLowerCase(),
+    (task) =>
+      task.title.trim().toLowerCase() === obj.title.trim().toLowerCase(),
   );
 
-  if (exists) return;
+  if (exists) {
+    alert("Task already exists");
+    return;
+  }
   tasks.push(obj);
   setToLocalStorage("todoList", tasks);
   displayTasks();
@@ -243,13 +282,21 @@ function editPlans(idx) {
 }
 
 function addDailyPlans(obj) {
-  const exists = dailyPlans.some(
-    (plans) =>
+  const exists = dailyPlans.some((plans, index) => {
+    if (index === updateIndex) return false;
+    return (
       plans.plan.toLowerCase().trim() === obj.plan.toLowerCase().trim() &&
-      plans.time === obj.time,
-  );
-  if (exists) return;
-  if (!obj.plan.trim()) return;
+      plans.time === obj.time
+    );
+  });
+  if (exists) {
+    alert("Plan already exists");
+    return;
+  }
+  if (!obj.plan.trim()) {
+    alert("Plan cannot be empty");
+    return;
+  }
   updateIndex !== null ? (dailyPlans[updateIndex] = obj) : dailyPlans.push(obj);
   updateIndex = null;
   setToLocalStorage("dailyPlans", dailyPlans);
@@ -281,15 +328,23 @@ let interval = null;
 
 function displayPomodoroTimer() {
   if (interval) return;
+  if (remainingTime === defaultTime) session++;
+  setToLocalStorage("sessionCount", session);
+  sessionCount.textContent = session;
+
+  const endTime = Date.now() + remainingTime * 1000;
 
   interval = setInterval(() => {
-    remainingTime--;
+    remainingTime = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
 
     const [minutes, seconds] = getPomodoroTimer(remainingTime);
 
     pomodoroTimer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 
     if (remainingTime <= 0) {
+      completed++;
+      setToLocalStorage("completedCount", completed);
+      completedCount.textContent = completed;
       clearInterval(interval);
       interval = null;
       pomodoroStart.disabled = false;
@@ -319,28 +374,58 @@ function resetPomodoroTimer() {
   pomodoroTimer.innerHTML = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 // api functions
-async function getWeather(city) {
+async function getWeather(lat, lon) {
   const apiKey = "70c4d22dc812a64e9a3b0b48bb887de3";
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
   try {
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Unable to fetch weather");
+    }
     const data = await response.json();
     return data;
   } catch (err) {
     console.log(err);
+    return null;
+  }
+}
+async function getWeatherByCity(city) {
+  const apiKey = "70c4d22dc812a64e9a3b0b48bb887de3";
+
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+  try {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Unable to fetch weather");
+    }
+
+    return await response.json();
+  } catch (err) {
+    console.error(err);
+    return null;
   }
 }
 
 async function getQuotes() {
   const apiKey = "l5Y3as4DVyGPVQIm5eT8BISMatxGoHhUMbuRGBKh";
   const url = "https://api.api-ninjas.com/v2/quoteoftheday";
-  const response = await fetch(url, {
-    headers: {
-      "X-Api-Key": apiKey,
-    },
-  });
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "X-Api-Key": apiKey,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Unable to fetch");
+    }
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
 }
 
 // helper functions
@@ -417,7 +502,7 @@ addPlanBtn.addEventListener("click", () => {
   const suffix = hour >= 12 ? "PM" : "AM";
   hour = hour % 12 || 12;
 
-  const time = `${hour}:${String(minutes).padStart(2, "0")} ${suffix}`;
+  const time = `${String(hour).padStart(2, "0")}:${String(minutes).padStart(2, "0")} ${suffix}`;
 
   const planObj = {
     time,
@@ -430,8 +515,9 @@ addPlanBtn.addEventListener("click", () => {
 
 pomodoroStart.addEventListener("click", () => {
   pomodoroStart.disabled = true;
+
   displayPomodoroTimer();
 });
 pomodoroPause.addEventListener("click", () => pausePomodoroTimer());
 pomodoroReset.addEventListener("click", () => resetPomodoroTimer());
-displayUI();
+initializeApp();
