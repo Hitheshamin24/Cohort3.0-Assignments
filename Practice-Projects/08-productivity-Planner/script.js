@@ -24,6 +24,14 @@ const closePlannerPopup = $("#close-planner");
 const plannerContainer = $(".planner-container");
 const addPlanBtn = $("#save-plan");
 const plannerList = $(".planner-list");
+
+const pomodoroCardPopup = $(".pomodoro-view");
+const closePomodoroPopup = $("#close-pomodoro");
+const pomodoroCard = $("#pomodoro-card");
+const pomodoroTimer = $("#pomodoro-timer");
+const pomodoroStart = $("#start-timer");
+const pomodoroPause = $("#pause-timer");
+const pomodoroReset = $("#reset-timer");
 // variables
 let timer;
 let updateIndex = null;
@@ -33,15 +41,19 @@ const nightImg =
   "https://plus.unsplash.com/premium_photo-1671336757490-1249b2ccb020?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmlnaHQlMjBpbWFnZXxlbnwwfHwwfHx8MA%3D%3D";
 let currentPage = getLocalStorage("currentPage") || "";
 
+const defaultTime = 25 * 60;
+let remainingTime = defaultTime;
 const tasks = getLocalStorage("todoList") || [];
 const dailyPlans = getLocalStorage("dailyPlans") || [];
 if (currentPage == "motivationCard") showMotivationCardPopup();
 else if (currentPage === "todoCard") showTodoCardPopup();
 else if (currentPage === "plannerCard") showPlannerCardPopup();
+else if (currentPage === "pomodoroCard") showPomodoroCardPopup();
 else {
   hideMotivationCardPopup();
   hideTodoCardPopup();
   hidePlannerCardPopup();
+  hidePomodoroCardPopup();
 }
 
 function setToLocalStorage(key, value) {
@@ -141,6 +153,19 @@ function showPlannerCardPopup() {
 }
 function hidePlannerCardPopup() {
   plannerCardPopup.style.display = "none";
+  featureView.style.display = "flex";
+  currentPage = "featureView";
+  setToLocalStorage("currentPage", currentPage);
+}
+function showPomodoroCardPopup() {
+  pomodoroCardPopup.style.display = "flex";
+  featureView.style.display = "none";
+  currentPage = "pomodoroCard";
+  setToLocalStorage("currentPage", currentPage);
+}
+
+function hidePomodoroCardPopup() {
+  pomodoroCardPopup.style.display = "none";
   featureView.style.display = "flex";
   currentPage = "featureView";
   setToLocalStorage("currentPage", currentPage);
@@ -268,7 +293,49 @@ function sortDailyPlans() {
 function deletePlans(idx) {
   dailyPlans.splice(idx, 1);
   setToLocalStorage("dailyPlans", dailyPlans);
-  displayDailyPlans()
+  displayDailyPlans();
+}
+
+let interval = null;
+
+function displayPomodoroTimer() {
+  if (interval) return;
+
+  interval = setInterval(() => {
+    remainingTime--;
+
+    const [minutes, seconds] = getPomodoroTimer(remainingTime);
+
+    pomodoroTimer.textContent = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+    if (remainingTime <= 0) {
+      clearInterval(interval);
+      interval = null;
+      pomodoroStart.disabled = false;
+      alert("Pomodoro Completed!");
+    }
+  }, 1000);
+}
+
+function pausePomodoroTimer() {
+  clearInterval(interval);
+  interval = null;
+  pomodoroStart.disabled = false;
+}
+function getPomodoroTimer(remainingTime) {
+  let minutes = Math.floor(remainingTime / 60);
+  let seconds = remainingTime % 60;
+  return [minutes, seconds];
+}
+function resetPomodoroTimer() {
+  if (interval !== null) {
+    clearInterval(interval);
+    interval = null;
+  }
+  remainingTime = defaultTime;
+  pomodoroStart.disabled = false;
+  const [minutes, seconds] = getPomodoroTimer(remainingTime);
+  pomodoroTimer.innerHTML = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 // api functions
 async function getWeather(city) {
@@ -331,6 +398,13 @@ closePlannerPopup.addEventListener("click", () => {
   hidePlannerCardPopup();
 });
 
+pomodoroCard.addEventListener("click", () => {
+  showPomodoroCardPopup();
+});
+closePomodoroPopup.addEventListener("click", () => {
+  hidePomodoroCardPopup();
+});
+
 addTaskBtn.addEventListener("click", () => {
   const input = todoContainer.querySelector("input");
   let title = input.value;
@@ -368,8 +442,15 @@ addPlanBtn.addEventListener("click", () => {
     time,
     plan,
   };
-  plannerContainer.querySelector("#task-name").value=""
-  plannerContainer.querySelector("#task-time").value=""
+  plannerContainer.querySelector("#task-name").value = "";
+  plannerContainer.querySelector("#task-time").value = "";
   addDailyPlans(planObj);
 });
+
+pomodoroStart.addEventListener("click", () => {
+  pomodoroStart.disabled = true;
+  displayPomodoroTimer();
+});
+pomodoroPause.addEventListener("click", () => pausePomodoroTimer());
+pomodoroReset.addEventListener("click", () => resetPomodoroTimer());
 displayUI();

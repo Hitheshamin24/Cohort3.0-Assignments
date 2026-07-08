@@ -160,7 +160,7 @@ body {
 
 /* Close Button */
 #close-motivation-card,
-#close-todo-card ,#close-planner{
+#close-todo-card ,#close-planner,#close-pomodoro{
   padding: 0.7rem 1.4rem;
   border: none;
   outline: none;
@@ -176,13 +176,13 @@ body {
 }
 
 #close-motivation-card:hover,
-#close-todo-card:hover,#close-planner:hover {
+#close-todo-card:hover,#close-planner:hover ,#close-pomodoro:hover{
   background: rgba(189, 5, 5, 0.719);
   transform: translateY(-2px);
 }
 
 #close-motivation-card:active,
-#close-todo-card:active,#close-planner:active {
+#close-todo-card:active,#close-planner:active ,#close-pomodoro:active{
   transform: scale(0.96);
 }
 /* Card */
@@ -505,4 +505,140 @@ body {
 
 .planner-actions button:last-child {
   background: #e74c3c;
+}
+
+.pomodoro-view {
+  position: absolute;
+  inset: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.pomodoro-view nav {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.pomodoro-view nav button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #ff5c5c;
+  color: white;
+  cursor: pointer;
+}
+
+.pomodoro-container {
+  width: 650px;
+  background: rgba(255,255,255,.12);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+.pomodoro-container h2 {
+  color: white;
+  font-size: 2rem;
+}
+
+.timer-card {
+  width: 100%;
+  background: rgba(255,255,255,.15);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+}
+
+.timer-card h1 {
+  font-size: 5rem;
+  color: white;
+  letter-spacing: 5px;
+}
+
+.timer-card p {
+  margin-top: 10px;
+  color: #eee;
+  font-size: 1.2rem;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 20px;
+}
+
+.timer-controls button {
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: .3s;
+}
+
+.timer-controls button:active {
+  transform: scale(.9);
+}
+
+#start-timer {
+  background: #2ecc71;
+}
+#start-timer:disabled {
+  background: #a1a69569;
+  color: #ecf0f1;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+#pause-timer {
+  background: #f39c12;
+}
+
+#reset-timer {
+  background: #e74c3c;
+}
+
+#start-timer:hover {
+  background: #27ae60;
+}
+
+#pause-timer:hover {
+  background: #d68910;
+}
+
+#reset-timer:hover {
+  background: #c0392b;
+}
+
+.session-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.info-card {
+  flex: 1;
+  background: rgba(255,255,255,.15);
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+}
+
+.info-card h3 {
+  color: white;
+  margin-bottom: 10px;
+}
+
+.info-card p {
+  font-size: 2rem;
+  color: #2ecc71;
+  font-weight: bold;
 }

@@ -48,22 +48,13 @@
               <h4>Motivation Quote</h4>
             </div>
           </div>
-          <div class="card">
+          <div id="pomodoro-card" class="card">
             <div class="card-img">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfEse55dY0boPkxKBIRdkezAc0dW6fGuqADYx30P_gNw&s=10"
+                src="data:image/png;base64,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"
                 alt=""
               />
               <h4>Pomodoro Timer</h4>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-img">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQivQO_AwlZaarYhWExYDHMttzb3j1owYnKYWe31mHMTg&s=10"
-                alt=""
-              />
-              <h4>Daily Goals</h4>
             </div>
           </div>
         </div>
@@ -121,7 +112,38 @@
         <div class="planner-list"></div>
       </div>
     </div>
+    <div class="pomodoro-view">
+      <nav>
+        <button id="close-pomodoro">Close</button>
+      </nav>
 
+      <div class="pomodoro-container">
+        <h2>Pomodoro Timer</h2>
+
+        <div class="timer-card">
+          <h1 id="pomodoro-timer">25:00</h1>
+          <p id="timer-status">Focus Time</p>
+        </div>
+
+        <div class="timer-controls">
+          <button id="start-timer">Start</button>
+          <button id="pause-timer">Pause</button>
+          <button id="reset-timer">Reset</button>
+        </div>
+
+        <div class="session-info">
+          <div class="info-card">
+            <h3>Sessions</h3>
+            <p id="session-count">0</p>
+          </div>
+
+          <div class="info-card">
+            <h3>Completed</h3>
+            <p id="completed-count">0</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
