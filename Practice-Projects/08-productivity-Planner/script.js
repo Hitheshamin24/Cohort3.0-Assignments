@@ -50,10 +50,10 @@ else if (currentPage === "todoCard") showTodoCardPopup();
 else if (currentPage === "plannerCard") showPlannerCardPopup();
 else if (currentPage === "pomodoroCard") showPomodoroCardPopup();
 else {
-  hideMotivationCardPopup();
-  hideTodoCardPopup();
-  hidePlannerCardPopup();
-  hidePomodoroCardPopup();
+  hidePopup(motivationCardPopup);
+  hidePopup(todoCardPopup);
+  hidePopup(plannerCardPopup);
+  hidePopup(pomodoroCardPopup);
 }
 
 function setToLocalStorage(key, value) {
@@ -101,7 +101,7 @@ async function displayWeather() {
   `;
 }
 async function showMotivationCardPopup() {
-  featureView.style.display = "none";
+  showPopup(motivationCardPopup, "motivationCard");
   const quote = motivationCardPopup.querySelector("#quote");
   const author = motivationCardPopup.querySelector("#author");
 
@@ -123,49 +123,30 @@ async function showMotivationCardPopup() {
   currentPage = "motivationCard";
   setToLocalStorage("currentPage", currentPage);
 }
-function hideMotivationCardPopup() {
-  motivationCardPopup.style.display = "none";
-  featureView.style.display = "flex";
-  currentPage = "featureView";
-  setToLocalStorage("currentPage", currentPage);
-}
 
 function showTodoCardPopup() {
-  todoCardPopup.style.display = "flex";
-  featureView.style.display = "none";
+  showPopup(todoCardPopup, "todoCard");
   displayTasks();
-  currentPage = "todoCard";
-  setToLocalStorage("currentPage", currentPage);
 }
 
-function hideTodoCardPopup() {
-  todoCardPopup.style.display = "none";
-  featureView.style.display = "flex";
-  currentPage = "featureView";
-  setToLocalStorage("currentPage", currentPage);
-}
 function showPlannerCardPopup() {
-  plannerCardPopup.style.display = "flex";
-  featureView.style.display = "none";
+  showPopup(plannerCardPopup, "plannerCard");
   displayDailyPlans();
-  currentPage = "plannerCard";
-  setToLocalStorage("currentPage", currentPage);
-}
-function hidePlannerCardPopup() {
-  plannerCardPopup.style.display = "none";
-  featureView.style.display = "flex";
-  currentPage = "featureView";
-  setToLocalStorage("currentPage", currentPage);
-}
-function showPomodoroCardPopup() {
-  pomodoroCardPopup.style.display = "flex";
-  featureView.style.display = "none";
-  currentPage = "pomodoroCard";
-  setToLocalStorage("currentPage", currentPage);
 }
 
-function hidePomodoroCardPopup() {
-  pomodoroCardPopup.style.display = "none";
+function showPomodoroCardPopup() {
+  showPopup(pomodoroCardPopup, "pomodoroCard");
+}
+
+function showPopup(popup, pageName) {
+  popup.style.display = "flex";
+  featureView.style.display = "none";
+
+  currentPage = pageName;
+  setToLocalStorage("currentPage", currentPage);
+}
+function hidePopup(popup) {
+  popup.style.display = "none";
   featureView.style.display = "flex";
   currentPage = "featureView";
   setToLocalStorage("currentPage", currentPage);
@@ -382,27 +363,27 @@ motivationCard.addEventListener("click", () => {
   showMotivationCardPopup();
 });
 closeMotivationPopup.addEventListener("click", () => {
-  hideMotivationCardPopup();
+  hidePopup(motivationCardPopup);
 });
 
 todoListCard.addEventListener("click", () => {
   showTodoCardPopup();
 });
 closeTaskPopup.addEventListener("click", () => {
-  hideTodoCardPopup();
+  hidePopup(todoCardPopup);
 });
 plannerCard.addEventListener("click", () => {
   showPlannerCardPopup();
 });
 closePlannerPopup.addEventListener("click", () => {
-  hidePlannerCardPopup();
+  hidePopup(plannerCardPopup);
 });
 
 pomodoroCard.addEventListener("click", () => {
   showPomodoroCardPopup();
 });
 closePomodoroPopup.addEventListener("click", () => {
-  hidePomodoroCardPopup();
+  hidePopup(pomodoroCardPopup);
 });
 
 addTaskBtn.addEventListener("click", () => {

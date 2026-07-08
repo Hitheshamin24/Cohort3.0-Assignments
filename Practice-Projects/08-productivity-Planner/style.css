@@ -591,7 +591,7 @@ body {
   background: #2ecc71;
 }
 #start-timer:disabled {
-  background: #a1a69569;
+  background: #27ae60;
   color: #ecf0f1;
   cursor: not-allowed;
   opacity: 0.7;
