@@ -3,6 +3,7 @@ const $ = (selector) => document.querySelector(selector);
 
 const dashboardImg = $("#dashboard-img");
 const time = $("#timer");
+const dateDisplay = $("#date-display");
 const weather = $("#weather");
 const featureView = $(".feature-view");
 
@@ -94,6 +95,7 @@ function displayBackground() {
 }
 
 function displayTimer() {
+  dateDisplay.textContent=getFormattedDate()
   time.textContent = `Time-${getTimer()}`;
   clearInterval(timer);
 
@@ -430,9 +432,23 @@ async function getQuotes() {
 
 // helper functions
 function getTimer() {
-  let time = new Date();
+  let now = new Date();
+  let hours = now.getHours();
+  const minutes = String(now.getMinutes()).padStart(2, "0");
+  const seconds = String(now.getSeconds()).padStart(2, "0");
+  const suffix = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12 || 12;
+  return `${String(hours).padStart(2, "0")}:${minutes}:${seconds} ${suffix}`;
 
-  return time.toTimeString().split(" ")[0];
+}
+function getFormattedDate() {
+  const now = new Date();
+  return now.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
 }
 
 function getBackground() {
