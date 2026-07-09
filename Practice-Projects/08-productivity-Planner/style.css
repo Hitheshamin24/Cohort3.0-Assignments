@@ -1,4 +1,4 @@
-/* Variables */
+﻿/* Variables */
 :root {
   --font: "Inter", "Segoe UI", sans-serif;
   --overlay: linear-gradient(
@@ -300,11 +300,7 @@ body {
   background: rgba(251, 113, 133, 0.7);
 }
 .glow-green {
-  background: radial-gradient(
-    circle,
-    rgba(74, 222, 128, 0.35),
-    transparent 70%
-  );
+  background: rgba(40, 255, 119, 0.7);
 }
 .card:hover {
   transform: translateY(-12px) scale(1.06);
