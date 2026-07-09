@@ -35,6 +35,7 @@ const pomodoroPause = $("#pause-timer");
 const pomodoroReset = $("#reset-timer");
 const sessionCount = $("#session-count");
 const completedCount = $("#completed-count");
+const themeToggle = $("#theme-toggle");
 // variables
 let timer;
 let updateIndex = null;
@@ -86,6 +87,7 @@ function restoreCurrentPage() {
 }
 
 function initializeApp() {
+  initTheme();
   restoreCurrentPage();
   displayUI();
 }
@@ -458,6 +460,28 @@ function getBackground() {
   }
   return morningImg;
 }
+
+function applyTheme(theme) {
+  if (theme === "light") {
+    document.documentElement.setAttribute("data-theme", "light");
+    themeToggle.textContent = "☀️";
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    themeToggle.textContent = "🌙";
+  }
+}
+
+function initTheme() {
+  const saved = localStorage.getItem("theme") || "dark";
+  applyTheme(saved);
+}
+
+themeToggle.addEventListener("click", () => {
+  const current = document.documentElement.getAttribute("data-theme");
+  const next = current === "light" ? "dark" : "light";
+  localStorage.setItem("theme", next);
+  applyTheme(next);
+});
 
 // event listeners
 motivationCard.addEventListener("click", () => {
