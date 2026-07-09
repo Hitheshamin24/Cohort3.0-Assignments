@@ -103,6 +103,7 @@ function restoreCurrentPage() {
 function initializeApp() {
   initTheme();
   restoreCurrentPage();
+  resetPomodoroStatsIfNewDay();
   displayUI();
 }
 // ui functions
@@ -377,6 +378,7 @@ function displayPomodoroTimer() {
       completedCount.textContent = completed;
       clearInterval(interval);
       interval = null;
+
       pomodoroStart.disabled = false;
       alert("Pomodoro Completed!");
     }
@@ -577,6 +579,19 @@ function applyTheme(theme) {
 function initTheme() {
   const saved = localStorage.getItem("theme") || "dark";
   applyTheme(saved);
+}
+function resetPomodoroStatsIfNewDay() {
+  const today = new Date().toDateString();
+  const lastDate = getLocalStorage("pomodoroDate");
+
+  if (lastDate !== today) {
+    session = 0;
+    completed = 0;
+
+    setToLocalStorage("sessionCount", session);
+    setToLocalStorage("completedCount", completed);
+    setToLocalStorage("pomodoroDate", today);
+  }
 }
 
 themeToggle.addEventListener("click", () => {
