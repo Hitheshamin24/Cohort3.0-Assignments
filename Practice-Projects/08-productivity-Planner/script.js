@@ -11,6 +11,7 @@ const featureView = $(".feature-view");
 const motivationCard = $("#motivation-card");
 const motivationCardPopup = $(".motivation-card-view");
 const closeMotivationPopup = $("#close-motivation-card");
+const newQuoteBtn = $("#new-quote-btn");
 
 const todoListCard = $("#todo-list");
 const todoCardPopup = $(".todolist-card-view");
@@ -47,6 +48,10 @@ let timer;
 let updateIndex = null;
 const morningImg =
   "https://images.unsplash.com/photo-1514241516423-6c0a5e031aa2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bW9ybmluZ2ltYWdlfGVufDB8fDB8fHww";
+const afternoonImg =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN06Tvcw51X_2I_aSHP6Fif7SSF2Q6a99RTkOmIr4kYg&s=10";
+const eveningImg =
+  "https://images.unsplash.com/photo-1577257107590-fc448601f16a?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 const nightImg =
   "https://plus.unsplash.com/premium_photo-1671336757490-1249b2ccb020?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmlnaHQlMjBpbWFnZXxlbnwwfHwwfHx8MA%3D%3D";
 let currentPage = getLocalStorage("currentPage") || "";
@@ -504,6 +509,26 @@ async function getQuotes() {
     return null;
   }
 }
+async function getRandomQuote() {
+  const apiKey = "l5Y3as4DVyGPVQIm5eT8BISMatxGoHhUMbuRGBKh";
+  const url =
+    "https://api.api-ninjas.com/v2/randomquotes?categories=success,wisdom";
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "X-Api-Key": apiKey,
+      },
+    });
+    if (!response.ok) {
+      throw new Error("Unable to fetch");
+    }
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
 
 // helper functions
 function getTimer() {
@@ -527,10 +552,16 @@ function getFormattedDate() {
 
 function getBackground() {
   const hour = new Date().getHours();
-  if (hour >= 19) {
+
+  if (hour >= 6 && hour < 12) {
+    return morningImg;
+  } else if (hour >= 12 && hour < 17) {
+    return afternoonImg;
+  } else if (hour >= 17 && hour < 20) {
+    return eveningImg;
+  } else {
     return nightImg;
   }
-  return morningImg;
 }
 
 function applyTheme(theme) {
@@ -561,6 +592,28 @@ motivationCard.addEventListener("click", () => {
 });
 closeMotivationPopup.addEventListener("click", () => {
   hidePopup(motivationCardPopup);
+});
+newQuoteBtn.addEventListener("click", async () => {
+  const quote = motivationCardPopup.querySelector("#quote");
+  const author = motivationCardPopup.querySelector("#author");
+  newQuoteBtn.disabled = true;
+  newQuoteBtn.textContent = "Loading...";
+  quote.textContent = "Fetching quote...";
+  author.textContent = "";
+  try {
+    const data = await getRandomQuote();
+    if (!data || !data.length) {
+      quote.textContent = "Unable to fetch quote.";
+      return;
+    }
+    quote.textContent = data[0].quote;
+    author.textContent = data[0].author;
+  } catch (err) {
+    quote.textContent = "Failed to load quote.";
+  } finally {
+    newQuoteBtn.disabled = false;
+    newQuoteBtn.textContent = " New Quote";
+  }
 });
 
 todoListCard.addEventListener("click", () => {
@@ -644,5 +697,6 @@ addGoalBtn.addEventListener("click", () => {
   const input = dailyGoalsCardPopup.querySelector("input");
   const goal = input.value.trim();
   addDailyGoal(goal);
+  input.value = "";
 });
 initializeApp();
