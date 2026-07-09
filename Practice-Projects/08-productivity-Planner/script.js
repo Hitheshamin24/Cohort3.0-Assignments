@@ -36,6 +36,12 @@ const pomodoroReset = $("#reset-timer");
 const sessionCount = $("#session-count");
 const completedCount = $("#completed-count");
 const themeToggle = $("#theme-toggle");
+
+const dailyGoalsCardPopup = $(".goals-view");
+const closeDailyGoalsPopup = $("#close-goals");
+const dailyGoalsCard = $("#daily-goals-card");
+const addGoalBtn = $("#add-goal");
+const dailyGoalsList = $(".goals-list");
 // variables
 let timer;
 let updateIndex = null;
@@ -51,7 +57,8 @@ let session = getLocalStorage("sessionCount") || 0;
 let completed = getLocalStorage("completedCount") || 0;
 const tasks = getLocalStorage("todoList") || [];
 const dailyPlans = getLocalStorage("dailyPlans") || [];
-
+const dailyGoals = getLocalStorage("dailyGoals") || [];
+const goalProgress = $("#goal-progress");
 function setToLocalStorage(key, value) {
   value = JSON.stringify(value);
   localStorage.setItem(key, value);
@@ -78,11 +85,13 @@ function restoreCurrentPage() {
   else if (currentPage === "todoCard") showTodoCardPopup();
   else if (currentPage === "plannerCard") showPlannerCardPopup();
   else if (currentPage === "pomodoroCard") showPomodoroCardPopup();
+  else if (currentPage === "dailyGoalsCard") showDailyGoalsCardPopup();
   else {
     hidePopup(motivationCardPopup);
     hidePopup(todoCardPopup);
     hidePopup(plannerCardPopup);
     hidePopup(pomodoroCardPopup);
+    hidePopup(dailyGoalsCardPopup);
   }
 }
 
@@ -97,12 +106,12 @@ function displayBackground() {
 }
 
 function displayTimer() {
-  dateDisplay.textContent=getFormattedDate()
-  time.textContent = `Time-${getTimer()}`;
+  dateDisplay.textContent = getFormattedDate();
+  time.textContent = getTimer();
   clearInterval(timer);
 
   timer = setInterval(() => {
-    time.textContent = `Time-${getTimer()}`;
+    time.textContent = getTimer();
   }, 1000);
 }
 
@@ -172,6 +181,10 @@ function showPomodoroCardPopup() {
   sessionCount.textContent = session;
   completedCount.textContent = completed;
   showPopup(pomodoroCardPopup, "pomodoroCard");
+}
+function showDailyGoalsCardPopup() {
+  showPopup(dailyGoalsCardPopup, "dailyGoalsCard");
+  displayDailyGoal();
 }
 
 function showPopup(popup, pageName) {
@@ -297,6 +310,14 @@ function addDailyPlans(obj) {
     alert("Plan already exists");
     return;
   }
+  const timeExists = dailyPlans.some((plans, index) => {
+    if (index === updateIndex) return false;
+    return plans.time === obj.time;
+  });
+  if (timeExists) {
+    alert("Plan already exists at this time");
+    return;
+  }
   if (!obj.plan.trim()) {
     alert("Plan cannot be empty");
     return;
@@ -377,6 +398,58 @@ function resetPomodoroTimer() {
   const [minutes, seconds] = getPomodoroTimer(remainingTime);
   pomodoroTimer.innerHTML = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
+function addDailyGoal(goal) {
+  if (!goal.trim()) {
+    alert("Goal cannot be empty");
+    return;
+  }
+  const exists = dailyGoals.some(
+    (g) => g.goal.toLowerCase().trim() === goal.toLowerCase().trim(),
+  );
+  if (exists) {
+    alert("Goal already exists");
+    return;
+  }
+  dailyGoals.push({ goal, completed: false });
+  setToLocalStorage("dailyGoals", dailyGoals);
+  displayDailyGoal();
+}
+function displayDailyGoal() {
+  dailyGoalsList.innerHTML = dailyGoals
+    .map(
+      (g, idx) =>
+        `<div class="goal-card">
+  <div class="goal-details">
+    <input
+      type="checkbox"
+      ${g.completed ? "checked" : ""}
+      onchange="toggleGoal(${idx})"
+    />
+    <p class="${g.completed ? "completed" : ""}">
+      ${g.goal}
+    </p>
+  </div>
+  <div class="goal-actions">
+    <button onclick="deleteGoal(${idx})">Delete</button>
+  </div>
+</div>`,
+    )
+    .join("");
+
+  const doneCount = dailyGoals.filter((g) => g.completed).length;
+  goalProgress.textContent = `${doneCount}/${dailyGoals.length} Goals Completed`;
+}
+function toggleGoal(idx) {
+  dailyGoals[idx].completed = !dailyGoals[idx].completed;
+  setToLocalStorage("dailyGoals", dailyGoals);
+  displayDailyGoal();
+}
+function deleteGoal(idx) {
+  dailyGoals.splice(idx, 1);
+  setToLocalStorage("dailyGoals", dailyGoals);
+  displayDailyGoal();
+}
+
 // api functions
 async function getWeather(lat, lon) {
   const apiKey = "70c4d22dc812a64e9a3b0b48bb887de3";
@@ -441,7 +514,6 @@ function getTimer() {
   const suffix = hours >= 12 ? "PM" : "AM";
   hours = hours % 12 || 12;
   return `${String(hours).padStart(2, "0")}:${minutes}:${seconds} ${suffix}`;
-
 }
 function getFormattedDate() {
   const now = new Date();
@@ -511,6 +583,13 @@ closePomodoroPopup.addEventListener("click", () => {
   hidePopup(pomodoroCardPopup);
 });
 
+dailyGoalsCard.addEventListener("click", () => {
+  showDailyGoalsCardPopup();
+});
+closeDailyGoalsPopup.addEventListener("click", () => {
+  hidePopup(dailyGoalsCardPopup);
+});
+
 addTaskBtn.addEventListener("click", () => {
   const input = todoContainer.querySelector("input");
   let title = input.value;
@@ -560,4 +639,10 @@ pomodoroStart.addEventListener("click", () => {
 });
 pomodoroPause.addEventListener("click", () => pausePomodoroTimer());
 pomodoroReset.addEventListener("click", () => resetPomodoroTimer());
+
+addGoalBtn.addEventListener("click", () => {
+  const input = dailyGoalsCardPopup.querySelector("input");
+  const goal = input.value.trim();
+  addDailyGoal(goal);
+});
 initializeApp();
