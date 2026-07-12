@@ -171,6 +171,7 @@ function calculateTransactionDetails(data = transactionArr) {
   return [currentBalance, totalIncome, totalExpense, data.length];
 }
 function showTransactionDetails(data = transactionArr) {
+  data.sort((a, b) => new Date(a.date) - new Date(b.date));
   tbody.innerHTML = data
     .map(
       (transactions) => `
@@ -250,7 +251,6 @@ function showTransactionCalculation(data = transactionArr) {
   const result = calculateTransactionDetails(data);
   const statValues = [...statCard].map((card) => card.querySelector("h1"));
   statValues.forEach((h1, index) => {
-   
     h1.innerHTML =
       index == statCard.length - 1
         ? result[index]
@@ -301,7 +301,7 @@ function profileSetting(username, currency) {
   }
   if (!username.trim()) {
     alert("Username cannot be empty");
-    return
+    return;
   }
   const index = registeredUsers.findIndex((u) => u.username === user.username);
   user.username = username;
