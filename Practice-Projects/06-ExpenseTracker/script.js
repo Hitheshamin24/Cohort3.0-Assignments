@@ -141,18 +141,13 @@ function displayUI() {
 // transactions
 function updateCategoryOptions(type, selectedCategory = "") {
   const categorySelect = transactionForm.category;
-  categorySelect.innerHTML = '<option value="">Select a category</option>';
   const categories = type === "Income" ? incomeCategories : expenseCategories;
   
-  categories.forEach(category => {
-    const option = document.createElement("option");
-    option.value = category;
-    option.textContent = category;
-    if (category === selectedCategory) {
-      option.selected = true;
-    }
-    categorySelect.appendChild(option);
-  });
+  const optionsHTML = categories.map(category => 
+    `<option value="${category}" ${category === selectedCategory ? 'selected' : ''}>${category}</option>`
+  ).join("");
+
+  categorySelect.innerHTML = `<option value="">Select a category</option>${optionsHTML}`;
 }
 
 // add transaction
