@@ -34,6 +34,9 @@ const searchInput = $(".search-input");
 // transaction form and btn
 const transactionForm = $("#add-transaction");
 const saveTransactionBtn = $("#save-transaction");
+
+const incomeCategories = ["Salary", "Freelance", "Investments", "Others"];
+const expenseCategories = ["Food & Dining", "Shopping", "Recharge & Bills", "Petrol & Auto", "Utilities", "Entertainment", "Others"];
 // stat card budget allocate karne keliye
 const statCard = document.querySelectorAll(".card");
 // setting form
@@ -136,6 +139,21 @@ function displayUI() {
 }
 
 // transactions
+function updateCategoryOptions(type, selectedCategory = "") {
+  const categorySelect = transactionForm.category;
+  categorySelect.innerHTML = '<option value="">Select a category</option>';
+  const categories = type === "Income" ? incomeCategories : expenseCategories;
+  
+  categories.forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    if (category === selectedCategory) {
+      option.selected = true;
+    }
+    categorySelect.appendChild(option);
+  });
+}
 
 // add transaction
 function addTransaction(obj) {
@@ -193,6 +211,9 @@ function editTransaction(id) {
   let transaction = transactionArr.find((t) => t.id == id);
   updateIndex = transactionArr.findIndex((t) => t.id == id);
   transactionForm.type.value = transaction.type;
+  
+  updateCategoryOptions(transaction.type, transaction.category);
+
   transactionForm.description.value = transaction.description;
   transactionForm.date.value = transaction.date;
   transactionForm.amount.value = transaction.amount;
@@ -399,10 +420,17 @@ mode.addEventListener("click", () => {
 });
 
 transactionBtn.addEventListener("click", () => {
+  updateIndex = null;
+  transactionForm.reset();
+  updateCategoryOptions(transactionForm.type.value);
   displayTransactionModal();
 });
 closeBtn.addEventListener("click", () => {
   closeTransactionModal();
+});
+
+transactionForm.type.addEventListener("change", (e) => {
+  updateCategoryOptions(e.target.value);
 });
 
 saveTransactionBtn.addEventListener("click", (e) => {
