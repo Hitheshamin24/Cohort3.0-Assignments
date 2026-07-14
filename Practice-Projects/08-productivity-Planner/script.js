@@ -558,7 +558,7 @@ function getBackground() {
   if (hour >= 6 && hour < 12) {
     return morningVid;
   } else if (hour >= 12 && hour < 17) {
-    return morningVid;
+    return afternoonVid;
   } else if (hour >= 17 && hour < 20) {
     return eveningVid;
   } else {
