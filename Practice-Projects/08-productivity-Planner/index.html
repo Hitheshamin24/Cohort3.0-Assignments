@@ -1,248 +1,201 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="A premium productivity dashboard — To-Do List, Daily Planner, Pomodoro Timer & Daily Motivation."
-    />
-    <title>Productivity Planner</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="dashboard">
-      <img id="dashboard-img" src="" alt="Background" />
-      <div class="overlay"></div>
 
-      <div class="feature-view">
-        <!-- TOP BAR -->
-        <header class="top-bar">
-          <div class="brand">
-            <div class="brand-pulse"></div>
-            <span class="brand-name">Productivity Planner</span>
-          </div>
-          <div class="top-actions">
-            <div id="weather" class="weather-chip">
-              <span>⛅ Loading weather…</span>
-            </div>
-            <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
-          </div>
-        </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="A premium productivity dashboard — To-Do List, Daily Planner, Pomodoro Timer & Daily Motivation." />
+  <title>Productivity Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-        <!-- HERO CLOCK -->
-        <section class="hero-section">
-          <div class="clock-wrapper">
-            <div id="timer" class="clock-face">--:--:-- AM</div>
-          </div>
-          <p id="date-display" class="date-line"></p>
-          <p class="hero-tagline">Stay focused &mdash; stay productive.</p>
-        </section>
+<body>
+  <div class="dashboard">
+    <video id="dashboard-video" autoplay loop muted playsinline></video>
+    <div class="overlay"></div>
 
-        <!-- CARD DOCK -->
-        <nav class="card-dock" aria-label="Features">
-          <div
-            id="todo-list"
-            class="card"
-            role="button"
-            tabindex="0"
-            aria-label="Open To-Do List"
-          >
-            <div class="card-glow glow-purple"></div>
-            <div class="card-icon-wrap icon-purple">📝</div>
-            <span class="card-label">To-Do List</span>
+    <div class="feature-view">
+      <!-- TOP BAR -->
+      <header class="top-bar">
+        <div class="brand">
+          <div class="brand-pulse"></div>
+          <span class="brand-name">Productivity Planner</span>
+        </div>
+        <div class="top-actions">
+          <div id="weather" class="weather-chip">
+            <span>⛅ Loading weather…</span>
           </div>
+          <button id="theme-toggle" aria-label="Toggle theme">🌙</button>
+        </div>
+      </header>
 
-          <div
-            id="daily-planner"
-            class="card"
-            role="button"
-            tabindex="0"
-            aria-label="Open Daily Planner"
-          >
-            <div class="card-glow glow-blue"></div>
-            <div class="card-icon-wrap icon-blue">📅</div>
-            <span class="card-label">Daily Planner</span>
-          </div>
+      <!-- HERO CLOCK -->
+      <section class="hero-section">
+        <div class="clock-wrapper">
+          <div id="timer" class="clock-face">--:--:-- AM</div>
+        </div>
+        <p id="date-display" class="date-line"></p>
+        <p class="hero-tagline">Stay focused &mdash; stay productive.</p>
+      </section>
 
-          <div
-            id="motivation-card"
-            class="card"
-            role="button"
-            tabindex="0"
-            aria-label="Open Daily Quote"
-          >
-            <div class="card-glow glow-amber"></div>
-            <div class="card-icon-wrap icon-amber">💡</div>
-            <span class="card-label">Daily Quote</span>
-          </div>
+      <!-- CARD DOCK -->
+      <nav class="card-dock" aria-label="Features">
+        <div id="todo-list" class="card" role="button" tabindex="0" aria-label="Open To-Do List">
+          <div class="card-glow glow-purple"></div>
+          <div class="card-icon-wrap icon-purple">📝</div>
+          <span class="card-label">To-Do List</span>
+        </div>
 
-          <div
-            id="pomodoro-card"
-            class="card"
-            role="button"
-            tabindex="0"
-            aria-label="Open Pomodoro Timer"
-          >
-            <div class="card-glow glow-red"></div>
-            <div class="card-icon-wrap icon-red">🍅</div>
-            <span class="card-label">Pomodoro</span>
-          </div>
-          <div
-            id="daily-goals-card"
-            class="card"
-            role="button"
-            tabindex="0"
-            aria-label="Open Daily Goals"
-          >
-            <div class="card-glow glow-green"></div>
-            <div class="card-icon-wrap icon-green">🎯</div>
-            <span class="card-label">Daily Goals</span>
-          </div>
-        </nav>
-      </div>
-    </div>
+        <div id="daily-planner" class="card" role="button" tabindex="0" aria-label="Open Daily Planner">
+          <div class="card-glow glow-blue"></div>
+          <div class="card-icon-wrap icon-blue">📅</div>
+          <span class="card-label">Daily Planner</span>
+        </div>
 
-    <div class="todolist-card-view modal-view">
-      <nav class="modal-nav">
-        <button id="close-todo-card" class="close-btn">✕ Close</button>
+        <div id="motivation-card" class="card" role="button" tabindex="0" aria-label="Open Daily Quote">
+          <div class="card-glow glow-amber"></div>
+          <div class="card-icon-wrap icon-amber">💡</div>
+          <span class="card-label">Daily Quote</span>
+        </div>
+
+        <div id="pomodoro-card" class="card" role="button" tabindex="0" aria-label="Open Pomodoro Timer">
+          <div class="card-glow glow-red"></div>
+          <div class="card-icon-wrap icon-red">🍅</div>
+          <span class="card-label">Pomodoro</span>
+        </div>
+        <div id="daily-goals-card" class="card" role="button" tabindex="0" aria-label="Open Daily Goals">
+          <div class="card-glow glow-green"></div>
+          <div class="card-icon-wrap icon-green">🎯</div>
+          <span class="card-label">Daily Goals</span>
+        </div>
       </nav>
-      <div class="todo-container modal-panel">
-        <div class="panel-header">
-          <div class="panel-icon icon-purple">📝</div>
-          <div>
-            <h2 class="panel-title">To-Do List</h2>
-            <p class="panel-sub">Capture everything on your mind</p>
-          </div>
-        </div>
-        <div class="input">
-          <input
-            name="task"
-            type="text"
-            placeholder="Add a new task…"
-            autocomplete="off"
-          />
-          <button id="add-task">+ Add</button>
-        </div>
-        <div class="tasks"></div>
-      </div>
     </div>
+  </div>
 
-    <div class="motivation-card-view modal-view">
-      <nav class="modal-nav">
-        <button id="close-motivation-card" class="close-btn">✕ Close</button>
-      </nav>
-      <div class="motivation modal-panel">
-        <div class="quotes">
-          <div class="quote-mark">&ldquo;</div>
-          <h2 class="panel-title">Quote of the Day</h2>
-          <p id="quote" class="quote-text">Loading…</p>
-          <p id="author" class="quote-author">—</p>
-          <button id="new-quote-btn">New Quote</button>
+  <div class="todolist-card-view modal-view">
+    <nav class="modal-nav">
+      <button id="close-todo-card" class="close-btn">✕ Close</button>
+    </nav>
+    <div class="todo-container modal-panel">
+      <div class="panel-header">
+        <div class="panel-icon icon-purple">📝</div>
+        <div>
+          <h2 class="panel-title">To-Do List</h2>
+          <p class="panel-sub">Capture everything on your mind</p>
         </div>
       </div>
+      <div class="input">
+        <input name="task" type="text" placeholder="Add a new task…" autocomplete="off" />
+        <button id="add-task">+ Add</button>
+      </div>
+      <div class="tasks"></div>
     </div>
+  </div>
 
-    <div class="daily-planner-view modal-view">
-      <nav class="modal-nav">
-        <button id="close-planner" class="close-btn">✕ Close</button>
-      </nav>
-      <div class="planner-container modal-panel">
-        <div class="panel-header">
-          <div class="panel-icon icon-blue">📅</div>
-          <div>
-            <h2 class="panel-title">Daily Planner</h2>
-            <p class="panel-sub">Schedule your day, own your time</p>
-          </div>
-        </div>
-        <div class="planner-form">
-          <input type="time" id="task-time" name="task-time" />
-          <input
-            type="text"
-            id="task-name"
-            name="plan"
-            placeholder="What's the plan?"
-            autocomplete="off"
-          />
-          <button id="save-plan">+ Add</button>
-        </div>
-        <div class="planner-list"></div>
+  <div class="motivation-card-view modal-view">
+    <nav class="modal-nav">
+      <button id="close-motivation-card" class="close-btn">✕ Close</button>
+    </nav>
+    <div class="motivation modal-panel">
+      <div class="quotes">
+        <div class="quote-mark">&ldquo;</div>
+        <h2 class="panel-title">Quote of the Day</h2>
+        <p id="quote" class="quote-text">Loading…</p>
+        <p id="author" class="quote-author">—</p>
+        <button id="new-quote-btn">New Quote</button>
       </div>
     </div>
+  </div>
 
-    <div class="pomodoro-view modal-view">
-      <nav class="modal-nav">
-        <button id="close-pomodoro" class="close-btn">✕ Close</button>
-      </nav>
-      <div class="pomodoro-container modal-panel">
-        <div class="panel-header">
-          <div class="panel-icon icon-red">🍅</div>
-          <div>
-            <h2 class="panel-title">Pomodoro Timer</h2>
-            <p class="panel-sub">25 min focus, 5 min break</p>
-          </div>
+  <div class="daily-planner-view modal-view">
+    <nav class="modal-nav">
+      <button id="close-planner" class="close-btn">✕ Close</button>
+    </nav>
+    <div class="planner-container modal-panel">
+      <div class="panel-header">
+        <div class="panel-icon icon-blue">📅</div>
+        <div>
+          <h2 class="panel-title">Daily Planner</h2>
+          <p class="panel-sub">Schedule your day, own your time</p>
         </div>
-        <div class="timer-card">
-          <div class="timer-ring">
-            <h1 id="pomodoro-timer">25:00</h1>
-            <p id="timer-status">Focus Time</p>
-          </div>
+      </div>
+      <div class="planner-form">
+        <input type="time" id="task-time" name="task-time" />
+        <input type="text" id="task-name" name="plan" placeholder="What's the plan?" autocomplete="off" />
+        <button id="save-plan">+ Add</button>
+      </div>
+      <div class="planner-list"></div>
+    </div>
+  </div>
+
+  <div class="pomodoro-view modal-view">
+    <nav class="modal-nav">
+      <button id="close-pomodoro" class="close-btn">✕ Close</button>
+    </nav>
+    <div class="pomodoro-container modal-panel">
+      <div class="panel-header">
+        <div class="panel-icon icon-red">🍅</div>
+        <div>
+          <h2 class="panel-title">Pomodoro Timer</h2>
+          <p class="panel-sub">25 min focus, 5 min break</p>
         </div>
-        <div class="timer-controls">
-          <button id="start-timer">▶ Start</button>
-          <button id="pause-timer">⏸ Pause</button>
-          <button id="reset-timer">↺ Reset</button>
+      </div>
+      <div class="timer-card">
+        <div class="timer-ring">
+          <h1 id="pomodoro-timer">25:00</h1>
+          <p id="timer-status">Focus Time</p>
         </div>
-        <div class="session-info">
-          <div class="info-card">
-            <h3>Sessions</h3>
-            <p id="session-count">0</p>
-          </div>
-          <div class="info-card">
-            <h3>Completed</h3>
-            <p id="completed-count">0</p>
-          </div>
+      </div>
+      <div class="timer-controls">
+        <button id="start-timer">▶ Start</button>
+        <button id="pause-timer">⏸ Pause</button>
+        <button id="reset-timer">↺ Reset</button>
+      </div>
+      <div class="session-info">
+        <div class="info-card">
+          <h3>Sessions</h3>
+          <p id="session-count">0</p>
+        </div>
+        <div class="info-card">
+          <h3>Completed</h3>
+          <p id="completed-count">0</p>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="goals-view modal-view">
-      <nav class="modal-nav">
-        <button id="close-goals" class="close-btn">✕ Close</button>
-      </nav>
+  <div class="goals-view modal-view">
+    <nav class="modal-nav">
+      <button id="close-goals" class="close-btn">✕ Close</button>
+    </nav>
 
-      <div class="goals-container modal-panel">
-        <div class="panel-header">
-          <div class="panel-icon icon-green">🎯</div>
-          <div>
-            <h2 class="panel-title">Daily Goals</h2>
-            <p class="panel-sub">Stay focused and complete your goals</p>
-          </div>
+    <div class="goals-container modal-panel">
+      <div class="panel-header">
+        <div class="panel-icon icon-green">🎯</div>
+        <div>
+          <h2 class="panel-title">Daily Goals</h2>
+          <p class="panel-sub">Stay focused and complete your goals</p>
         </div>
-
-        <div class="goals-form">
-          <input
-            type="text"
-            id="goal-input"
-            name="goal"
-            placeholder="What's your goal today?"
-            autocomplete="off"
-          />
-          <button id="add-goal">+ Add</button>
-        </div>
-
-        <p id="goal-progress" class="goal-progress">0 of 0 completed</p>
-
-        <div class="goals-list"></div>
       </div>
-    </div>
 
-    <script src="script.js"></script>
-  </body>
+      <div class="goals-form">
+        <input type="text" id="goal-input" name="goal" placeholder="What's your goal today?" autocomplete="off" />
+        <button id="add-goal">+ Add</button>
+      </div>
+
+      <p id="goal-progress" class="goal-progress">0 of 0 completed</p>
+
+      <div class="goals-list"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
 </html>

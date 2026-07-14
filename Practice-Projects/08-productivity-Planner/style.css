@@ -1,4 +1,4 @@
-﻿/* Variables */
+/* Variables */
 :root {
   --font: "Inter", "Segoe UI", sans-serif;
   --overlay: linear-gradient(
@@ -90,7 +90,7 @@ body {
   position: relative;
   overflow: hidden;
 }
-#dashboard-img {
+#dashboard-video {
   width: 100%;
   height: 100%;
   object-fit: cover;

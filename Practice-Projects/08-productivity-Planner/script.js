@@ -1,7 +1,7 @@
 // dom selectors
 const $ = (selector) => document.querySelector(selector);
 
-const dashboardImg = $("#dashboard-img");
+const dashboardVideo = $("#dashboard-video");
 const time = $("#timer");
 const dateDisplay = $("#date-display");
 const weather = $("#weather");
@@ -46,14 +46,10 @@ const dailyGoalsList = $(".goals-list");
 // variables
 let timer;
 let updateIndex = null;
-const morningImg =
-  "https://images.unsplash.com/photo-1514241516423-6c0a5e031aa2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bW9ybmluZ2ltYWdlfGVufDB8fDB8fHww";
-const afternoonImg =
-  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRN06Tvcw51X_2I_aSHP6Fif7SSF2Q6a99RTkOmIr4kYg&s=10";
-const eveningImg =
-  "https://images.unsplash.com/photo-1577257107590-fc448601f16a?q=80&w=874&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-const nightImg =
-  "https://plus.unsplash.com/premium_photo-1671336757490-1249b2ccb020?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bmlnaHQlMjBpbWFnZXxlbnwwfHwwfHx8MA%3D%3D";
+const morningVid ="./assets/sunrise.mp4"
+const afternoonVid ="./assets/afternoon.mp4"
+const eveningVid ="./assets/sunset.mp4"
+const nightVid ="./assets/night.mp4"
 let currentPage = getLocalStorage("currentPage") || "";
 
 const defaultTime = 25 * 60;
@@ -108,7 +104,11 @@ function initializeApp() {
 }
 // ui functions
 function displayBackground() {
-  dashboardImg.setAttribute("src", getBackground());
+  const currentVid = getBackground();
+  if (dashboardVideo.getAttribute("src") !== currentVid) {
+    dashboardVideo.setAttribute("src", currentVid);
+    dashboardVideo.load();
+  }
 }
 
 function displayTimer() {
@@ -556,13 +556,13 @@ function getBackground() {
   const hour = new Date().getHours();
 
   if (hour >= 6 && hour < 12) {
-    return morningImg;
+    return morningVid;
   } else if (hour >= 12 && hour < 17) {
-    return afternoonImg;
+    return morningVid;
   } else if (hour >= 17 && hour < 20) {
-    return eveningImg;
+    return eveningVid;
   } else {
-    return nightImg;
+    return nightVid;
   }
 }
 
