@@ -1,7 +1,9 @@
 import React from 'react'
 import { Zap, Mail, Lock, Eye, ArrowRight } from 'lucide-react'
+import { useNavigate } from 'react-router'
 
 const LoginPage = () => {
+  let navigate=useNavigate()
   return (
     <div className="min-h-screen w-full bg-black flex items-stretch">
       {/* Left panel */}
@@ -101,7 +103,7 @@ const LoginPage = () => {
 
           <p className="text-center text-neutral-400 text-sm mt-6">
             Don&apos;t have an account?{' '}
-            <span className="text-lime-400 font-semibold cursor-pointer hover:underline">
+            <span onClick={()=>navigate("/register")} className="text-lime-400 font-semibold cursor-pointer hover:underline">
               Create one
             </span>
           </p>
