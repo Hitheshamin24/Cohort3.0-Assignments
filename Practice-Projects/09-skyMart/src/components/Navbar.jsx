@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Zap, ShoppingCart, LogOut, Menu, X } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuth } from "../hooks/UseAuthHooks";
@@ -13,8 +13,8 @@ const Navbar = () => {
   ];
 
   return (
-    <>
-      <nav className="w-full bg-[#0f0f0f] border-b border-zinc-800">
+    <header className="fixed top-0 left-0 right-0 z-50">
+      <nav className="w-full bg-[#0d0d0d] border-b border-zinc-800">
         <div className="max-w-7xl mx-auto h-16 px-5 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
@@ -119,7 +119,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </>
+    </header>
   );
 };
 
