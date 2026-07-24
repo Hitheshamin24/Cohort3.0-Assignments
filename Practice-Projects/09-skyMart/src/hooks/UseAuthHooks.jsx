@@ -36,7 +36,7 @@ export const useAuth = () => {
     }
     const newUser = {
       id: Date.now(),
-      avatar: data.fullName.trim()[0],
+      avatar: data.fullName.trim()[0].toUpperCase(),
       fullName: data.fullName.trim(),
       email: data.email.trim().toLowerCase(),
       ...data,
