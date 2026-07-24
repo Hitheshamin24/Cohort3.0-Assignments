@@ -3,10 +3,17 @@ import { RouterProvider, createBrowserRouter } from "react-router";
 import AuthLayout from "../layout/AuthLayout";
 import LoginPage from "../Pages/LoginPage";
 import RegisterPage from "../Pages/RegisterPage";
+import MainLayout from "../layout/MainLayout";
+import ProtectedRoutes from "./ProtectedRoutes";
+import PublicRoutes from "./PublicRoutes";
 
 const AppRoutes = () => {
   const router = createBrowserRouter([
-    {
+   {
+    path:"/",
+    element:<PublicRoutes/>,
+    children:[
+       {
       path: "/",
       element: <AuthLayout />,
       children: [
@@ -20,6 +27,18 @@ const AppRoutes = () => {
         },
       ],
     },
+    ]
+   },
+    {
+      path:"/main",
+      element:<ProtectedRoutes/>,
+      children:[
+        {
+          path:"",
+          element:<MainLayout/>
+        }
+      ]
+    }
   ]);
 
   return <RouterProvider router={router} />;

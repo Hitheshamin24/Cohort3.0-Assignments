@@ -1,30 +1,19 @@
-import React from "react";
-import { User, Mail, Lock, Eye, ArrowRight, Zap } from "lucide-react";
-import { useNavigate } from "react-router";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { User, Mail, Lock, Eye, EyeOff, ArrowRight, Zap } from "lucide-react";
+import { useAuth } from "../hooks/UseAuthHooks";
+
 const RegisterPage = () => {
-  let navigate = useNavigate();
-  let {
+  const {
+    navigate,
+    showPassword,
+    setShowPassword,
+    showConfirmPassword,
+    setShowConfirmPassword,
     register,
     handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-  const registerFormSubmit = (data) => {
-    console.log(errors);
-    console.log(data);
-
-    reset();
-  };
-  const registerFormError = (errors) => {
-    const errorArray = Object.values(errors);
-    if (errorArray.length === 4) {
-      toast.error("All fields are required");
-      return;
-    }
-    toast.error(errorArray[errorArray.length - 1].message);
-  };
+    watch,
+    registerFormSubmit,
+    registerFormError,
+  } = useAuth();
   return (
     <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center px-4 py-12">
       {/* Logo */}
@@ -88,11 +77,20 @@ const RegisterPage = () => {
                   message: "Password must contain 6 or more characters",
                 },
               })}
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password (min 6 chars)"
               className="bg-transparent outline-none text-white placeholder-neutral-500 text-sm w-full"
             />
-            <Eye className="w-4 h-4 text-neutral-500 shrink-0" />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <EyeOff className="w-4 h-4 text-neutral-500 shrink-0" />
+              ) : (
+                <Eye className="w-4 h-4 text-neutral-500 shrink-0" />
+              )}
+            </button>
           </div>
 
           {/* Confirm password */}
@@ -100,16 +98,24 @@ const RegisterPage = () => {
             <Lock className="w-4 h-4 text-neutral-500 shrink-0" />
             <input
               {...register("confirmPassword", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must contain 6 or more characters",
-                },
+                required: "Confirm Password is required",
+                validate: (value) =>
+                  value === watch("password") || "Password do not match",
               })}
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm password"
               className="bg-transparent outline-none text-white placeholder-neutral-500 text-sm w-full"
             />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? (
+                <EyeOff className="w-4 h-4 text-neutral-500 shrink-0" />
+              ) : (
+                <Eye className="w-4 h-4 text-neutral-500 shrink-0" />
+              )}
+            </button>
           </div>
         </form>
         {/* Submit */}

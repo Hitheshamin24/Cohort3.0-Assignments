@@ -1,9 +1,18 @@
-import React from 'react'
-import { Zap, Mail, Lock, Eye, ArrowRight } from 'lucide-react'
-import { useNavigate } from 'react-router'
+import { Zap, Mail, Lock, Eye, ArrowRight, EyeOff } from "lucide-react";
+import { Auth } from "../context/AuthContext";
+import { useAuth } from "../hooks/UseAuthHooks";
 
 const LoginPage = () => {
-  let navigate=useNavigate()
+  const {
+    navigate,
+    showPassword,
+    setShowPassword,
+    register,
+    handleSubmit,
+    loginFormSubmit,
+    loginFormError,
+  } = useAuth();
+
   return (
     <div className="min-h-screen w-full bg-black flex items-stretch">
       {/* Left panel */}
@@ -32,16 +41,16 @@ const LoginPage = () => {
             Today.
           </h1>
           <p className="text-neutral-400 text-base font-dm-sans leading-relaxed mb-10">
-            Thousands of products, lightning-fast delivery, and prices
-            that make your wallet happy.
+            Thousands of products, lightning-fast delivery, and prices that make
+            your wallet happy.
           </p>
 
           {/* Stats */}
           <div className="flex gap-4">
             {[
-              { value: '20K+', label: 'Products' },
-              { value: '50K+', label: 'Users' },
-              { value: '4.9★', label: 'Rating' },
+              { value: "20K+", label: "Products" },
+              { value: "50K+", label: "Users" },
+              { value: "4.9★", label: "Rating" },
             ].map((stat) => (
               <div
                 key={stat.label}
@@ -67,10 +76,16 @@ const LoginPage = () => {
             Enter your credentials to continue
           </p>
 
-          <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+          <form
+            onSubmit={handleSubmit(loginFormSubmit, loginFormError)}
+            className="space-y-4"
+          >
             <div className="relative">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
               <input
+                {...register("email", {
+                  required: "Email is required",
+                })}
                 type="email"
                 placeholder="Email address"
                 className="w-full bg-neutral-800/70 border border-white/10 rounded-lg py-3 pl-11 pr-4 text-sm text-white placeholder-neutral-500 outline-none focus:border-lime-400/60 transition-colors"
@@ -80,15 +95,27 @@ const LoginPage = () => {
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-500" />
               <input
-                type="password"
+                {...register("password", {
+                  required: "password is required",
+                  minLength: {
+                    value: 6,
+                    message: "Password must contain 6 or more characters",
+                  },
+                })}
+                type={showPassword ? "text" : "password"}
                 placeholder="Password"
                 className="w-full bg-neutral-800/70 border border-white/10 rounded-lg py-3 pl-11 pr-11 text-sm text-white placeholder-neutral-500 outline-none focus:border-lime-400/60 transition-colors"
               />
               <button
                 type="button"
+                onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300"
               >
-                <Eye className="w-4 h-4" />
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
               </button>
             </div>
 
@@ -102,15 +129,18 @@ const LoginPage = () => {
           </form>
 
           <p className="text-center text-neutral-400 text-sm mt-6">
-            Don&apos;t have an account?{' '}
-            <span onClick={()=>navigate("/register")} className="text-lime-400 font-semibold cursor-pointer hover:underline">
+            Don&apos;t have an account?{" "}
+            <span
+              onClick={() => navigate("/register")}
+              className="text-lime-400 font-semibold cursor-pointer hover:underline"
+            >
               Create one
             </span>
           </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
