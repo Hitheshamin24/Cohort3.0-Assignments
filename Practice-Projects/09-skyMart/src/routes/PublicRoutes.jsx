@@ -5,7 +5,7 @@ import { Navigate, Outlet } from "react-router";
 const PublicRoutes = () => {
   const { loggedInUser } = useContext(Auth);
   if (loggedInUser) {
-    return <Navigate to={"/main"} />;
+    return <Navigate to={"/home"} />;
   }
   return <Outlet />;
 };
