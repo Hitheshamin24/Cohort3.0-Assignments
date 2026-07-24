@@ -14,7 +14,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      <nav className="w-full bg-[#0d0d0d] border-b border-zinc-800">
+      <nav className="w-full bg-[#0d0d0d] border-b border-zinc-300">
         <div className="max-w-7xl mx-auto h-16 px-5 flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center gap-2">
