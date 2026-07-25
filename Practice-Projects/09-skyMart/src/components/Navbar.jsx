@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Zap, ShoppingCart, LogOut, Menu, X } from "lucide-react";
 import { NavLink } from "react-router";
 import { useAuth } from "../hooks/UseAuthHooks";
+import { Product } from "../context/ProductContext";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const { loggedInUser, userLogout } = useAuth();
+  const { setCartDrawer,cart } = useContext(Product);
   const links = [
     { name: "Home", path: "/home" },
     { name: "Shop", path: "/shop" },
@@ -63,16 +65,22 @@ const Navbar = () => {
             </div>
 
             {/* Cart */}
-            <button className="relative w-10 h-10 rounded-xl border border-zinc-700 bg-[#111] flex items-center justify-center cursor-pointer">
+            <button
+              onClick={() => setCartDrawer(true)}
+              className="relative w-10 h-10 rounded-xl border border-zinc-700 bg-[#111] flex items-center justify-center cursor-pointer"
+            >
               <ShoppingCart size={18} className="text-white" />
 
               <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-lime-400 text-[10px] font-bold font-dm-sans flex items-center justify-center text-black">
-                2
+                {cart.length}
               </span>
             </button>
 
             {/* Logout */}
-            <button onClick={()=>userLogout()} className="hidden md:flex w-10 h-10 rounded-xl border border-zinc-700 bg-[#111] items-center justify-center cursor-pointer">
+            <button
+              onClick={() => userLogout()}
+              className="hidden md:flex w-10 h-10 rounded-xl border border-zinc-700 bg-[#111] items-center justify-center cursor-pointer"
+            >
               <LogOut size={18} className="text-zinc-300" />
             </button>
 
@@ -112,7 +120,10 @@ const Navbar = () => {
               </NavLink>
             ))}
 
-            <button onClick={()=>userLogout()} className="mt-4 flex items-center gap-2 text-red-400 text-sm">
+            <button
+              onClick={() => userLogout()}
+              className="mt-4 flex items-center gap-2 text-red-400 text-sm"
+            >
               <LogOut size={16} />
               Logout
             </button>

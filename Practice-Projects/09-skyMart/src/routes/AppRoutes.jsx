@@ -6,39 +6,55 @@ import RegisterPage from "../Pages/RegisterPage";
 import MainLayout from "../layout/MainLayout";
 import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
-
+import ProductsPage from "../Pages/ProductsPage";
+import Home from "../Pages/Home";
+import AboutPage from "../Pages/AboutPage";
 const AppRoutes = () => {
   const router = createBrowserRouter([
-   {
-    path:"/",
-    element:<PublicRoutes/>,
-    children:[
-       {
+    {
       path: "/",
-      element: <AuthLayout />,
+      element: <PublicRoutes />,
       children: [
         {
-          path: "login",
-          element: <LoginPage />,
-        },
-        {
-          path: "register",
-          element: <RegisterPage />,
+          path: "/",
+          element: <AuthLayout />,
+          children: [
+            {
+              path: "login",
+              element: <LoginPage />,
+            },
+            {
+              path: "register",
+              element: <RegisterPage />,
+            },
+          ],
         },
       ],
     },
-    ]
-   },
     {
-      path:"/home",
-      element:<ProtectedRoutes/>,
-      children:[
+      path: "/",
+      element: <ProtectedRoutes />,
+      children: [
         {
-          path:"",
-          element:<MainLayout/>
-        }
-      ]
-    }
+          path: "",
+          element: <MainLayout />,
+          children: [
+            {
+             path:"home",
+              element: <Home />,
+            },
+            {
+              path: "shop",
+              element: <ProductsPage />,
+            },
+            {
+              path: "about",
+              element: <AboutPage />,
+            },
+          ],
+        },
+      ],
+    },
   ]);
 
   return <RouterProvider router={router} />;
