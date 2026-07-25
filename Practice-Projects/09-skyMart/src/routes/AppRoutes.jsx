@@ -9,6 +9,7 @@ import PublicRoutes from "./PublicRoutes";
 import ProductsPage from "../Pages/ProductsPage";
 import Home from "../Pages/Home";
 import AboutPage from "../Pages/AboutPage";
+import ProductDetailsPage from "../Pages/ProductDetailsPage";
 const AppRoutes = () => {
   const router = createBrowserRouter([
     {
@@ -40,12 +41,16 @@ const AppRoutes = () => {
           element: <MainLayout />,
           children: [
             {
-             path:"home",
+              path: "home",
               element: <Home />,
             },
             {
-              path: "shop",
+              path: "products",
               element: <ProductsPage />,
+            },
+            {
+              path: "/products/:id",
+              element: <ProductDetailsPage />,
             },
             {
               path: "about",

@@ -1,15 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ArrowRight, ShoppingBag, Zap } from "lucide-react";
-
-const products = [
-  { image: "/products/6.png", price: "$99.99" },
-  { image: "/products/7.png", price: "$299.99" },
-  { image: "/products/8.png", price: "$24.99" },
-  { image: "/products/9.png", price: "$199.99" },
-  { image: "/products/10.png", price: "$34.99" },
-];
+import { Product } from "../context/ProductContext";
+import { useNavigate } from "react-router";
 
 const NewArrivalsCard = () => {
+  const navigate = useNavigate();
+  const { products, addToCart } = useContext(Product);
+  const newArrivals = [...products].sort((a, b) => b.id - a.id).slice(0, 5);
+
   return (
     <div className="bg-white rounded-[30px] p-5">
       <div className="flex justify-between items-center mb-5">
@@ -18,17 +16,18 @@ const NewArrivalsCard = () => {
           New Arrivals
         </h2>
 
-        <button className="flex items-center gap-1 font-dm-sans text-[12px] text-lime-500">
+        <button className="flex items-center gap-1 font-dm-sans text-[12px] text-lime-500 cursor-pointer">
           See all
           <ArrowRight size={14} />
         </button>
       </div>
 
       <div className="space-y-3">
-        {products.map((item, index) => (
+        {newArrivals.map((item, index) => (
           <div
+            onClick={() => navigate(`/products/${item.id}`)}
             key={index}
-            className="border rounded-2xl px-4 py-3 flex justify-between items-center"
+            className="border border-[#eefcb2] rounded-2xl px-4 py-3 flex justify-between items-center cursor-pointer"
           >
             <div className="flex gap-3 items-center">
               <img
@@ -38,11 +37,17 @@ const NewArrivalsCard = () => {
               />
 
               <h3 className="font-syne text-[14px] text-lime-500">
-                {item.price}
+                ${item.price}
               </h3>
             </div>
 
-            <button className="w-8 h-8 rounded-xl bg-lime-50 flex justify-center items-center">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                addToCart(item);
+              }}
+              className="w-8 h-8 rounded-xl bg-lime-50 flex justify-center items-center cursor-pointer"
+            >
               <ShoppingBag size={16} className="text-lime-500" />
             </button>
           </div>

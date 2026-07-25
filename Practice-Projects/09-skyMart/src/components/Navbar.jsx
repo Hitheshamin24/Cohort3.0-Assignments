@@ -7,10 +7,10 @@ import { Product } from "../context/ProductContext";
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
   const { loggedInUser, userLogout } = useAuth();
-  const { setCartDrawer,cart } = useContext(Product);
+  const { setCartDrawer, cart } = useContext(Product);
   const links = [
     { name: "Home", path: "/home" },
-    { name: "Shop", path: "/shop" },
+    { name: "Shop", path: "/products" },
     { name: "About", path: "/about" },
   ];
 
@@ -71,9 +71,11 @@ const Navbar = () => {
             >
               <ShoppingCart size={18} className="text-white" />
 
-              <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-lime-400 text-[10px] font-bold font-dm-sans flex items-center justify-center text-black">
-                {cart.length}
-              </span>
+              {cart.length > 0 && (
+                <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-lime-400 text-[10px] font-bold font-dm-sans flex items-center justify-center text-black">
+                  {cart.length}
+                </span>
+              )}
             </button>
 
             {/* Logout */}

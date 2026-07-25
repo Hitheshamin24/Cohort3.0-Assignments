@@ -1,36 +1,33 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ArrowRight, ShoppingBag, Star } from "lucide-react";
-
-const products = [
-  { image: "/products/1.png", price: "$599.99" },
-  { image: "/products/2.png", price: "$199.99" },
-  { image: "/products/3.png", price: "$349.99" },
-  { image: "/products/4.png", price: "$49.99" },
-  { image: "/products/5.png", price: "$149.99" },
-];
+import { Product } from "../context/ProductContext";
+import { useNavigate } from "react-router";
 
 const TopRatedCard = () => {
+  const navigate=useNavigate()
+  const { sortProducts, addToCart } = useContext(Product);
+  const topRated = sortProducts().slice(0,5);
   return (
-    <div className="bg-white rounded-[30px] p-5">
+    <div className="bg-white rounded-[30px] p-5 ">
       <div className="flex justify-between items-center mb-5">
         <h2 className="flex items-center gap-2 font-syne text-[18px] font-bold">
           <Star size={16} fill="#facc15" className="text-yellow-400" />
           Top Rated
         </h2>
 
-        <button className="flex items-center gap-1 font-dm-sans text-[12px] text-lime-500">
+        <button className="flex items-center gap-1 font-dm-sans text-[12px] text-lime-500 cursor-pointer">
           See all
           <ArrowRight size={14} />
         </button>
       </div>
 
       <div className="space-y-3">
-        {products.map((item, index) => (
-          <div
+        {topRated.map((item, index) => (
+          <div onClick={()=>navigate(`/products/${item.id}`)}
             key={index}
-            className="border rounded-2xl px-4 py-3 flex justify-between items-center"
+            className="border border-[#eefcb2] rounded-2xl px-4 py-3 flex justify-between items-center cursor-pointer"
           >
-            <div className="flex gap-3 items-center">
+            <div  className="flex gap-3 items-center ">
               <img
                 src={item.image}
                 alt=""
@@ -38,11 +35,16 @@ const TopRatedCard = () => {
               />
 
               <h3 className="font-syne text-[14px] text-lime-500">
-                {item.price}
+                ${item.price}
               </h3>
             </div>
 
-            <button className="w-8 h-8 rounded-xl bg-lime-50 flex justify-center items-center">
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                addToCart(item)}}
+              className="w-8 h-8 rounded-xl bg-lime-50 flex justify-center items-center"
+            >
               <ShoppingBag size={16} className="text-lime-500" />
             </button>
           </div>

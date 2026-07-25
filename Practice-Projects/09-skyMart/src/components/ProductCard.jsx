@@ -1,11 +1,16 @@
 import React, { useContext } from "react";
 import { Check, ShoppingCart, Star } from "lucide-react";
 import { Product } from "../context/ProductContext";
+import { useNavigate } from "react-router";
 
 const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
   const { addToCart, checkIfProductExists } = useContext(Product);
   return (
-    <div className="w-full max-w-[260px] overflow-hidden rounded-[28px] border border-zinc-700 bg-[#101010] transition-all duration-300 hover:border-lime-400">
+    <div
+      onClick={() => navigate(`/products/${product.id}`)}
+      className="w-full max-w-65 overflow-hidden rounded-[28px] border border-zinc-700 bg-[#101010] transition-all duration-300 hover:border-lime-400 cursor-pointer"
+    >
       {/* Image Section */}
       <div className="bg-white p-4">
         {/* Category Badge */}
@@ -24,7 +29,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content */}
-      <div className="flex min-h-[220px] flex-col p-4">
+      <div className="flex min-h-55 flex-col p-4">
         {/* Category */}
         <p className="font-dm-sans text-[10px] text-zinc-500 capitalize">
           {product.category}
@@ -32,7 +37,7 @@ const ProductCard = ({ product }) => {
 
         {/* Product Name */}
         <h3
-          className="mt-2 h-[72px] overflow-hidden font-dm-sans text-[14px] font-semibold leading-6 text-white"
+          className="mt-2 h-18 overflow-hidden font-dm-sans text-[14px] font-semibold leading-6 text-white"
           style={{
             display: "-webkit-box",
             WebkitLineClamp: 3,
@@ -80,8 +85,11 @@ const ProductCard = ({ product }) => {
             </button>
           ) : (
             <button
-              onClick={() => addToCart(product)}
-              className="flex items-center gap-2 rounded-full bg-lime-400 px-4 py-2 transition duration-300 hover:bg-lime-300"
+              onClick={(e) => {
+                e.stopPropagation();
+                addToCart(product);
+              }}
+              className="flex items-center gap-2 rounded-full bg-lime-400 px-4 py-2 transition duration-300 hover:bg-lime-300 cursor-pointer"
             >
               <ShoppingCart size={14} className="text-black" />
               <span className="font-dm-sans text-[12px] font-medium text-black">
