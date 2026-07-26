@@ -1,8 +1,19 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit';
 
-const initialState = {
-  transactions: [],
+// Load initial state from local storage if available
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem('transactions');
+    if (serializedState === null) {
+      return { transactions: [] };
+    }
+    return { transactions: JSON.parse(serializedState) };
+  } catch (err) {
+    return { transactions: [] };
+  }
 };
+
+const initialState = loadState();
 
 export const transactionSlice = createSlice({
   name: 'transactions',
