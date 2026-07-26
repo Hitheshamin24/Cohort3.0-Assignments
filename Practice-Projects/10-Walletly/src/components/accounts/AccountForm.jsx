@@ -28,11 +28,15 @@ const AccountForm = ({ onClose, editData }) => {
 
   const onFormSubmit = (data) => {
     if (editData) {
+      const newOpeningBalance = Number(data.openingBalance);
+      const diff = newOpeningBalance - editData.openingBalance;
+
       dispatch(updateAccount({
         ...editData,
         name: data.name.trim(),
         type: data.type,
-        openingBalance: Number(data.openingBalance),
+        openingBalance: newOpeningBalance,
+        currentBalance: editData.currentBalance + diff,
       }))
     } else {
       dispatch(addAccount({
