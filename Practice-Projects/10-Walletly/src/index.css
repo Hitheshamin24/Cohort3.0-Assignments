@@ -1,68 +1,46 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@theme {
+  /* fonts */
+  --font-sans: "Inter", system-ui, sans-serif;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  /* brand */
+  --color-primary: hsl(243 75% 59%);
+  --color-primary-light: hsl(243 75% 70%);
+  --color-primary-dark: hsl(243 75% 45%);
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+  /* income — green */
+  --color-income: hsl(158 64% 42%);
+  --color-income-light: hsl(158 64% 92%);
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
+  /* expense — red */
+  --color-expense: hsl(0 72% 58%);
+  --color-expense-light: hsl(0 72% 95%);
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+  /* warning */
+  --color-warning: hsl(38 92% 50%);
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  /* backgrounds */
+  --color-bg: hsl(220 20% 97%);
+  --color-surface: hsl(0 0% 100%);
+  --color-surface-2: hsl(220 20% 95%);
+
+  /* text */
+  --color-text-primary: hsl(220 25% 15%);
+  --color-text-secondary: hsl(220 15% 45%);
+  --color-text-muted: hsl(220 10% 65%);
+
+  /* border */
+  --color-border: hsl(220 20% 88%);
+
+  /* sidebar */
+  --color-sidebar: hsl(240 30% 15%);
+  --color-sidebar-text: hsl(220 20% 75%);
+  --color-sidebar-active: hsl(243 75% 59%);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface-2); }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
