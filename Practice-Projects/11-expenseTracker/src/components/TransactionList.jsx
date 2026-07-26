@@ -6,58 +6,53 @@ const TransactionList = ({ onEdit }) => {
   const transactions = useSelector((state) => state.transactions.transactions);
   const dispatch = useDispatch();
 
-  // Reverse the array to show newest first
   const sortedTransactions = [...transactions].reverse();
 
   return (
-    <div className="bg-[#121419] rounded-3xl p-6 border border-gray-800 shadow-2xl">
-      <h2 className="text-xl font-bold mb-6 text-gray-100 flex items-center gap-2">
-        <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Recent Activity
-      </h2>
+    <div>
+      <h2 className="text-lg font-bold text-gray-900 mb-6">Recent Transactions</h2>
       
       {sortedTransactions.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-10 text-gray-500">
-          <svg className="w-16 h-16 mb-4 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="flex flex-col items-center justify-center py-16 bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
+          <svg className="w-12 h-12 mb-4 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <p>No transactions found. Add one to get started!</p>
+          <p className="text-gray-500 font-medium">No transactions yet</p>
         </div>
       ) : (
-        <ul className="space-y-4">
+        <ul className="space-y-3">
           {sortedTransactions.map((transaction) => (
             <li 
               key={transaction.id} 
-              className="group flex justify-between items-center p-4 bg-[#1a1d24] hover:bg-[#1f232b] rounded-2xl border border-gray-800 transition duration-300"
+              className="group flex justify-between items-center p-4 bg-white hover:bg-gray-50/50 rounded-2xl border border-gray-100 shadow-[0_2px_10px_rgb(0,0,0,0.02)] transition-all"
             >
               <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${transaction.type === 'income' ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'}`}>
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${transaction.type === 'income' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'}`}>
                   {transaction.type === 'income' ? (
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   ) : (
-                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6" />
                     </svg>
                   )}
                 </div>
                 <div>
-                  <p className="font-bold text-gray-200 text-lg">{transaction.name}</p>
-                  <p className="text-sm text-gray-500 capitalize">{transaction.type}</p>
+                  <p className="font-semibold text-gray-900">{transaction.name}</p>
+                  <p className="text-xs font-medium text-gray-500 capitalize">{transaction.type}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-6">
-                <p className={`font-bold text-lg ${transaction.type === 'income' ? 'text-green-400' : 'text-white'}`}>
+              <div className="flex items-center gap-4">
+                <p className={`font-semibold text-right ${transaction.type === 'income' ? 'text-green-600' : 'text-red-600'}`}>
                   {transaction.type === 'income' ? '+' : '-'}₹{transaction.amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </p>
-                <div className="flex gap-2 transition-opacity">
+                
+                <div className="flex gap-1">
                   <button 
                     onClick={() => onEdit(transaction)}
-                    className="p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg transition"
+                    className="p-2 text-gray-400 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
                     title="Edit"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -66,7 +61,7 @@ const TransactionList = ({ onEdit }) => {
                   </button>
                   <button 
                     onClick={() => dispatch(deleteTransaction(transaction.id))}
-                    className="p-2 bg-red-900/30 hover:bg-red-500/50 text-red-400 rounded-lg transition"
+                    className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     title="Delete"
                   >
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
