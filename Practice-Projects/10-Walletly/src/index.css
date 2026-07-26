@@ -4,39 +4,39 @@
   /* fonts */
   --font-sans: "Inter", system-ui, sans-serif;
 
-  /* brand */
-  --color-primary: hsl(265 89% 65%);
-  --color-primary-light: hsl(265 89% 80%);
-  --color-primary-dark: hsl(265 89% 45%);
+  /* brand (Black & White Theme) */
+  --color-primary: hsl(0 0% 5%); /* Almost black */
+  --color-primary-light: hsl(0 0% 20%);
+  --color-primary-dark: hsl(0 0% 0%); /* Pure black */
 
   /* income — green */
-  --color-income: hsl(142 71% 45%);
-  --color-income-light: hsl(142 71% 95%);
+  --color-income: hsl(152 69% 40%); /* Vibrant emerald green */
+  --color-income-light: hsl(152 69% 95%);
 
   /* expense — red */
-  --color-expense: hsl(348 83% 55%);
-  --color-expense-light: hsl(348 83% 95%);
+  --color-expense: hsl(354 70% 54%); /* Clean red */
+  --color-expense-light: hsl(354 70% 95%);
 
   /* warning */
   --color-warning: hsl(38 92% 50%);
 
   /* backgrounds */
-  --color-bg: hsl(220 20% 98%);
-  --color-surface: hsl(0 0% 100%);
-  --color-surface-2: hsl(220 20% 95%);
+  --color-bg: hsl(210 20% 97%); /* Very soft cool gray, like the dribbble shot */
+  --color-surface: hsl(0 0% 100%); /* Pure white */
+  --color-surface-2: hsl(210 20% 95%);
 
   /* text */
-  --color-text-primary: hsl(220 25% 15%);
-  --color-text-secondary: hsl(220 15% 45%);
-  --color-text-muted: hsl(220 10% 65%);
+  --color-text-primary: hsl(0 0% 10%); /* Very dark gray/black */
+  --color-text-secondary: hsl(0 0% 40%);
+  --color-text-muted: hsl(0 0% 60%);
 
   /* border */
-  --color-border: hsl(220 20% 90%);
+  --color-border: hsl(210 15% 92%);
 
   /* sidebar */
-  --color-sidebar: hsl(265 40% 12%);
-  --color-sidebar-text: hsl(220 20% 75%);
-  --color-sidebar-active: hsl(265 89% 65%);
+  --color-sidebar: hsl(0 0% 100%); /* White sidebar */
+  --color-sidebar-text: hsl(0 0% 40%);
+  --color-sidebar-active: hsl(0 0% 5%); /* Black active state */
 }
 
 /* scrollbar */

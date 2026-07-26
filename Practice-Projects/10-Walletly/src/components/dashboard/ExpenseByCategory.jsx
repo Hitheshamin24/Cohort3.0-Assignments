@@ -25,13 +25,13 @@ const ExpenseByCategory = () => {
   const total = categoryData.reduce((s, c) => s + c.amount, 0)
 
   return (
-    <div className="bg-surface rounded-2xl border border-border p-5">
-      <h2 className="font-semibold text-text-primary mb-4">Expense by Category</h2>
+    <div className="h-full flex flex-col bg-surface rounded-3xl border border-border p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+      <h2 className="font-semibold text-text-primary mb-4 shrink-0">Expense by Category</h2>
 
       {categoryData.length === 0 ? (
-        <p className="text-center py-8 text-text-muted text-sm">No expenses yet</p>
+        <p className="text-center py-8 text-text-muted text-sm flex-1">No expenses yet</p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-3 flex-1 overflow-y-auto pr-2">
           {categoryData.map(({ name, amount }, i) => {
             const pct = total > 0 ? Math.round((amount / total) * 100) : 0
             return (

@@ -19,14 +19,14 @@ const navItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="w-64 min-h-screen flex flex-col bg-sidebar text-white shrink-0">
+    <aside className="w-64 min-h-screen flex flex-col bg-surface text-text-primary shrink-0 border-r border-border shadow-sm">
 
       {/* logo */}
-      <div className="flex items-center gap-3 px-6 py-6 border-b border-white/10">
-        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center font-bold text-lg">
+      <div className="flex items-center gap-3 px-6 py-6 border-b border-border">
+        <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center font-bold text-lg text-white">
           W
         </div>
-        <span className="text-xl font-bold tracking-tight">Walletly</span>
+        <span className="text-xl font-extrabold tracking-tight">Walletly</span>
       </div>
 
       {/* nav links */}
@@ -37,10 +37,10 @@ const Sidebar = () => {
             to={path}
             end={path === "/"}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+              `flex items-center gap-3 px-4 py-3 rounded-full text-sm font-semibold transition-all duration-300 ${
                 isActive
-                  ? "bg-primary text-white shadow-lg shadow-primary/25 translate-x-1"
-                  : "text-white/60 hover:bg-white/10 hover:text-white"
+                  ? "bg-primary text-white shadow-md shadow-primary/20 translate-x-1"
+                  : "text-text-secondary hover:bg-surface-2 hover:text-text-primary"
               }`
             }
           >

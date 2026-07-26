@@ -7,8 +7,8 @@ const RecentTransactions = () => {
   const recent = useSelector(selectRecentTransactions)
 
   return (
-    <div className="bg-surface rounded-2xl border border-border p-5">
-      <div className="flex items-center justify-between mb-4">
+    <div className="h-full flex flex-col bg-surface rounded-3xl border border-border p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+      <div className="flex items-center justify-between mb-4 shrink-0">
         <h2 className="font-semibold text-text-primary">Recent Transactions</h2>
         <button
           onClick={() => navigate("/transactions")}
@@ -19,9 +19,9 @@ const RecentTransactions = () => {
       </div>
 
       {recent.length === 0 ? (
-        <p className="text-center py-8 text-text-muted text-sm">No transactions yet</p>
+        <p className="text-center py-8 text-text-muted text-sm flex-1">No transactions yet</p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-3 flex-1 overflow-y-auto pr-2">
           {recent.map((t) => (
             <li key={t.id} className="flex items-center justify-between">
               <div className="flex items-center gap-3">

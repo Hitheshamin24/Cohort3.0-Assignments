@@ -21,7 +21,7 @@ const CategoryBreakdown = ({ data, emptyMsg }) => {
   }
 
   return (
-    <ul className="space-y-3">
+    <ul className="space-y-3 flex-1 overflow-y-auto pr-2">
       {data.map(({ name, amount }, i) => {
         const pct = total > 0 ? Math.round((amount / total) * 100) : 0
         return (
@@ -120,15 +120,15 @@ const Reports = () => {
   const maxBar = Math.max(...last6Months.map((m) => Math.max(m.inc, m.exp)), 1)
 
   return (
-    <div className="space-y-6">
+    <div className="h-full flex flex-col gap-4">
 
       {/* month selector */}
-      <div className="bg-surface rounded-2xl border border-border p-4 flex items-center justify-between">
-        <button onClick={prevMonth} className="p-2 rounded-lg hover:bg-surface-2 text-text-secondary transition-colors">
-          <ChevronLeft size={18} />
+      <div className="bg-surface rounded-2xl border border-border p-3 flex items-center justify-between shrink-0">
+        <button onClick={prevMonth} className="p-1.5 rounded-lg hover:bg-surface-2 text-text-secondary transition-colors">
+          <ChevronLeft size={16} />
         </button>
         <div className="text-center">
-          <p className="font-semibold text-text-primary">{monthLabel}</p>
+          <p className="font-semibold text-text-primary text-sm">{monthLabel}</p>
           <input
             type="month"
             value={selectedMonth}
@@ -136,58 +136,55 @@ const Reports = () => {
             className="text-xs text-text-muted mt-0.5 outline-none bg-transparent cursor-pointer"
           />
         </div>
-        <button onClick={nextMonth} className="p-2 rounded-lg hover:bg-surface-2 text-text-secondary transition-colors">
-          <ChevronRight size={18} />
+        <button onClick={nextMonth} className="p-1.5 rounded-lg hover:bg-surface-2 text-text-secondary transition-colors">
+          <ChevronRight size={16} />
         </button>
       </div>
 
       {/* monthly summary cards */}
-      <div className="grid grid-cols-3 gap-4">
-        <div className="bg-surface rounded-2xl border border-border p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp size={16} className="text-income" />
-            <p className="text-sm text-text-muted">Income</p>
+      <div className="grid grid-cols-3 gap-3 shrink-0">
+        <div className="bg-surface rounded-2xl border border-border p-3 flex flex-col justify-center items-center text-center">
+          <div className="flex items-center gap-1.5 mb-1">
+            <TrendingUp size={14} className="text-income" />
+            <p className="text-xs text-text-muted">Income</p>
           </div>
-          <p className="text-xl font-bold text-income">{fmt(totalIncome)}</p>
-          <p className="text-xs text-text-muted mt-1">{monthlyIncomes.length} entries</p>
+          <p className="text-lg font-bold text-income">{fmt(totalIncome)}</p>
         </div>
-        <div className="bg-surface rounded-2xl border border-border p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingDown size={16} className="text-expense" />
-            <p className="text-sm text-text-muted">Expense</p>
+        <div className="bg-surface rounded-2xl border border-border p-3 flex flex-col justify-center items-center text-center">
+          <div className="flex items-center gap-1.5 mb-1">
+            <TrendingDown size={14} className="text-expense" />
+            <p className="text-xs text-text-muted">Expense</p>
           </div>
-          <p className="text-xl font-bold text-expense">{fmt(totalExpense)}</p>
-          <p className="text-xs text-text-muted mt-1">{monthlyExpenses.length} entries</p>
+          <p className="text-lg font-bold text-expense">{fmt(totalExpense)}</p>
         </div>
-        <div className="bg-surface rounded-2xl border border-border p-5">
-          <div className="flex items-center gap-2 mb-2">
-            <PiggyBank size={16} className={savings >= 0 ? "text-income" : "text-expense"} />
-            <p className="text-sm text-text-muted">Savings</p>
+        <div className="bg-surface rounded-2xl border border-border p-3 flex flex-col justify-center items-center text-center">
+          <div className="flex items-center gap-1.5 mb-1">
+            <PiggyBank size={14} className={savings >= 0 ? "text-income" : "text-expense"} />
+            <p className="text-xs text-text-muted">Savings</p>
           </div>
-          <p className={`text-xl font-bold ${savings >= 0 ? "text-income" : "text-expense"}`}>{fmt(savings)}</p>
-          <p className="text-xs text-text-muted mt-1">Income − Expense</p>
+          <p className={`text-lg font-bold ${savings >= 0 ? "text-income" : "text-expense"}`}>{fmt(savings)}</p>
         </div>
       </div>
 
       {/* category breakdowns */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-surface rounded-2xl border border-border p-5">
-          <h3 className="font-semibold text-text-primary mb-4">Income by Category</h3>
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="h-full flex flex-col bg-surface rounded-2xl border border-border p-4">
+          <h3 className="font-semibold text-text-primary mb-4 shrink-0">Income by Category</h3>
           <CategoryBreakdown data={incomeByCategory} emptyMsg="No income this month" />
         </div>
-        <div className="bg-surface rounded-2xl border border-border p-5">
-          <h3 className="font-semibold text-text-primary mb-4">Expense by Category</h3>
+        <div className="h-full flex flex-col bg-surface rounded-2xl border border-border p-4">
+          <h3 className="font-semibold text-text-primary mb-4 shrink-0">Expense by Category</h3>
           <CategoryBreakdown data={expenseByCategory} emptyMsg="No expenses this month" />
         </div>
       </div>
 
       {/* last 6 months bar chart */}
-      <div className="bg-surface rounded-2xl border border-border p-5">
-        <h3 className="font-semibold text-text-primary mb-6">Last 6 Months Overview</h3>
-        <div className="flex items-end justify-between gap-2 h-40">
+      <div className="bg-surface rounded-2xl border border-border p-4 shrink-0">
+        <h3 className="font-semibold text-text-primary text-sm mb-3">Last 6 Months Overview</h3>
+        <div className="flex items-end justify-between gap-2 h-24">
           {last6Months.map((m) => (
             <div key={m.key} className="flex-1 flex flex-col items-center gap-1">
-              <div className="w-full flex gap-1 items-end" style={{ height: "120px" }}>
+              <div className="w-full flex gap-1 items-end" style={{ height: "64px" }}>
                 <div
                   className="flex-1 bg-income rounded-t-md opacity-80"
                   style={{ height: `${(m.inc / maxBar) * 100}%`, minHeight: m.inc > 0 ? "4px" : "0" }}
@@ -203,12 +200,12 @@ const Reports = () => {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-4 mt-3 justify-center">
+        <div className="flex items-center gap-4 mt-2 justify-center">
           <span className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span className="w-3 h-3 rounded-sm bg-income inline-block" /> Income
+            <span className="w-2.5 h-2.5 rounded-sm bg-income inline-block" /> Income
           </span>
           <span className="flex items-center gap-1.5 text-xs text-text-muted">
-            <span className="w-3 h-3 rounded-sm bg-expense inline-block" /> Expense
+            <span className="w-2.5 h-2.5 rounded-sm bg-expense inline-block" /> Expense
           </span>
         </div>
       </div>

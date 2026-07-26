@@ -31,7 +31,7 @@ const Navbar = () => {
   const initial = currentUser?.name?.[0]?.toUpperCase() ?? "U"
 
   return (
-    <header className="h-16 bg-surface border-b border-border flex items-center justify-between px-6 shrink-0">
+    <header className="sticky top-0 z-40 h-20 bg-surface/80 backdrop-blur-md flex items-center justify-between px-8 shrink-0">
 
       <div>
         <h1 className="text-lg font-semibold text-text-primary">{title}</h1>

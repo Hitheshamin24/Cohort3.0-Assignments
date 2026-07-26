@@ -9,13 +9,13 @@ const typeIcons = {
   "Savings": PiggyBank,
 }
 
-// type ke hisaab se color
+// type ke hisaab se color (Black & White theme)
 const typeColors = {
-  "Bank Account": "bg-blue-100 text-blue-600",
-  "Wallet": "bg-purple-100 text-purple-600",
-  "Cash": "bg-green-100 text-green-600",
-  "Credit Card": "bg-red-100 text-red-600",
-  "Savings": "bg-amber-100 text-amber-600",
+  "Bank Account": "bg-surface-2 text-text-primary",
+  "Wallet": "bg-surface-2 text-text-primary",
+  "Cash": "bg-surface-2 text-text-primary",
+  "Credit Card": "bg-surface-2 text-text-primary",
+  "Savings": "bg-surface-2 text-text-primary",
 }
 
 const AccountCard = ({ account, onEdit, onDelete, onToggle }) => {
@@ -23,7 +23,7 @@ const AccountCard = ({ account, onEdit, onDelete, onToggle }) => {
   const colorClass = typeColors[account.type] ?? "bg-gray-100 text-gray-600"
 
   return (
-    <div className={`bg-surface rounded-2xl p-5 border border-border transition-all duration-200 ${!account.isActive ? "opacity-50" : ""}`}>
+    <div className={`bg-surface rounded-3xl p-6 border border-border shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] ${!account.isActive ? "opacity-50" : ""}`}>
 
       {/* top row */}
       <div className="flex items-start justify-between mb-4">
@@ -56,8 +56,8 @@ const AccountCard = ({ account, onEdit, onDelete, onToggle }) => {
       </div>
 
       {/* name & type */}
-      <p className="text-sm text-text-muted">{account.type}</p>
-      <h3 className="font-semibold text-text-primary text-base mt-0.5">{account.name}</h3>
+      <p className="text-xs uppercase tracking-wider text-text-muted font-semibold mt-1">{account.type}</p>
+      <h3 className="font-extrabold text-text-primary text-lg tracking-tight mt-0.5">{account.name}</h3>
 
       {/* balance */}
       <div className="mt-4 pt-4 border-t border-border">

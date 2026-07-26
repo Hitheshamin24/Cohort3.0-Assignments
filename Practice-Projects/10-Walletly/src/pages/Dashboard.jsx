@@ -32,10 +32,10 @@ const Dashboard = () => {
   const monthlySavings = monthlyIncome - monthlyExpense
 
   return (
-    <div className="space-y-6">
+    <div className="h-full flex flex-col gap-4">
 
       {/* quick actions */}
-      <div className="flex gap-3">
+      <div className="flex gap-3 shrink-0">
         <button
           onClick={() => navigate("/income")}
           className="flex items-center gap-2 bg-income text-white px-4 py-2 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
@@ -51,7 +51,7 @@ const Dashboard = () => {
       </div>
 
       {/* stat cards row 1 */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
         <StatCard
           title="Total Balance"
           value={fmt(totalBalance)}
@@ -81,7 +81,7 @@ const Dashboard = () => {
       </div>
 
       {/* stat cards row 2 — monthly */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 shrink-0">
         <StatCard
           title="Monthly Income"
           value={fmt(monthlyIncome)}
@@ -106,7 +106,7 @@ const Dashboard = () => {
       </div>
 
       {/* bottom section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <RecentTransactions />
         </div>

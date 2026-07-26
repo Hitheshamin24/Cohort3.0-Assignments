@@ -86,7 +86,7 @@ const Transactions = () => {
   return (
     <div className="space-y-4">
 
-      <div className="bg-surface rounded-2xl border border-border p-5 space-y-4">
+      <div className="bg-surface rounded-3xl border border-border p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] space-y-4">
 
         <div className="relative">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" />
@@ -168,22 +168,22 @@ const Transactions = () => {
       </div>
 
       {/* transactions table */}
-      <div className="bg-surface rounded-2xl border border-border p-5">
+      <div className="bg-surface rounded-3xl border border-border p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
         {filtered.length === 0 ? (
-          <p className="text-center py-12 text-text-muted text-sm">No transactions found</p>
+          <p className="text-center py-12 text-text-muted text-sm font-medium">No transactions found</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-border text-text-muted text-left">
-                  <th className="pb-3 font-medium">Date</th>
-                  <th className="pb-3 font-medium">Description</th>
-                  <th className="pb-3 font-medium">Type</th>
-                  <th className="pb-3 font-medium">Category</th>
-                  <th className="pb-3 font-medium">Account</th>
-                  <th className="pb-3 font-medium">Method</th>
-                  <th className="pb-3 font-medium text-right">Amount</th>
-                  <th className="pb-3 font-medium text-right">Action</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold">Date</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold">Description</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold">Type</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold">Category</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold">Account</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold">Method</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold text-right">Amount</th>
+                  <th className="pb-3 text-xs uppercase tracking-wider font-semibold text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border">
