@@ -39,6 +39,7 @@ const TransactionForm = ({ transactionToEdit, clearEdit }) => {
         <h2 className="text-xl font-bold tracking-tight text-gray-900">
           {transactionToEdit ? 'Edit Transaction' : 'Quick Transfer'}
         </h2>
+
         {transactionToEdit && (
           <button 
             onClick={() => {
@@ -47,11 +48,26 @@ const TransactionForm = ({ transactionToEdit, clearEdit }) => {
               setAmount('');
               setType('expense');
             }}
-            className="text-xs font-bold text-gray-500 hover:text-gray-900 uppercase tracking-wider"
+            className="hidden lg:block text-xs font-bold text-gray-500 hover:text-gray-900 uppercase tracking-wider"
           >
             Cancel
           </button>
         )}
+        
+
+        <button 
+          onClick={() => {
+            clearEdit();
+            setName('');
+            setAmount('');
+            setType('expense');
+          }}
+          className="lg:hidden w-8 h-8 flex items-center justify-center rounded-full bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">

@@ -16,9 +16,9 @@ const Dashboard = () => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-      {/* Total Balance Card - Premium Dark */}
+
       <div className="bg-gray-900 text-white p-6 rounded-3xl shadow-xl shadow-gray-900/10 relative overflow-hidden flex items-center gap-4">
-        {/* Subtle decorative circles */}
+
         <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white/5 blur-2xl"></div>
         
         <div className="relative z-10 w-full">
@@ -29,7 +29,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Income Card - Light */}
+
       <div className="bg-white p-6 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 flex items-center gap-4">
         <div className="w-12 h-12 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center shrink-0">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,7 +44,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Expense Card - Light */}
+
       <div className="bg-white p-6 rounded-3xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 flex items-center gap-4">
         <div className="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center shrink-0">
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
