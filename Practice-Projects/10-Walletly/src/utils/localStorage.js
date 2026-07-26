@@ -1,12 +1,13 @@
-// keys — ek jagah define karo, galti na ho
 export const STORAGE_KEYS = {
-  ACCOUNTS: "walletly_accounts",
-  INCOMES: "walletly_incomes",
-  EXPENSES: "walletly_expenses",
-  TRANSACTIONS: "walletly_transactions",
+  USERS: "walletly_users",
+  CURRENT_USER: "walletly_current_user",
+  // per-user data — userId se prefix hoga
+  ACCOUNTS: (uid) => `walletly_accounts_${uid}`,
+  INCOMES: (uid) => `walletly_incomes_${uid}`,
+  EXPENSES: (uid) => `walletly_expenses_${uid}`,
+  TRANSACTIONS: (uid) => `walletly_transactions_${uid}`,
 }
 
-// localStorage se data nikalo
 export const loadFromStorage = (key) => {
   try {
     const data = localStorage.getItem(key)
@@ -16,11 +17,18 @@ export const loadFromStorage = (key) => {
   }
 }
 
-// localStorage mein save karo
 export const saveToStorage = (key, data) => {
   try {
     localStorage.setItem(key, JSON.stringify(data))
   } catch {
     console.error("localStorage save failed")
+  }
+}
+
+export const removeFromStorage = (key) => {
+  try {
+    localStorage.removeItem(key)
+  } catch {
+    console.error("localStorage remove failed")
   }
 }

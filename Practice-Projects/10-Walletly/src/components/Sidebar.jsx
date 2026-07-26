@@ -37,9 +37,9 @@ const Sidebar = () => {
             to={path}
             end={path === "/"}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150 ${
+              `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
                 isActive
-                  ? "bg-primary text-white"
+                  ? "bg-primary text-white shadow-lg shadow-primary/25 translate-x-1"
                   : "text-white/60 hover:bg-white/10 hover:text-white"
               }`
             }
@@ -50,10 +50,6 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* footer */}
-      <div className="px-6 py-4 border-t border-white/10 text-white/40 text-xs">
-        v1.0.0 · Walletly
-      </div>
     </aside>
   )
 }

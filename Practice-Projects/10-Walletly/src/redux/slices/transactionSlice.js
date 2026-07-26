@@ -29,6 +29,9 @@ const transactionSlice = createSlice({
       state.transactions = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase("auth/logout", () => initialState)
+  },
 })
 
 export const {

@@ -35,6 +35,9 @@ const incomeSlice = createSlice({
       state.incomes = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase("auth/logout", () => initialState)
+  },
 })
 
 export const { addIncome, updateIncome, deleteIncome, setIncomes } = incomeSlice.actions

@@ -40,6 +40,9 @@ const expenseSlice = createSlice({
       state.expenses = action.payload
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase("auth/logout", () => initialState)
+  },
 })
 
 export const { addExpense, updateExpense, deleteExpense, setExpenses } = expenseSlice.actions
