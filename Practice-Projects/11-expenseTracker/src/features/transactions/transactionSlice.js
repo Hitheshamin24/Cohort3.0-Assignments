@@ -8,6 +8,7 @@ const loadState = () => {
     }
     return { transactions: JSON.parse(serializedState) };
   } catch (err) {
+    console.log(err)
     return { transactions: [] };
   }
 };

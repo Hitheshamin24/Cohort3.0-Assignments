@@ -12,7 +12,7 @@ const TransactionForm = ({ transactionToEdit, clearEdit }) => {
   useEffect(() => {
     if (transactionToEdit) {
       setName(transactionToEdit.name);
-      setAmount(transactionToEdit.amount);
+      setAmount(transactionToEdit.amount); 
       setType(transactionToEdit.type);
     }
   }, [transactionToEdit]);

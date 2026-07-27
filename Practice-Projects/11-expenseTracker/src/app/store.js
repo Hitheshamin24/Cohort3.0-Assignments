@@ -11,3 +11,4 @@ store.subscribe(() => {
   const state = store.getState();
   localStorage.setItem('transactions', JSON.stringify(state.transactions.transactions));
 });
+ 

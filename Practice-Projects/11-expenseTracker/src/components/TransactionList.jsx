@@ -7,7 +7,7 @@ const TransactionList = ({ onEdit }) => {
   const dispatch = useDispatch();
 
   const sortedTransactions = [...transactions].reverse();
-
+ 
   return (
     <div>
       <h2 className="text-lg font-bold text-gray-900 mb-6">Recent Transactions</h2>
