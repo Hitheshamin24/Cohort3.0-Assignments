@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Search, ChevronDown } from "lucide-react";
 import ProductCard from "../components/ProductCard";
 import { Product } from "../context/ProductContext";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router";
 const ProductPage = () => {
   const { register, watch, reset } = useForm({
     defaultValues: {
@@ -11,9 +12,13 @@ const ProductPage = () => {
       feature: "",
     },
   });
+  const [searchParams] = useSearchParams();
+  const searchCategory = searchParams.get("category");
+  console.log("search category",searchCategory);
   const search = watch("search");
   const category = watch("category");
   const feature = watch("feature");
+  console.log("watch category",category)
   const hasFilters = search || category || feature;
   const { products } = useContext(Product);
   const categories = [...new Set(products.map((item) => item.category))];
@@ -22,10 +27,9 @@ const ProductPage = () => {
     const matchesSearch = item.title
       .toLowerCase()
       .includes(search.toLowerCase());
-
-    // Category
-    const matchesCategory = category === "" || item.category === category;
-
+    const matchesCategory = searchCategory
+      ? item.category === searchCategory
+      : category === "" || item.category === category;
     return matchesSearch && matchesCategory;
   });
   if (feature === "top-rated") {
@@ -43,6 +47,14 @@ const ProductPage = () => {
   if (feature === "high-low") {
     filteredProducts.sort((a, b) => b.price - a.price);
   }
+
+ useEffect(() => {
+  reset({
+    search: "",
+    category: searchCategory || "",
+    feature: "",
+  });
+}, [searchCategory, reset]);
   return (
     <section className="max-w-7xl mx-auto px-5 py-12">
       {/* Heading */}
