@@ -12,9 +12,9 @@ export const ProductProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [cartDrawer, setCartDrawer] = useState(false);
   const { loggedInUser } = useContext(Auth);
-  const likedProducts = JSON.parse(localStorage.getItem("likedProducts")) || [];
+
   useEffect(() => {
-    if (loggedInUser?.fullName) {
+    if (loggedInUser?.id) {
       const storedCart = localStorage.getItem(`sm_cart_${loggedInUser.id}`);
       if (storedCart) {
         setCart(JSON.parse(storedCart));
@@ -34,6 +34,9 @@ export const ProductProvider = ({ children }) => {
     try {
       const response = await axios.get("https://fakestoreapi.com/products");
 
+      const likedProducts = loggedInUser?.id
+        ? JSON.parse(localStorage.getItem(`sm_liked_${loggedInUser.id}`)) || []
+        : [];
       const updatedProducts = response.data.map((product) => ({
         ...product,
         liked: likedProducts.includes(product.id),
@@ -46,7 +49,7 @@ export const ProductProvider = ({ children }) => {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [loggedInUser]);
 
   useEffect(() => {
     if (products.length > 0 && singleProduct.id) {
@@ -56,7 +59,7 @@ export const ProductProvider = ({ children }) => {
         setSingleProduct(updated);
       }
     }
-  }, [products]);
+  }, [products, singleProduct.id]);
 
   const getSingleProduct = async (productId) => {
     try {
@@ -168,33 +171,30 @@ export const ProductProvider = ({ children }) => {
   };
 
   // Favourite
-const toggleFavorite = (productId) => {
-  setProducts((prevProducts) => {
-    const updatedProducts = prevProducts.map((item) =>
-      item.id === productId
-        ? { ...item, liked: !item.liked }
-        : item
+  const toggleFavorite = (productId) => {
+    setProducts((prevProducts) => {
+      const updatedProducts = prevProducts.map((item) =>
+        item.id === productId ? { ...item, liked: !item.liked } : item,
+      );
+
+      const likedIds = updatedProducts
+        .filter((item) => item.liked)
+        .map((item) => item.id);
+
+      if (loggedInUser?.id) {
+        localStorage.setItem(
+          `sm_liked_${loggedInUser.id}`,
+          JSON.stringify(likedIds),
+        );
+      }
+
+      return updatedProducts;
+    });
+
+    setSingleProduct((prev) =>
+      prev.id === productId ? { ...prev, liked: !prev.liked } : prev,
     );
-
-    const likedIds = updatedProducts
-      .filter((item) => item.liked)
-      .map((item) => item.id);
-
-    localStorage.setItem(
-      "likedProducts",
-      JSON.stringify(likedIds)
-    );
-
-    return updatedProducts;
-  });
-
-  setSingleProduct((prev) =>
-    prev.id === productId
-      ? { ...prev, liked: !prev.liked }
-      : prev
-  );
-};
-
+  };
   const sortProducts = () => {
     let sortedProducts = [...products];
     sortedProducts = sortedProducts.sort(
@@ -203,9 +203,8 @@ const toggleFavorite = (productId) => {
     return sortedProducts;
   };
 
-  const cartTotal = cart.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0,
+  const cartTotal = Number(
+    cart.reduce((acc, item) => acc + item.price * item.quantity, 0).toFixed(2),
   );
   const categoriesList = [...new Set(products.map((p) => p.category))];
   const topProductsCount = products.filter(
