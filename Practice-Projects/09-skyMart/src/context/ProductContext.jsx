@@ -210,7 +210,7 @@ export const ProductProvider = ({ children }) => {
   const topProductsCount = products.filter(
     (p) => p.rating && p.rating.rate >= 4.5,
   ).length;
-
+ 
   return (
     <Product.Provider
       value={{
