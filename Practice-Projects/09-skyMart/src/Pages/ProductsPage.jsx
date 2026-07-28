@@ -1,60 +1,48 @@
 import React, { useContext, useEffect } from "react";
 import { Search, ChevronDown } from "lucide-react";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/product/ProductCard";
 import { Product } from "../context/ProductContext";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "react-router";
+import { useProductFilter } from "../hooks/useProductFilter";
 const ProductPage = () => {
-  const { register, watch, reset } = useForm({
+  const { register, watch, reset, setValue } = useForm({
     defaultValues: {
       search: "",
       category: "",
       feature: "",
     },
   });
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const searchCategory = searchParams.get("category");
-  console.log("search category",searchCategory);
+  const searchSort = searchParams.get("sort");
+
   const search = watch("search");
   const category = watch("category");
   const feature = watch("feature");
-  console.log("watch category",category)
   const hasFilters = search || category || feature;
-  const { products } = useContext(Product);
-  const categories = [...new Set(products.map((item) => item.category))];
-  let filteredProducts = products.filter((item) => {
-    // Search
-    const matchesSearch = item.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    const matchesCategory = searchCategory
-      ? item.category === searchCategory
-      : category === "" || item.category === category;
-    return matchesSearch && matchesCategory;
-  });
-  if (feature === "top-rated") {
-    filteredProducts.sort((a, b) => b.rating.rate - a.rating.rate);
-  }
+  const { products, categoriesList } = useContext(Product);
+  const { filteredProducts } = useProductFilter(
+    products,
+    search,
+    category,
+    feature,
+  );
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    },[]);
 
-  if (feature === "lowest-rated") {
-    filteredProducts.sort((a, b) => a.rating.rate - b.rating.rate);
-  }
-
-  if (feature === "low-high") {
-    filteredProducts.sort((a, b) => a.price - b.price);
-  }
-
-  if (feature === "high-low") {
-    filteredProducts.sort((a, b) => b.price - a.price);
-  }
-
- useEffect(() => {
-  reset({
-    search: "",
-    category: searchCategory || "",
-    feature: "",
-  });
-}, [searchCategory, reset]);
+    reset({
+      search: "",
+      category: searchCategory || "",
+      feature: "",
+    });
+    if (searchSort) {
+      setValue("feature", "top-rated");
+    }
+  }, [searchCategory, searchSort, setValue, reset]);
   return (
     <section className="max-w-7xl mx-auto px-5 py-12">
       {/* Heading */}
@@ -93,7 +81,7 @@ const ProductPage = () => {
               className="appearance-none w-full h-12 rounded-2xl border border-zinc-700 bg-[#1b1b1b] px-4 pr-10 font-dm-sans text-[14px] text-white outline-none focus:border-lime-400"
             >
               <option value="">All Categories</option>
-              {categories.map((cat) => (
+              {categoriesList.map((cat) => (
                 <option key={cat} value={cat}>
                   {cat}
                 </option>
@@ -127,14 +115,15 @@ const ProductPage = () => {
           {hasFilters && (
             <button
               type="button"
-              onClick={() =>
+              onClick={() => {
                 reset({
                   search: "",
                   category: "",
-                  sort: "",
-                })
-              }
-              className="h-12 px-6 rounded-2xl border border-red-500/30 bg-[#1b1b1b] text-red-400 font-dm-sans text-sm hover:bg-red-500/10 transition"
+                  feature: "",
+                });
+                setSearchParams(new URLSearchParams());
+              }}
+              className="h-12 px-6 rounded-2xl border border-red-500/30 bg-[#1b1b1b] text-red-400 font-dm-sans text-sm hover:bg-red-500/10 transition cursor-pointer"
             >
               ✕ Clear
             </button>
@@ -162,7 +151,7 @@ const ProductPage = () => {
       </div>
 
       {/* Products */}
-      <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="mt-10 grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-6">
         {filteredProducts.map((product) => {
           return <ProductCard key={product.id} product={product} />;
         })}

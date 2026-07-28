@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
 import { Zap, ShoppingCart, LogOut, Menu, X } from "lucide-react";
 import { NavLink } from "react-router";
-import { useAuth } from "../hooks/UseAuthHooks";
-import { Product } from "../context/ProductContext";
+import { useAuth } from "../../hooks/UseAuthHooks";
+import { Product } from "../../context/ProductContext";
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -124,7 +124,7 @@ const Navbar = () => {
 
             <button
               onClick={() => userLogout()}
-              className="mt-4 flex items-center gap-2 text-red-400 text-sm"
+              className="mt-4 flex items-center gap-2 text-red-400 text-sm cursor-pointer"
             >
               <LogOut size={16} />
               Logout

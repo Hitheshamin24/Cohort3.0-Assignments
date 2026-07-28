@@ -1,15 +1,14 @@
-import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router";
 import AuthLayout from "../layout/AuthLayout";
-import LoginPage from "../Pages/LoginPage";
-import RegisterPage from "../Pages/RegisterPage";
+import LoginPage from "../pages/LoginPage";
+import RegisterPage from "../pages/RegisterPage";
 import MainLayout from "../layout/MainLayout";
 import ProtectedRoutes from "./ProtectedRoutes";
 import PublicRoutes from "./PublicRoutes";
-import ProductsPage from "../Pages/ProductsPage";
-import Home from "../Pages/Home";
-import AboutPage from "../Pages/AboutPage";
-import ProductDetailsPage from "../Pages/ProductDetailsPage";
+import ProductsPage from "../pages/ProductsPage";
+import Home from "../pages/Home";
+import AboutPage from "../pages/AboutPage";
+import ProductDetailsPage from "../pages/ProductDetailsPage";
 const AppRoutes = () => {
   const router = createBrowserRouter([
     {

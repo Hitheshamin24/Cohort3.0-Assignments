@@ -1,19 +1,19 @@
 import { User, Mail, Lock, Eye, EyeOff, ArrowRight, Zap } from "lucide-react";
 import { useAuth } from "../hooks/UseAuthHooks";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const RegisterPage = () => {
   const {
     navigate,
-    showPassword,
-    setShowPassword,
-    showConfirmPassword,
-    setShowConfirmPassword,
-    register,
-    handleSubmit,
-    watch,
     registerFormSubmit,
     registerFormError,
   } = useAuth();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { register, handleSubmit, watch } = useForm();
+
   return (
     <div className="min-h-screen w-full bg-black flex flex-col items-center justify-center px-4 py-12">
       {/* Logo */}
@@ -82,6 +82,7 @@ const RegisterPage = () => {
               className="bg-transparent outline-none text-white placeholder-neutral-500 text-sm w-full"
             />
             <button
+              className="cursor-pointer"
               type="button"
               onClick={() => setShowPassword(!showPassword)}
             >
@@ -107,6 +108,7 @@ const RegisterPage = () => {
               className="bg-transparent outline-none text-white placeholder-neutral-500 text-sm w-full"
             />
             <button
+              className="cursor-pointer"
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
             >
@@ -122,7 +124,7 @@ const RegisterPage = () => {
         <button
           type="submit"
           form="registerForm"
-          className="w-full mt-5 bg-lime-400 hover:bg-lime-300 transition-colors text-black font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2"
+          className="w-full mt-5 bg-lime-400 hover:bg-lime-300 transition-colors text-black font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 cursor-pointer"
         >
           Create Account
           <ArrowRight className="w-4 h-4" />
@@ -133,7 +135,7 @@ const RegisterPage = () => {
           <button
             onClick={() => navigate("/login")}
             type="button"
-            className="text-lime-400 font-semibold hover:underline"
+            className="text-lime-400 font-semibold hover:underline cursor-pointer"
           >
             Sign in
           </button>

@@ -16,7 +16,7 @@ const AboutCTA = () => {
           Explore thousands of products at unbeatable prices.
         </p>
 
-        <button onClick={()=>navigate("/shop")} className="mt-8 inline-flex items-center gap-2 bg-lime-400 text-black font-syne text-[16px] px-8 py-4 rounded-2xl hover:bg-lime-300 transition cursor-pointer">
+        <button onClick={()=>navigate("/products")} className="mt-8 inline-flex items-center gap-2 bg-lime-400 text-black font-syne text-[16px] px-8 py-4 rounded-2xl hover:bg-lime-300 transition cursor-pointer">
           Shop Now
           <ArrowRight size={18} />
         </button>

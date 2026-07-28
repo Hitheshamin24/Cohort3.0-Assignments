@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Check, ShoppingCart, Star } from "lucide-react";
-import { Product } from "../context/ProductContext";
+import { Product } from "../../context/ProductContext";
 import { useNavigate } from "react-router";
 
 const ProductCard = ({ product }) => {
@@ -79,7 +79,7 @@ const ProductCard = ({ product }) => {
             ${product.price}
           </h2>
           {checkIfProductExists(product.id) ? (
-            <button className="flex items-center gap-2 rounded-full border border-green-800 bg-green-950 px-4 py-2 text-sm font-medium text-green-400 transition-all duration-300 hover:bg-green-900">
+            <button className="flex items-center gap-2 rounded-full border border-green-800 bg-green-950 px-4 py-2 text-sm font-medium text-green-400 transition-all duration-300 hover:bg-green-900 cursor-pointer">
               <Check size={16} strokeWidth={2.5} />
               Added
             </button>

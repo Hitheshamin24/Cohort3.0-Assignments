@@ -1,9 +1,9 @@
 import React from 'react'
-import AboutHero from '../components/AboutHero'
-import OurStory from '../components/OurStory'
-import ValuesSection from '../components/ValueSections'
-import TeamSection from '../components/TeamSection'
-import AboutCTA from '../components/AboutCTA'
+import AboutHero from '../components/about/AboutHero'
+import OurStory from '../components/about/OurStory'
+import ValuesSection from '../components/about/ValueSections'
+import TeamSection from '../components/about/TeamSection'
+import AboutCTA from '../components/about/AboutCTA'
 
 const AboutPage = () => {
   return (

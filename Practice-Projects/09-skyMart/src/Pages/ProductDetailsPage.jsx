@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   ChevronRight,
   Heart,
@@ -8,14 +8,18 @@ import {
   ShieldCheck,
   RotateCcw,
   ChevronLeft,
+  Check,
+  Plus,
+  Minus,
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router";
 import { Product } from "../context/ProductContext";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../components/product/ProductCard";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     products,
@@ -23,16 +27,37 @@ const ProductDetails = () => {
     getSingleProduct,
     addToCart,
     toggleFavorite,
+    checkIfProductExists,
+    cart,
+    increaseQuantity,
+    decreaseQuantity,
+    setCartDrawer
   } = useContext(Product);
 
   useEffect(() => {
+    const fetchProduct = async () => {
+      setIsLoading(true);
+      await getSingleProduct(id);
+      setIsLoading(false);
+    };
+    fetchProduct();
 
-    getSingleProduct(id);
-     window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   }, [id]);
+  
+  const cartItem = cart.find((item) => item.id === singleProduct.id);
+  const quantity = cartItem?.quantity || 0;
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center text-white text-xl">
+        Loading product...
+      </div>
+    );
+  }
 
   if (!singleProduct || Object.keys(singleProduct).length === 0) {
     return (
@@ -131,29 +156,94 @@ const ProductDetails = () => {
           </p>
 
           {/* Buttons */}
-          <div className="flex gap-4 mt-8">
-            <button
-              onClick={() => addToCart(singleProduct)}
-              className="flex-1 h-12 rounded-[14px] bg-[#C8FF00] text-black font-semibold text-[16px] font-dm-sans flex justify-center items-center gap-3 hover:bg-[#D4FF2F] duration-200"
-            >
-              <ShoppingCart size={18} />
-              Add to Cart
-            </button>
+          <div className="flex flex-col gap-4 mt-8">
+            {checkIfProductExists(singleProduct.id) ? (
+              <>
+                {/* Quantity */}
+                <div className="h-14 px-5 rounded-2xl border border-zinc-700 bg-[#111111] flex items-center justify-between">
+                  <span className="text-zinc-400 text-sm font-medium">
+                    In cart:
+                  </span>
 
-            <button
-              onClick={() => toggleFavorite(singleProduct.id)}
-              className={
-                "w-14 rounded-xl border border-zinc-700 flex justify-center items-center " +
-                (singleProduct.liked
-                  ? "bg-[#c0070734] text-red-500"
-                  : "text-gray-400 hover:text-red-500")
-              }
-            >
-              <Heart
-                size={12}
-                className={`w-6 h-6 rounded-[14px]   flex items-center justify-center transition ${singleProduct.liked ? "bg-[#2B1717] fill-red-500 border-[#5A2A2A]" : "hover:border-[#555]"}`}
-              />
-            </button>
+                  <div className="flex items-center gap-5">
+                    <button
+                      onClick={() => decreaseQuantity(singleProduct.id)}
+                      className="w-9 h-9 rounded-full border border-zinc-700 hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                    >
+                      <Minus size={16} />
+                    </button>
+
+                    <span className="text-white text-lg font-semibold">
+                      {quantity}
+                    </span>
+
+                    <button
+                      onClick={() => increaseQuantity(singleProduct.id)}
+                      className="w-9 h-9 rounded-full border border-zinc-700 hover:bg-zinc-800 flex items-center justify-center cursor-pointer"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Added + Wishlist */}
+                <div className="flex gap-4">
+                  <button
+                    disabled
+                    className="flex-1 h-12 rounded-[14px] bg-[#0F2D18] border border-[#1D5C33] text-[#4ADE80] font-semibold flex items-center justify-center gap-3 cursor-pointer"
+                  >
+                    <Check size={18} />
+                    Added to Cart
+                  </button>
+
+                  <button
+                    onClick={() => toggleFavorite(singleProduct.id)}
+                    className={`w-14 rounded-xl border border-zinc-700 flex justify-center items-center cursor-pointer ${
+                      singleProduct.liked
+                        ? "bg-[#2B1717] text-red-500"
+                        : "text-gray-400 hover:text-red-500"
+                    }`}
+                  >
+                    <Heart
+                      size={22}
+                      fill={singleProduct.liked ? "currentColor" : "none"}
+                    />
+                  </button>
+                </div>
+
+                {/* View Cart */}
+                <button
+                  onClick={() => setCartDrawer(true)}
+                  className="h-12 rounded-[14px] border border-zinc-700 text-white hover:bg-zinc-800 transition cursor-pointer"
+                >
+                  View Cart →
+                </button>
+              </>
+            ) : (
+              <div className="flex gap-4">
+                <button
+                  onClick={() => addToCart(singleProduct)}
+                  className="flex-1 h-12 rounded-[14px] bg-[#C8FF00] text-black font-semibold flex items-center justify-center gap-3 cursor-pointer"
+                >
+                  <ShoppingCart size={18} />
+                  Add to Cart
+                </button>
+
+                <button
+                  onClick={() => toggleFavorite(singleProduct.id)}
+                  className={`w-14 rounded-xl border border-zinc-700 flex justify-center items-center cursor-pointer ${
+                    singleProduct.liked
+                      ? "bg-[#2B1717] text-red-500"
+                      : "text-gray-400 hover:text-red-500"
+                  }`}
+                >
+                  <Heart
+                    size={22}
+                    fill={singleProduct.liked ? "currentColor" : "none"}
+                  />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Cards */}
@@ -196,7 +286,7 @@ const ProductDetails = () => {
             {Number(id) > 1 && (
               <button
                 onClick={previousProduct}
-                className="flex-1 h-11.5 rounded-xl bg-[#242424] flex justify-center items-center gap-2 text-white border border-[#3B3B3B] font-dm-sans text-[14px] font-semibold hover:bg-[#2F2F2F] duration-200"
+                className="flex-1 h-11.5 rounded-xl bg-[#242424] flex justify-center items-center gap-2 text-white border border-[#3B3B3B] font-dm-sans text-[14px] font-semibold hover:bg-[#2F2F2F] duration-200 cursor-pointer"
               >
                 <ChevronLeft size={18} />
                 Previous
@@ -208,7 +298,7 @@ const ProductDetails = () => {
                 onClick={nextProduct}
                 className={`${
                   Number(id) > 1 ? "flex-1" : "w-full"
-                } h-11.5 rounded-xl bg-[#C8FF00] text-black font-dm-sans text-[14px] font-semibold flex justify-center items-center gap-2 hover:bg-[#D4FF2F] duration-200`}
+                } h-11.5 rounded-xl bg-[#C8FF00] text-black font-dm-sans text-[14px] font-semibold flex justify-center items-center gap-2 hover:bg-[#D4FF2F] duration-200 cursor-pointer`}
               >
                 Next
                 <ChevronRight size={18} />

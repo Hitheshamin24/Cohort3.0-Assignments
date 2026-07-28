@@ -1,8 +1,8 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../components/common/Navbar";
+import Footer from "../components/common/Footer";
 import { Outlet } from "react-router";
-import CartDrawer from "../components/CartDrawer";
+import CartDrawer from "../components/cart/CartDrawer";
 
 const MainLayout = () => {
   return (
@@ -10,9 +10,9 @@ const MainLayout = () => {
       <Navbar />
       <CartDrawer />
       <div className="pt-17 max-w-7xl mx-auto px-5">
-        <Outlet/>
+        <Outlet />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

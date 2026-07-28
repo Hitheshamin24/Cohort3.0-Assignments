@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router";
-import { Product } from "../context/ProductContext";
+import { Product } from "../../context/ProductContext";
 
 const CategoryCard = () => {
   const navigate = useNavigate();
@@ -30,7 +30,7 @@ const CategoryCard = () => {
 
         <button
           onClick={() => navigate("/products")}
-          className="flex items-center gap-2 font-dm-sans text-[14px] font-medium text-lime-400 hover:gap-3 transition-all cursor-pointer"
+          className="bg-[#2a2a2a] w-full rounded-2xl py-3.5 flex justify-center items-center gap-2 text-lime-400 font-syne font-bold text-sm hover:bg-[#333] transition-colors cursor-pointer"
         >
           View All
           <ArrowRight size={16} />

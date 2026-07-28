@@ -1,7 +1,7 @@
 import React from "react";
-import DashboardCard from "../components/DashboardCard";
-import CategoryCard from "../components/CategoryCard";
-import ProductShowcase from "../components/ProductShowcase";
+import DashboardCard from "../components/dashboard/DashboardCard";
+import CategoryCard from "../components/dashboard/CategoryCard";
+import ProductShowcase from "../components/product/ProductShowcase";
 
 const Home = () => {
   return (

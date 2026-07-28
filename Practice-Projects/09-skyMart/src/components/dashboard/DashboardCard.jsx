@@ -1,5 +1,5 @@
-import DashboardHero from "../components/DashboardHero";
-import DashboardStats from "../components/DashboardStats";
+import DashboardHero from "./DashboardHero";
+import DashboardStats from "./DashboardStats";
 
 const DashboardCard = () => {
   return (

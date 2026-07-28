@@ -1,30 +1,26 @@
-import React from "react";
-import {
-  ArrowRight,
-  ShoppingBag,
-  TrendingUp,
-  Star,
-  Tags,
-} from "lucide-react";
+import React, { useContext } from "react";
+import { ArrowRight, ShoppingBag, TrendingUp, Star, Tags } from "lucide-react";
+import { useNavigate } from "react-router";
+import { Auth } from "../../context/AuthContext";
 
 const DashboardHero = () => {
+  const navigate = useNavigate();
   const hour = new Date().getHours();
+  const { loggedInUser } = useContext(Auth);
 
   const greeting =
     hour < 12
       ? "Good Morning"
       : hour < 17
-      ? "Good Afternoon"
-      : hour < 21
-      ? "Good Evening"
-      : "Good Night";
-
+        ? "Good Afternoon"
+        : hour < 21
+          ? "Good Evening"
+          : "Good Night";
 
   return (
     <div className="">
       {/* Hero Card */}
       <div className="relative overflow-hidden rounded-[30px] border border-zinc-700 bg-[#101010] p-12">
-
         {/* Grid Background */}
         <div
           className="absolute inset-0 opacity-40"
@@ -36,7 +32,6 @@ const DashboardHero = () => {
         />
 
         <div className="relative flex items-center  justify-between gap-10">
-
           {/* Left */}
           <div className="max-w-2xl">
             <p className="font-dm-sans text-[14px] uppercase tracking-widest text-lime-400 mb-5">
@@ -46,21 +41,29 @@ const DashboardHero = () => {
             <h1 className="font-dm-sans text-[48px] leading-13 font-bold text-white">
               Welcome back,
               <br />
-              <span className="text-lime-400">Hithesh!</span>
+              <span className="text-lime-400">
+                {loggedInUser.fullName}
+              </span>
             </h1>
 
             <p className="mt-6 max-w-xl text-[16px] text-zinc-400 font-dm-sans leading-8">
-              Discover today's picks — hand-curated products across
-              electronics, fashion, and more.
+              Discover today's picks — hand-curated products across electronics,
+              fashion, and more.
             </p>
 
             <div className="mt-10 flex  gap-2">
-              <button className="font-dm-sans text-nowrap text-[14px] font-medium bg-lime-400 text-black px-5 py-2 rounded-2xl flex items-center gap-2 hover:bg-lime-300 duration-300">
+              <button
+                onClick={() => navigate("/products")}
+                className="font-dm-sans text-nowrap text-[14px] font-medium bg-lime-400 text-black px-5 py-2 rounded-2xl flex items-center gap-2 hover:bg-lime-300 duration-300 cursor-pointer"
+              >
                 Shop Now
                 <ArrowRight size={18} />
               </button>
 
-              <button className="font-dm-sans text-nowrap text-[14px] font-medium border border-zinc-700 text-white px-5 py-4 rounded-2xl hover:bg-zinc-900 duration-300">
+              <button
+                onClick={() => navigate("/products")}
+                className="font-dm-sans text-nowrap text-[14px] font-medium border border-zinc-700 text-white px-5 py-4 rounded-2xl hover:bg-zinc-900 duration-300 cursor-pointer"
+              >
                 View All Products
               </button>
             </div>
@@ -68,7 +71,6 @@ const DashboardHero = () => {
 
           {/* Right */}
           <div className="flex flex-col gap-5">
-
             <div className="w-40 h-32 rounded-3xl bg-lime-400/15 border border-lime-400/30 flex flex-col items-center justify-center">
               <h2 className="font-syne text-[36px] font-bold text-lime-400">
                 20+
@@ -88,12 +90,9 @@ const DashboardHero = () => {
                 Delivery on ₹999+
               </p>
             </div>
-
           </div>
         </div>
       </div>
-
-    
     </div>
   );
 };

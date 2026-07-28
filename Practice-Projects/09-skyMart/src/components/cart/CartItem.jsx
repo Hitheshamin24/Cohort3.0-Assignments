@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { Minus, Plus, Trash2 } from "lucide-react";
-import { Product } from "../context/ProductContext";
+import { Product } from "../../context/ProductContext";
 
 const CartItem = ({ item }) => {
   const {increaseQuantity, decreaseQuantity,deleteFromCart} = useContext(Product)

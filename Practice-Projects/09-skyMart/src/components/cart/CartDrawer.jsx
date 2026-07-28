@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
 import { ShoppingBag, Package, X } from "lucide-react";
 import CartItem from "./CartItem";
-import { Product } from "../context/ProductContext";
 import { useNavigate } from "react-router";
+import { Product } from "../../context/ProductContext";
 
 const CartDrawer = () => {
   const navigate = useNavigate();
-  const { cart, cartDrawer, setCartDrawer, clearCart, placeOrder } =
+  const { cart, cartDrawer, setCartDrawer, clearCart, placeOrder, cartTotal } =
     useContext(Product);
-  const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
     <>
       {/* Backdrop */}
 
       <div
-        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-all duration-300 ${
+        onClick={() => setCartDrawer(false)}
+        className={`fixed inset-0 z-40 bg-black/70 backdrop-blur-sm transition-all duration-300 cursor-pointer ${
           cartDrawer ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
       />
@@ -23,7 +23,7 @@ const CartDrawer = () => {
       {/* Drawer */}
 
       <aside
-        className={`fixed right-0 top-0 z-50 flex h-screen w-full max-w-md flex-col border-l border-zinc-700 bg-[#101010] transition-transform duration-500 ${
+        className={`fixed right-0 top-0 z-50 flex h-screen w-full sm:max-w-md max-w-full flex-col border-l border-zinc-700 bg-[#101010] transition-transform duration-500 ${
           cartDrawer ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -71,7 +71,7 @@ const CartDrawer = () => {
                 navigate("/products");
                 setCartDrawer(false);
               }}
-              className="mt-8 rounded-2xl bg-lime-400 px-8 py-4 font-dm-sans text-[14px] font-medium text-black transition hover:bg-lime-300"
+              className="mt-8 rounded-2xl bg-lime-400 px-8 py-4 font-dm-sans text-[14px] font-medium text-black transition hover:bg-lime-300 cursor-pointer"
             >
               Browse Products
             </button>
@@ -95,20 +95,20 @@ const CartDrawer = () => {
                 </span>
 
                 <h2 className="font-syne text-[24px] font-bold text-white">
-                  ${total.toFixed(2)}
+                  ${cartTotal.toFixed(2)}
                 </h2>
               </div>
 
               <button
                 onClick={() => placeOrder()}
-                className="w-full rounded-2xl bg-lime-400 py-4 font-syne text-[16px] font-bold text-black transition hover:bg-lime-300"
+                className="w-full rounded-2xl bg-lime-400 py-4 font-syne text-[16px] font-bold text-black transition hover:bg-lime-300 cursor-pointer"
               >
                 Checkout →
               </button>
 
               <button
                 onClick={() => clearCart()}
-                className="mt-5 w-full font-dm-sans text-[12px] text-zinc-500 transition hover:text-red-400"
+                className="mt-5 w-full font-dm-sans text-[12px] text-zinc-500 transition hover:text-red-400 cursor-pointer"
               >
                 Clear Cart
               </button>

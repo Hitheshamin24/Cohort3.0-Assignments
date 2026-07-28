@@ -1,23 +1,13 @@
-import { useContext, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { Auth } from "../context/AuthContext";
-import { User } from "lucide-react";
 
 export const useAuth = () => {
   let navigate = useNavigate();
   const { registeredUsers, setRegisteredUsers, loggedInUser, setLoggedInUser } =
     useContext(Auth);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  let {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors },
-  } = useForm();
+
   const registerFormSubmit = (data) => {
     const nameExists = registeredUsers.find(
       (user) =>
@@ -54,9 +44,8 @@ export const useAuth = () => {
     localStorage.setItem("sm_users", JSON.stringify(arr));
     localStorage.setItem("session_user", JSON.stringify(newUser));
     toast.success("Account created successfully");
-
-    reset();
   };
+
   const registerFormError = (errors) => {
     const errorArray = Object.values(errors);
     if (errorArray.length > 1) {
@@ -65,6 +54,7 @@ export const useAuth = () => {
     }
     toast.error(errorArray[errorArray.length - 1].message);
   };
+
   const loginFormSubmit = (data) => {
     const isCorrect = registeredUsers.find(
       (user) =>
@@ -80,6 +70,7 @@ export const useAuth = () => {
     toast.success("Login Successful");
     localStorage.setItem("session_user", JSON.stringify(isCorrect));
   };
+
   const loginFormError = (errors) => {
     const errorArray = Object.values(errors);
     if (errorArray.length > 1) {
@@ -92,21 +83,13 @@ export const useAuth = () => {
   const userLogout = () => {
     setLoggedInUser(null);
     localStorage.removeItem("session_user");
-        toast.success("Logged Out. See You Soon");
-
+    toast.success("Logged Out. See You Soon");
   };
+
   return {
     navigate,
     registeredUsers,
     setRegisteredUsers,
-    showPassword,
-    setShowPassword,
-    showConfirmPassword,
-    setShowConfirmPassword,
-    register,
-    handleSubmit,
-    errors,
-    watch,
     registerFormSubmit,
     registerFormError,
     loggedInUser,

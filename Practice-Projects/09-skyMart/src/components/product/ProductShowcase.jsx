@@ -5,8 +5,8 @@ import {
   Tag,
 } from "lucide-react";
 
-import TopRatedCard from "./TopRatedCard";
-import NewArrivalsCard from "./NewArrivalsCard";
+import TopRatedCard from "../dashboard/TopRatedCard";
+import NewArrivalsCard from "../dashboard/NewArrivalsCard";
 
 const ProductShowcase = () => {
   return (

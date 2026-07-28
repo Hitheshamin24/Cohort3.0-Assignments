@@ -1,17 +1,17 @@
 import { Zap, Mail, Lock, Eye, ArrowRight, EyeOff } from "lucide-react";
-import { Auth } from "../context/AuthContext";
 import { useAuth } from "../hooks/UseAuthHooks";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const LoginPage = () => {
   const {
     navigate,
-    showPassword,
-    setShowPassword,
-    register,
-    handleSubmit,
     loginFormSubmit,
     loginFormError,
   } = useAuth();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const { register, handleSubmit } = useForm();
 
   return (
     <div className="min-h-screen w-full bg-black flex items-stretch">
@@ -109,7 +109,7 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-neutral-300 cursor-pointer"
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -121,7 +121,7 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="w-full bg-lime-400 hover:bg-lime-300 text-black font-semibold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors mt-2"
+              className="w-full bg-lime-400 hover:bg-lime-300 text-black font-semibold rounded-lg py-3 flex items-center justify-center gap-2 transition-colors mt-2 cursor-pointer"
             >
               Sign in
               <ArrowRight className="w-4 h-4" />
