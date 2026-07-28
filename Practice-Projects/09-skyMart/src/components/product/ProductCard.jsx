@@ -74,7 +74,7 @@ const ProductCard = ({ product }) => {
         <hr className="my-4 border-zinc-700" />
 
         {/* Bottom Section */}
-        <div className="mt-auto flex items-center justify-between">
+        <div className="mt-auto flex items-center justify-between gap-2 px=2">
           <h2 className="font-syne text-[18px] font-bold text-lime-400">
             ${product.price}
           </h2>

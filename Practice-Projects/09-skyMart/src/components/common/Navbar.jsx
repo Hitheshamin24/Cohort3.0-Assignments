@@ -13,7 +13,7 @@ const Navbar = () => {
     { name: "Shop", path: "/products" },
     { name: "About", path: "/about" },
   ];
-
+  const totalProductInCart = cart.reduce((acc, item) => acc + item.quantity, 0);
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       <nav className="w-full bg-[#0d0d0d] border-b border-zinc-300">
@@ -73,7 +73,7 @@ const Navbar = () => {
 
               {cart.length > 0 && (
                 <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-lime-400 text-[10px] font-bold font-dm-sans flex items-center justify-center text-black">
-                  {cart.length}
+                  {totalProductInCart}
                 </span>
               )}
             </button>

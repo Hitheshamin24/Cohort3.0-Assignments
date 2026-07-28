@@ -94,6 +94,45 @@ const RegisterPage = () => {
             </button>
           </div>
 
+          {/* Password Strength Indicator */}
+          {watch("password")?.length > 0 && (() => {
+            const pass = watch("password");
+            let score = 0;
+            let text = "";
+            let colorClass = "";
+            let textColorClass = "";
+
+            if (pass.length < 6) {
+              score = 1;
+              text = "Weak";
+              colorClass = "bg-red-500";
+              textColorClass = "text-red-500";
+            } else if (pass.length < 10) {
+              score = 2;
+              text = "Medium";
+              colorClass = "bg-yellow-500";
+              textColorClass = "text-yellow-500";
+            } else {
+              score = 3;
+              text = "Strong";
+              colorClass = "bg-green-500";
+              textColorClass = "text-green-500";
+            }
+
+            return (
+              <div className="flex items-center gap-3 px-1 mt-1 mb-2">
+                <div className="flex gap-1.5 flex-1">
+                  <div className={`h-1 flex-1 rounded-full ${score >= 1 ? colorClass : 'bg-neutral-800'}`}></div>
+                  <div className={`h-1 flex-1 rounded-full ${score >= 2 ? colorClass : 'bg-neutral-800'}`}></div>
+                  <div className={`h-1 flex-1 rounded-full ${score >= 3 ? colorClass : 'bg-neutral-800'}`}></div>
+                </div>
+                <span className={`text-xs font-medium w-12 text-right ${textColorClass}`}>
+                  {text}
+                </span>
+              </div>
+            );
+          })()}
+
           {/* Confirm password */}
           <div className="flex items-center gap-3 bg-neutral-900 border border-neutral-800 rounded-xl px-4 py-3.5">
             <Lock className="w-4 h-4 text-neutral-500 shrink-0" />

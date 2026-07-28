@@ -9,10 +9,19 @@ createRoot(document.getElementById("root")).render(
     <App />
     <ToastContainer
       position="bottom-right"
-      toastClassName={() =>
-        "bg-zinc-900 border flex gap-2 p-2 border-zinc-700 rounded-2xl text-white shadow-lg"
-      }
-      bodyClassName={() => "text-sm font-medium"}
+      hideProgressBar
+      closeButton={false}
+      autoClose={1500}
+      newestOnTop
+      theme="dark"
+      toastStyle={{
+        background: "#1f1f1f",
+        color: "#fff",
+        border: "1px solid #3f3f46",
+        borderRadius: "16px",
+        minHeight: "48px",
+        boxShadow: "0 8px 20px rgba(0,0,0,.35)",
+      }}
     />
   </AuthProvider>,
 );

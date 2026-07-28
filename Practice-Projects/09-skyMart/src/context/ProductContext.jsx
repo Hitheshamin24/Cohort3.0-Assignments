@@ -2,6 +2,7 @@ import { createContext, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Auth } from "./AuthContext";
+import { Check, X } from "lucide-react";
 
 export const Product = createContext();
 
@@ -11,31 +12,31 @@ export const ProductProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [cartDrawer, setCartDrawer] = useState(false);
   const { loggedInUser } = useContext(Auth);
-
+  const likedProducts = JSON.parse(localStorage.getItem("likedProducts")) || [];
   useEffect(() => {
     if (loggedInUser?.fullName) {
-      const storedCart = localStorage.getItem(`sm_cart_${loggedInUser.fullName}`);
+      const storedCart = localStorage.getItem(`sm_cart_${loggedInUser.id}`);
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       } else {
-        setCart([]); 
+        setCart([]);
       }
     }
   }, [loggedInUser]);
 
   useEffect(() => {
-    if (loggedInUser?.fullName) {
-      localStorage.setItem(`sm_cart_${loggedInUser.fullName}`, JSON.stringify(cart));
+    if (loggedInUser?.id) {
+      localStorage.setItem(`sm_cart_${loggedInUser.id}`, JSON.stringify(cart));
     }
   }, [cart, loggedInUser]);
-  
+
   const getProducts = async () => {
     try {
       const response = await axios.get("https://fakestoreapi.com/products");
 
       const updatedProducts = response.data.map((product) => ({
         ...product,
-        liked: false,
+        liked: likedProducts.includes(product.id),
       }));
       setProducts(updatedProducts);
     } catch (error) {
@@ -82,13 +83,40 @@ export const ProductProvider = ({ children }) => {
   };
 
   const addToCart = (product) => {
-    if (checkIfProductExists(product.id)) return;
+    if (checkIfProductExists(product.id)) {
+      setCart((prev) =>
+        prev.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item,
+        ),
+      );
+
+      toast.success("quantity Updated", {
+        icon: (
+          <div className="w-6 h-6 rounded-full bg-[#e2ff66] flex items-center justify-center">
+            <Check className="w-4 h-4 text-black" strokeWidth={3} />
+          </div>
+        ),
+      });
+      setCartDrawer(true);
+
+      return;
+    }
 
     setCart((prev) => [...prev, { ...product, quantity: 1 }]);
-    toast.success("Added to cart");
+
+    toast.success("Added to cart", {
+      icon: (
+        <div className="w-6 h-6 rounded-full bg-[#9ae600] flex items-center justify-center">
+          <Check className="w-4 h-4 text-black" strokeWidth={3} />
+        </div>
+      ),
+    });
+
     setCartDrawer(true);
   };
- 
+
   const increaseQuantity = (productId) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
@@ -114,7 +142,13 @@ export const ProductProvider = ({ children }) => {
 
   const deleteFromCart = (productId) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-    toast.success("Removed from cart");
+    toast.success("Removed from cart", {
+      icon: (
+        <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center shrink-0">
+          <X className="w-4 h-4 text-white" strokeWidth={3} />
+        </div>
+      ),
+    });
   };
 
   const clearCart = () => {
@@ -122,23 +156,44 @@ export const ProductProvider = ({ children }) => {
   };
 
   const placeOrder = () => {
-    toast.success("Order Placed Successfully (Demo)");
+    toast.success("Order Placed Successfully (Demo)", {
+      icon: (
+        <div className="w-6 h-6 rounded-full bg-[#e2ff66] flex items-center justify-center shrink-0">
+          <Check className="w-4 h-4 text-black" strokeWidth={3} />
+        </div>
+      ),
+    });
     setCart([]);
     setCartDrawer(false);
   };
 
   // Favourite
-  const toggleFavorite = (productId) => {
-    setProducts((prevProducts) =>
-      prevProducts.map((item) =>
-        item.id === productId ? { ...item, liked: !item.liked } : item,
-      ),
+const toggleFavorite = (productId) => {
+  setProducts((prevProducts) => {
+    const updatedProducts = prevProducts.map((item) =>
+      item.id === productId
+        ? { ...item, liked: !item.liked }
+        : item
     );
 
-    setSingleProduct((prev) =>
-      prev.id === productId ? { ...prev, liked: !prev.liked } : prev,
+    const likedIds = updatedProducts
+      .filter((item) => item.liked)
+      .map((item) => item.id);
+
+    localStorage.setItem(
+      "likedProducts",
+      JSON.stringify(likedIds)
     );
-  };
+
+    return updatedProducts;
+  });
+
+  setSingleProduct((prev) =>
+    prev.id === productId
+      ? { ...prev, liked: !prev.liked }
+      : prev
+  );
+};
 
   const sortProducts = () => {
     let sortedProducts = [...products];
@@ -148,9 +203,14 @@ export const ProductProvider = ({ children }) => {
     return sortedProducts;
   };
 
-  const cartTotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const categoriesList = [...new Set(products.map(p => p.category))];
-  const topProductsCount = products.filter(p => p.rating && p.rating.rate >= 4.5).length;
+  const cartTotal = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0,
+  );
+  const categoriesList = [...new Set(products.map((p) => p.category))];
+  const topProductsCount = products.filter(
+    (p) => p.rating && p.rating.rate >= 4.5,
+  ).length;
 
   return (
     <Product.Provider
