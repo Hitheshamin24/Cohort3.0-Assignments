@@ -1,6 +1,4 @@
 import React from "react";
-import LoginPage from "./Pages/LoginPage";
-import RegisterPage from "./Pages/RegisterPage";
 import AppRoutes from "./routes/AppRoutes";
 import { ProductProvider } from "./context/ProductContext";
 
