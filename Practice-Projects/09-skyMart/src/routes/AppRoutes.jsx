@@ -1,4 +1,4 @@
-import { RouterProvider, createBrowserRouter } from "react-router";
+import { RouterProvider, createBrowserRouter, Navigate } from "react-router";
 import AuthLayout from "../layout/AuthLayout";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
@@ -19,6 +19,10 @@ const AppRoutes = () => {
           path: "/",
           element: <AuthLayout />,
           children: [
+            {
+              index: true,
+              element: <Navigate to="/login" replace />,
+            },
             {
               path: "login",
               element: <LoginPage />,
