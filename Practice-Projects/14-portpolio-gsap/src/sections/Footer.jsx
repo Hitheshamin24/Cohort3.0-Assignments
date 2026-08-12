@@ -17,11 +17,14 @@ const Footer = () => {
         trigger: footerRef.current,
         start: 'top 80%',
       },
-      y: 150,
+      y: 100,
       opacity: 0,
-      duration: 1.2,
+      rotateX: -90,
+      filter: 'blur(10px)',
+      scale: 0.8,
+      duration: 1.5,
       stagger: 0.05,
-      ease: 'power4.out',
+      ease: 'expo.out',
     });
 
     gsap.from('.footer-link', {

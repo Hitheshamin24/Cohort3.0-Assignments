@@ -11,43 +11,52 @@ const Skills = () => {
 
   useGSAP(() => {
     
-    gsap.from('.skills-header', {
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-      },
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out'
-    });
+    gsap.fromTo('.skills-header', 
+      { y: 50, opacity: 0 },
+      {
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top 80%',
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out'
+      }
+    );
 
     const categories = gsap.utils.toArray('.skill-category');
     categories.forEach((cat, i) => {
 
-      gsap.from(cat.querySelector('.category-title'), {
-        scrollTrigger: {
-          trigger: cat,
-          start: 'top 85%',
-        },
-        y: 20,
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-      });
+      gsap.fromTo(cat.querySelector('.category-title'), 
+        { y: 20, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: cat,
+            start: 'top 85%',
+          },
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power2.out',
+        }
+      );
 
-      gsap.from(cat.querySelectorAll('.skill-item'), {
-        scrollTrigger: {
-          trigger: cat,
-          start: 'top 85%',
-        },
-        y: 20,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.6,
-        ease: 'power2.out',
-        delay: 0.2
-      });
+      gsap.fromTo(cat.querySelectorAll('.skill-item'), 
+        { y: 20, opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: cat,
+            start: 'top 85%',
+          },
+          y: 0,
+          opacity: 1,
+          stagger: 0.1,
+          duration: 0.6,
+          ease: 'power2.out',
+          delay: 0.2
+        }
+      );
     });
 
   }, { scope: sectionRef });
