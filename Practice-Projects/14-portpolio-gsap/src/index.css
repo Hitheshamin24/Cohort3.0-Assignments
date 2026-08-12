@@ -202,3 +202,21 @@ a {
     --container-px: 1.25rem; /* slightly tighter on mobile */
   }
 }
+
+/* ─── 11. Hero Scroll Bounce Animation ───────────────────── */
+/*
+  CSS keyframe animation for the scroll indicator ArrowDown icon.
+  translateY(0) → translateY(6px) → translateY(0) loops forever.
+  
+  In Stage 5 we'll compare this to a GSAP yoyo repeat version.
+  The GSAP version will have more control (ease, repeat count, etc.)
+*/
+@keyframes hero-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(6px); }
+}
+
+.hero-bounce {
+  animation: hero-bounce 1.4s ease-in-out infinite;
+}
+

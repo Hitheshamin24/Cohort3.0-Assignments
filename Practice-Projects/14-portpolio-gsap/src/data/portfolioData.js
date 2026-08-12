@@ -3,8 +3,8 @@
 export const personalInfo = {
   name: "Hithesh",
   role: "Full Stack Developer",
-  tagline: "Code is structural engineering for the digital realm.",
-  subTagline: "Focus on minimal, robust systems. MCA Candidate.",
+  tagline: "I build thoughtful digital experiences with clean code, modern technologies, and purposeful design.",
+  subTagline: "MCA Candidate.",
   email: "hitheshamin24@gmail.com",
   github: "https://github.com/Hitheshamin24",
   linkedin: "https://www.linkedin.com/in/hithesh-a-720b33297/",
