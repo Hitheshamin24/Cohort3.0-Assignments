@@ -3,6 +3,7 @@ import { personalInfo } from '../data/portfolioData';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
+import Magnetic from '../components/Magnetic';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,7 +11,7 @@ const Footer = () => {
   const footerRef = useRef(null);
 
   useGSAP(() => {
-    // Massive text individual letter reveal
+    
     gsap.from('.footer-title span', {
       scrollTrigger: {
         trigger: footerRef.current,
@@ -23,7 +24,6 @@ const Footer = () => {
       ease: 'power4.out',
     });
 
-    // Links and subtext reveal
     gsap.from('.footer-link', {
       scrollTrigger: {
         trigger: footerRef.current,
@@ -45,13 +45,12 @@ const Footer = () => {
   return (
     <footer id="contact" ref={footerRef} className="relative bg-[#030303] pt-32 pb-12 overflow-hidden">
       <div className="container-custom relative z-10">
-        
-        {/* Massive Call To Action */}
+
         <div className="mb-24 md:mb-40 flex flex-col items-center text-center">
           <span className="block text-xs font-mono text-white/40 uppercase tracking-[0.3em] mb-8">
             04 — Let's collaborate
           </span>
-          {/* We wrap letters in spans to stagger animate them */}
+          
           <a 
             href={`https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}`}
             target="_blank"
@@ -72,7 +71,6 @@ const Footer = () => {
           </a>
         </div>
 
-        {/* Links & Info */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 border-t border-white/10 pt-12">
           
           <div className="flex flex-col gap-6">
@@ -100,14 +98,16 @@ const Footer = () => {
           <div className="flex flex-col md:items-end gap-8 w-full md:w-auto">
             <div className="w-full flex justify-between md:justify-end items-center">
               <span className="text-white/30 font-mono text-sm md:hidden">Back to top</span>
-              <button 
-                onClick={scrollToTop}
-                className="footer-link group w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:border-white transition-colors duration-500"
-              >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white group-hover:text-black transition-colors duration-500">
-                  <path d="M12 19V5M5 12l7-7 7 7"/>
-                </svg>
-              </button>
+              <Magnetic strength={0.6}>
+                <button 
+                  onClick={scrollToTop}
+                  className="footer-link group w-14 h-14 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:border-white transition-colors duration-500"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white group-hover:text-black transition-colors duration-500">
+                    <path d="M12 19V5M5 12l7-7 7 7"/>
+                  </svg>
+                </button>
+              </Magnetic>
             </div>
 
             <div className="footer-link text-left md:text-right mt-8 md:mt-0">
@@ -122,8 +122,7 @@ const Footer = () => {
 
         </div>
       </div>
-      
-      {/* Background cinematic glow */}
+
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-[100vw] md:w-[80vw] h-[100vw] md:h-[80vw] bg-white/[0.02] rounded-full blur-3xl pointer-events-none z-0"></div>
     </footer>
   );

@@ -24,28 +24,28 @@ const ProjectImageGallery = ({ imgs }) => {
       const relativeIndex = (i - activeIndex + n) % n;
 
       if (relativeIndex === 0) {
-        // 1. FRONT IMAGE (Large, Top-Left)
+        
         gsap.to(img, {
           top: '0%', left: '0%', width: '85%', height: '85%',
           opacity: 1, scale: 1, x: 0, y: 0, zIndex: 20,
           duration: 1, ease: 'power3.inOut'
         });
       } else if (relativeIndex === 1 || (n === 2 && i === 1)) {
-        // 2. BACK IMAGE (Small, Bottom-Right)
+        
         gsap.to(img, {
           top: '40%', left: '40%', width: '60%', height: '60%',
           opacity: 1, scale: 1, x: 0, y: 0, zIndex: 10,
           duration: 1, ease: 'power3.inOut'
         });
       } else if (relativeIndex === 2) {
-        // 3. OUTGOING IMAGE (Fades away further Bottom-Right)
+        
         gsap.to(img, {
           top: '40%', left: '40%', width: '60%', height: '60%',
           opacity: 0, scale: 0.95, x: 64, y: 64, zIndex: 0,
           duration: 1, ease: 'power3.inOut'
         });
       } else {
-        // 4. INCOMING IMAGE (Waits silently at Top-Left)
+        
         // We use gsap.set here because it doesn't need to animate into this waiting position
         gsap.set(img, {
           top: '0%', left: '0%', width: '85%', height: '85%',

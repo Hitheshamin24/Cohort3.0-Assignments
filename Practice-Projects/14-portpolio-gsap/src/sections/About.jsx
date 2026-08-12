@@ -6,10 +6,14 @@ import { useGSAP } from '@gsap/react';
 
 gsap.registerPlugin(ScrollTrigger);
 
+import imgStudent from '../assets/student.png';
+import imgDevelopment from '../assets/development.png';
+import imgLearning from '../assets/learningNewThings.png';
+
 const cardImages = [
-  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=2070&auto=format&fit=crop", 
-  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2070&auto=format&fit=crop", 
-  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop"
+  imgStudent,
+  imgDevelopment,
+  imgLearning
 ];
 
 const About = () => {
@@ -51,8 +55,7 @@ const About = () => {
     <section id="about" ref={containerRef} className="relative bg-[#050505] pt-48 pb-32 md:pt-64 md:pb-48">
       <div className="container-custom">
         <div className="flex flex-col lg:flex-row gap-20 lg:gap-32">
-          
-          {/* Left Column: Sticky Header */}
+
           <div className="lg:w-1/3 relative">
             <div className="sticky top-40">
               <span className="sticky-header-reveal block text-xs font-mono text-white/40 uppercase tracking-[0.3em] mb-8">
@@ -81,10 +84,8 @@ const About = () => {
                   />
                 </div>
 
-                {/* Dark Gradient Overlay for text readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>
 
-                {/* Content */}
                 <div className="relative z-10 w-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-700 ease-out">
                   <div className="flex items-center gap-4 mb-3 opacity-50 group-hover:opacity-100 transition-opacity duration-500">
                     <span className="text-xs font-mono text-white">0{index + 1}</span>

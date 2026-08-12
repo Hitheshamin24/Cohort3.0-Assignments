@@ -10,7 +10,7 @@ const Skills = () => {
   const sectionRef = useRef(null);
 
   useGSAP(() => {
-    // Reveal section header
+    
     gsap.from('.skills-header', {
       scrollTrigger: {
         trigger: sectionRef.current,
@@ -22,11 +22,9 @@ const Skills = () => {
       ease: 'power3.out'
     });
 
-    // Stagger reveal the skill categories and items
     const categories = gsap.utils.toArray('.skill-category');
     categories.forEach((cat, i) => {
-      
-      // Reveal Category Title
+
       gsap.from(cat.querySelector('.category-title'), {
         scrollTrigger: {
           trigger: cat,
@@ -38,7 +36,6 @@ const Skills = () => {
         ease: 'power2.out',
       });
 
-      // Reveal List Items sequentially
       gsap.from(cat.querySelectorAll('.skill-item'), {
         scrollTrigger: {
           trigger: cat,
@@ -58,8 +55,7 @@ const Skills = () => {
   return (
     <section id="skills" ref={sectionRef} className="section-padding bg-[#050505]">
       <div className="container-custom">
-        
-        {/* Header */}
+
         <div className="skills-header mb-20 md:mb-32 flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-white/10 pb-8">
           <div>
             <span className="block text-xs font-mono text-white/40 uppercase tracking-[0.3em] mb-4">
@@ -74,33 +70,60 @@ const Skills = () => {
           </p>
         </div>
 
-        {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
-          {skills.map((category, index) => (
-            <div key={index} className="skill-category">
-              <h3 className="category-title text-xl md:text-2xl font-heading text-white mb-8 pb-4 border-b border-white/10">
-                {category.category}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+
+          <div className="skill-category md:col-span-2 p-8 md:p-12 rounded-3xl bg-gradient-to-br from-white/[0.04] to-white/[0.01] border border-white/[0.05] hover:border-white/10 transition-colors group">
+            <div className="flex flex-col h-full justify-between">
+              <h3 className="category-title text-2xl md:text-3xl font-heading text-white mb-12">
+                {skills[0].category}
               </h3>
-              <ul className="flex flex-col gap-0">
-                {category.items.map((item, i) => (
-                  <li 
+              <div className="flex flex-wrap gap-3">
+                {skills[0].items.map((item, i) => (
+                  <span 
                     key={i} 
-                    className="skill-item group flex items-center justify-between py-4 border-b border-white/5 cursor-pointer relative overflow-hidden"
+                    className="skill-item px-6 py-3 rounded-full border border-white/10 text-white/70 text-sm font-mono tracking-wide hover:bg-white hover:text-black transition-all duration-300 cursor-default"
                   >
-                    {/* Hover Background Fill */}
-                    <div className="absolute inset-0 bg-white/5 w-0 group-hover:w-full transition-all duration-500 ease-out z-0"></div>
-                    
-                    <span className="relative z-10 text-lg md:text-xl font-light text-white/50 group-hover:text-white transition-colors duration-300 pl-2">
-                      {item}
-                    </span>
-                    <span className="relative z-10 text-white opacity-0 group-hover:opacity-100 transform -translate-x-4 group-hover:-translate-x-2 transition-all duration-500 ease-out">
-                      ↗
-                    </span>
-                  </li>
+                    {item}
+                  </span>
                 ))}
-              </ul>
+              </div>
             </div>
-          ))}
+          </div>
+
+          <div className="skill-category p-8 md:p-12 rounded-3xl bg-gradient-to-bl from-white/[0.04] to-white/[0.01] border border-white/[0.05] hover:border-white/10 transition-colors group">
+            <div className="flex flex-col h-full justify-between">
+              <h3 className="category-title text-2xl md:text-3xl font-heading text-white mb-12">
+                {skills[1].category}
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {skills[1].items.map((item, i) => (
+                  <span 
+                    key={i} 
+                    className="skill-item px-6 py-3 rounded-full border border-white/10 text-white/70 text-sm font-mono tracking-wide hover:bg-white hover:text-black transition-all duration-300 cursor-default"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="skill-category md:col-span-3 p-8 md:p-12 rounded-3xl bg-gradient-to-t from-white/[0.04] to-white/[0.01] border border-white/[0.05] hover:border-white/10 transition-colors group flex flex-col md:flex-row md:items-center justify-between gap-8">
+            <h3 className="category-title text-2xl md:text-3xl font-heading text-white">
+              {skills[2].category}
+            </h3>
+            <div className="flex flex-wrap gap-3 md:justify-end flex-1">
+              {skills[2].items.map((item, i) => (
+                <span 
+                  key={i} 
+                  className="skill-item px-6 py-3 rounded-full border border-white/10 text-white/70 text-sm font-mono tracking-wide hover:bg-white hover:text-black transition-all duration-300 cursor-default"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
 
       </div>

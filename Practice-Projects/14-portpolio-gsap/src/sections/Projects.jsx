@@ -11,14 +11,13 @@ const Projects = () => {
   const containerRef = useRef(null);
 
   useGSAP(() => {
-    // Select all project rows
+    
     const projectRows = gsap.utils.toArray('.project-row');
 
     projectRows.forEach((row, i) => {
       const textCol = row.querySelector('.project-text');
       const imgCol = row.querySelector('.project-images');
-      
-      // We want to animate the text coming in
+
       gsap.from(textCol, {
         scrollTrigger: {
           trigger: row,
@@ -31,7 +30,6 @@ const Projects = () => {
         ease: 'power3.out'
       });
 
-      // We want to animate the images coming in
       gsap.from(imgCol, {
         scrollTrigger: {
           trigger: row,
@@ -51,22 +49,19 @@ const Projects = () => {
   return (
     <section id="projects" ref={containerRef} className="section-padding relative bg-[#030303]">
       <div className="container-custom">
-        
-        {/* Section Header */}
+
         <div className="mb-24 md:mb-40">
           <h2 className="text-4xl md:text-6xl font-heading mb-4">Selected Work</h2>
           <div className="w-full h-px bg-white/10 mt-8"></div>
         </div>
 
-        {/* Projects List */}
         <div className="flex flex-col gap-32 md:gap-48">
           {projects.map((project, index) => {
             const isEven = index % 2 === 0;
 
             return (
               <div key={project.id} className={`project-row flex flex-col ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} gap-12 md:gap-24 items-center`}>
-                
-                {/* Text Column */}
+
                 <div className="project-text flex-1 flex flex-col w-full">
                   <div className="text-label mb-6">{project.index}</div>
                   <h3 className="text-4xl md:text-6xl font-heading mb-4 leading-tight">
@@ -75,8 +70,7 @@ const Projects = () => {
                   <p className="text-text-muted text-lg mb-8 max-w-md font-light leading-relaxed">
                     {project.description}
                   </p>
-                  
-                  {/* Tech Stack Pills */}
+
                   <div className="flex flex-wrap gap-3 mb-10">
                     {project.tech.map((tech, i) => (
                       <span key={i} className="px-4 py-1.5 rounded-full border border-white/20 text-xs font-mono text-white/80 bg-white/5">
@@ -85,7 +79,6 @@ const Projects = () => {
                     ))}
                   </div>
 
-                  {/* Links */}
                   <div className="flex items-center gap-6">
                     {project.live && (
                       <a href={project.live} target="_blank" rel="noreferrer" className="btn-primary py-3 px-6 text-xs">
@@ -100,7 +93,6 @@ const Projects = () => {
                   </div>
                 </div>
 
-                {/* Images Column (Rotating Gallery) */}
                 <ProjectImageGallery imgs={project.imgs} />
 
               </div>
