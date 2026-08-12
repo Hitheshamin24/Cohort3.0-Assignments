@@ -5,9 +5,9 @@ export const personalInfo = {
   role: "Full Stack Developer",
   tagline: "I build thoughtful digital experiences with clean code, modern technologies, and purposeful design.",
   subTagline: "MCA Candidate.",
-  email: "hitheshamin24@gmail.com",
+  email: "hitheshamin423@gmail.com",
   github: "https://github.com/Hitheshamin24",
-  linkedin: "https://www.linkedin.com/in/hithesh-a-720b33297/",
+  linkedin: "https://www.linkedin.com/in/hitheshamin/",
 };
 
 
@@ -36,22 +36,6 @@ export const aboutCards = [
   },
 ];
 
-
-export const skills = [
-  // Frontend
-  { name: "React / Next.js",   level: "Intermediate", category: "Frontend" },
-  { name: "TypeScript",        level: "Beginner",     category: "Frontend" },
-  { name: "Tailwind CSS",      level: "Intermediate", category: "Frontend" },
-  { name: "GSAP / Framer Motion", level: "Learning",  category: "Frontend" },
-  // Backend
-  { name: "Node.js / Express", level: "Beginner",     category: "Backend"  },
-  { name: "RESTful APIs / GraphQL", level: "Beginner", category: "Backend"  },
-  { name: "Python",            level: "Beginner",      category: "Backend"  },
-  // Data / DB
-  { name: "MongoDB / PostgreSQL", level: "Beginner",   category: "Database" },
-  // Tools
-  { name: "Git / GitHub Actions / Docker / Vercel", level: "Intermediate", category: "Tools" },
-];
 
 
 export const projects = [
@@ -126,6 +110,20 @@ export const education = [
   },
 ];
 
+export const skills = [
+  {
+    category: "Frontend",
+    items: ["React", "JavaScript (ES6+)", "Tailwind CSS", "GSAP Animations", "HTML5 & CSS3"],
+  },
+  {
+    category: "Backend & Database",
+    items: ["Node.js", "Express.js", "Python", "Flask", "MongoDB"],
+  },
+  {
+    category: "Tools & Others",
+    items: ["Git & GitHub", "Vercel Deployment", "Postman", "Figma Design", "Responsive Web Design"],
+  }
+];
 
 export const navLinks = [
   { name: "Work",    href: "#projects"   },

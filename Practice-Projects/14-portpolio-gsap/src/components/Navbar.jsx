@@ -1,193 +1,88 @@
-import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import React, { useRef } from 'react';
 import { navLinks, personalInfo } from '../data/portfolioData';
+import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { useGSAP } from '@gsap/react';
 
+gsap.registerPlugin(ScrollToPlugin);
 
 const Navbar = () => {
+  const navRef = useRef(null);
 
-  const [scrolled, setScrolled] = useState(false);
-
-  
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []); 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768) setMenuOpen(false);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+  useGSAP(() => {
+    gsap.from(navRef.current, {
+      y: -100,
+      opacity: 0,
+      duration: 1,
+      ease: 'power3.out',
+      delay: 0.2
+    });
   }, []);
 
-  
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [menuOpen]);
+  const handleNavClick = (e, target) => {
+    e.preventDefault();
+    
+    // 1. Interactive click animation (quick shrink and pop)
+    gsap.fromTo(e.currentTarget, 
+      { scale: 0.85, color: '#fff' }, 
+      { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.3)' }
+    );
 
-  // Close menu when a link is clicked
-  const handleNavClick = (href) => {
-    setMenuOpen(false);
-    // Smooth scroll to the target section
-    const target = document.querySelector(href);
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' });
-    }
+    // 2. Cinematic smooth scroll to the target section
+    gsap.to(window, {
+      duration: 1.5,
+      scrollTo: { y: target, offsetY: 80 }, // offsetY ensures the header doesn't cover the section
+      ease: 'power4.inOut'
+    });
   };
 
   return (
-    <>
-      <header
-        className="fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300"
-        style={{
-          backgroundColor: scrolled ? 'var(--color-surface)' : 'transparent',
-          borderBottom: scrolled ? '1px solid var(--color-border)' : '1px solid transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-        }}
-      >
-        <div className="container h-full flex items-center justify-between">
+    <nav ref={navRef} className="fixed top-0 left-0 w-full z-50 py-6 px-6 md:px-12 bg-[#0a0a0a]/80 backdrop-blur-sm border-b border-white/5">
+      <div className="max-w-[1400px] mx-auto flex items-center justify-between">
+        
+        {/* Logo / Name */}
+        <a 
+          href="#" 
+          onClick={(e) => handleNavClick(e, 0)} // Scroll to top
+          className="text-2xl font-heading font-bold uppercase tracking-tight hover:text-white/70 transition-colors text-white"
+        >
+          {personalInfo.name}
+        </a>
 
-          {/* Clicking the logo scrolls back to the top */}
-          <button
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="font-mono font-bold text-sm tracking-[0.2em] uppercase"
-            style={{ color: 'var(--color-text-primary)' }}
-            aria-label="Scroll to top"
-          >
-            {personalInfo.name}
-          </button>
-
-          <nav className="hidden md:flex items-center gap-8" aria-label="Main navigation">
-            <ul className="flex items-center gap-8">
-              {navLinks.map((link) => {
-                // Merge Contact link with email CTA
-                if (link.href === "#contact") {
-                  return (
-                    <a
-                      key={link.name}
-                      href={`mailto:${personalInfo.email}`}
-                      className="font-mono text-xs tracking-widest uppercase px-4 py-2 border transition-all duration-200"
-                      style={{
-                        color: 'var(--color-accent)',
-                        borderColor: 'var(--color-accent)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--color-accent-dim)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                      }}
-                    >
-                      {link.name}
-                    </a>
-                  );
-                }
-
-                return (
-                  <li key={link.name}>
-                    <button
-                      onClick={() => handleNavClick(link.href)}
-                      className="font-mono text-xs tracking-widest uppercase transition-colors duration-200"
-                      style={{ color: 'var(--color-text-secondary)' }}
-                      onMouseEnter={(e) => (e.target.style.color = 'var(--color-text-primary)')}
-                      onMouseLeave={(e) => (e.target.style.color = 'var(--color-text-secondary)')}
-                    >
-                      {link.name}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-
-          </nav>
-
-          <button
-            className="md:hidden flex items-center justify-center w-10 h-10"
-            onClick={() => setMenuOpen((prev) => !prev)}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            style={{ color: 'var(--color-text-primary)' }}
-          >
-            {menuOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <a 
+              key={link.name} 
+              href={link.href}
+              onClick={(e) => handleNavClick(e, link.href)}
+              className="text-[10px] uppercase font-mono tracking-widest text-text-muted hover:text-white transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
         </div>
-      </header>
 
-     
-      <div
-        className="fixed inset-0 z-40 flex flex-col items-center justify-center md:hidden transition-all duration-300"
-        style={{
-          backgroundColor: 'var(--color-surface)',
-          opacity: menuOpen ? 1 : 0,
-          transform: menuOpen ? 'translateY(0)' : 'translateY(-1rem)',
-          pointerEvents: menuOpen ? 'auto' : 'none',
-        }}
-        aria-hidden={!menuOpen}
-      >
-        <nav aria-label="Mobile navigation">
-          <ul className="flex flex-col items-center gap-10">
-            {navLinks.map((link, i) => {
-              if (link.href === "#contact") {
-                return (
-                  <li key={link.name}>
-                    <a
-                      href={`mailto:${personalInfo.email}`}
-                      className="font-mono text-2xl tracking-widest uppercase px-4 py-2 border transition-all duration-200"
-                      style={{
-                        color: 'var(--color-accent)',
-                        borderColor: 'var(--color-accent)',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'var(--color-accent-dim)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'transparent';
-                      }}
-                    >
-                      <span className="font-mono text-xs" style={{ color: 'var(--color-accent)' }}>
-                        0{i + 1}.{' '}
-                      </span>
-                      {link.name}
-                    </a>
-                  </li>
-                );
-              }
-              return (
-                <li key={link.name}>
-                  <button
-                    onClick={() => handleNavClick(link.href)}
-                    className="font-mono text-2xl tracking-widest uppercase transition-colors duration-200"
-                    style={{ color: 'var(--color-text-secondary)' }}
-                    onMouseEnter={(e) => (e.target.style.color = 'var(--color-text-primary)')}
-                    onMouseLeave={(e) => (e.target.style.color = 'var(--color-text-secondary)')}
-                  >
-                    <span className="font-mono text-xs" style={{ color: 'var(--color-accent)' }}>
-                      0{i + 1}.{' '}
-                    </span>
-                    {link.name}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+        {/* CTA Button */}
+        <div className="hidden md:block">
+          <a 
+            href="#contact" 
+            onClick={(e) => handleNavClick(e, '#contact')}
+            className="text-[10px] uppercase font-mono tracking-widest border border-white/20 bg-white text-black px-6 py-2 hover:bg-transparent hover:text-white transition-colors block"
+          >
+            Connect
+          </a>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button className="md:hidden flex flex-col gap-1.5 p-2 hover:scale-95 transition-transform">
+          <span className="w-6 h-[1.5px] bg-white block"></span>
+          <span className="w-6 h-[1.5px] bg-white block"></span>
+        </button>
+
       </div>
-
-     
-    </>
+    </nav>
   );
 };
 
-
-
 export default Navbar;
-

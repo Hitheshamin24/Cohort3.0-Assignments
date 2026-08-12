@@ -1,31 +1,22 @@
 import React from 'react';
-
-// Components (built stage by stage)
-import Navbar       from './components/Navbar';
-import CustomCursor from './components/CustomCursor';
-
-// Sections (built stage by stage)
-import Hero       from './sections/Hero';
-import About      from './sections/About';
-import Skills     from './sections/Skills';
-import Projects   from './sections/Projects';
-import Experience from './sections/Experience';
-import Contact    from './sections/Contact';
+import Navbar from './components/Navbar';
+import Hero from './sections/Hero';
+import About from './sections/About';
+import Projects from './sections/Projects';
+import Skills from './sections/Skills';
+import Footer from './sections/Footer';
 
 const App = () => {
   return (
-    <div className="bg-[#0a0a0a]">
-      <CustomCursor />
+    <div className="bg-bg min-h-screen selection:bg-white/20 selection:text-white">
       <Navbar />
-
       <main>
         <Hero />
         <About />
-        <Skills />
         <Projects />
-        <Experience />
-        <Contact />
+        <Skills />
       </main>
+      <Footer />
     </div>
   );
 };

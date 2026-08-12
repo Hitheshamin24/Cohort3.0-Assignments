@@ -1,241 +1,138 @@
-import { useRef, useLayoutEffect } from 'react';
-import { ArrowDown, ExternalLink } from 'lucide-react';
-import { FaGithub } from 'react-icons/fa';
-import gsap from 'gsap';
+import React, { useRef, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
 
+// Helper component to split text into characters for advanced GSAP staggering
+const SplitText = ({ text }) => {
+  return (
+    <span className="inline-block" aria-label={text}>
+      {text.split('').map((char, index) => (
+        <span
+          key={index}
+          className="char inline-block"
+          style={{ whiteSpace: char === ' ' ? 'pre' : 'normal' }}
+        >
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+};
 
 const Hero = () => {
-
   const heroRef = useRef(null);
+  const glowRef = useRef(null);
+  const textRef = useRef(null);
 
-  const scrollToWork = () => {
-    document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  useGSAP(() => {
+    // 1. Initial Entry Timeline
+    const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
 
-  // ── GSAP Animation ────────────────────────────────────────
-  // useLayoutEffect fires AFTER the DOM is updated but BEFORE
-  // the browser paints. This means GSAP sets elements to their
-  // initial "from" state (opacity:0, y:40) before the user ever
-  // sees them — no flash of un-animated content.
-  useLayoutEffect(() => {
-    // gsap.context() does two things:
-    //   1. Scopes all GSAP selectors to heroRef.current
-    //   2. Tracks all tweens so ctx.revert() can clean them up
-    const ctx = gsap.context(() => {
+    // Stagger characters in with blur and scale (very premium feel)
+    tl.from('.char', {
+      y: 100,
+      opacity: 0,
+      rotateX: -90,
+      filter: 'blur(10px)',
+      scale: 0.8,
+      duration: 1.5,
+      stagger: 0.02,
+      delay: 0.1
+    })
+    
+    // Draw the faint architectural line
+    .from('.hero-line', {
+      scaleY: 0,
+      transformOrigin: 'top',
+      duration: 2,
+      ease: 'power3.inOut',
+    }, '-=1.2')
+    
+    // Fade in supporting text smoothly
+    .from('.hero-fade-up', {
+      y: 20,
+      opacity: 0,
+      duration: 1.5,
+      filter: 'blur(5px)',
+    }, '-=1.2');
 
-      // ── Create a Timeline ───────────────────────────────
-      // gsap.timeline() groups tweens into a sequence.
-      // Each tween starts after the previous one (by default).
-      // We use position offsets like "<+0.2" to fine-tune timing:
-      //   "<"     = start at the same time as the previous tween
-      //   "<+0.2" = start 0.2s AFTER the previous tween STARTED
-      //   ">+0.2" = start 0.2s AFTER the previous tween ENDED
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      // defaults: { ease } applies this ease to every tween in the timeline
-      // so we don't have to repeat it on every .from() call
+  }, { scope: heroRef });
 
-      // ── Step 1: Animate the label ("01. Introduction") ──
-      // from() animates FROM these values TO the element's natural state
-      // opacity: 0 → 1  (fade in)
-      // y: 20 → 0       (slide up 20px)
-      tl.from('[data-hero="label"]', {
-        opacity: 0,
-        y: 20,
-        duration: 0.6,
+  // Interactive Mouse Parallax & Glow Follower
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      
+      // Calculate normalized coordinates (-1 to 1)
+      const xPos = (clientX / innerWidth - 0.5) * 2;
+      const yPos = (clientY / innerHeight - 0.5) * 2;
+
+      // 1. Move the background glow orb towards the cursor smoothly
+      gsap.to(glowRef.current, {
+        x: clientX - innerWidth / 2,
+        y: clientY - innerHeight / 2,
+        duration: 2,
+        ease: 'power3.out'
       });
 
-      // ── Step 2: Text Reveal — headline words ────────────
-      // The outer <span className="overflow-hidden"> acts as a clip mask.
-      // The inner <span data-hero="word"> starts at y:"110%" (fully below the mask)
-      // and slides up to y:"0%" (its natural position, visible inside the mask).
-      //
-      // stagger: 0.12 means each word starts 0.12s after the previous one.
-      // This creates the word-by-word reveal cascade.
-      //
-      // "<+0.1" = start 0.1s after the label tween STARTED (overlap slightly)
-      tl.from('[data-hero="word"]', {
-        y: '110%',
-        duration: 0.9,
-        stagger: 0.12,
-      }, '<+0.1');
+      // 2. Add subtle 3D parallax to the text itself
+      gsap.to(textRef.current, {
+        x: xPos * -30,
+        y: yPos * -20,
+        rotationY: xPos * 5,
+        rotationX: yPos * -5,
+        duration: 1.5,
+        ease: 'power2.out'
+      });
+    };
 
-      // ── Step 3: Subtitle ────────────────────────────────
-      // Simple fade + slide.
-      // "<+0.5" = starts 0.5s after the word tween started
-      // (the words are still animating — they overlap on purpose)
-      tl.from('[data-hero="sub"]', {
-        opacity: 0,
-        y: 24,
-        duration: 0.7,
-      }, '<+0.5');
-
-      // ── Step 4: CTA Buttons ──────────────────────────────
-      // scale: 0.95 → 1 gives a subtle "pop in" feel.
-      // Combined with opacity: 0 → 1 it feels premium.
-      tl.from('[data-hero="ctas"]', {
-        opacity: 0,
-        y: 20,
-        scale: 0.95,
-        duration: 0.6,
-      }, '<+0.3');
-
-      // ── Step 5: Scroll Indicator ─────────────────────────
-      // Fades in last, then the CSS hero-bounce class takes over.
-      tl.from('[data-hero="scroll"]', {
-        opacity: 0,
-        y: 10,
-        duration: 0.5,
-      }, '<+0.2');
-
-    }, heroRef); // ← scope: only search inside heroRef.current
-
-  
-    return () => ctx.revert();
-
-  }, []); 
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
-    <section
-      ref={heroRef}
-      id="hero"
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden"
-      style={{ paddingTop: 'var(--navbar-h)' }}
+    <section 
+      ref={heroRef} 
+      className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-[#0a0a0a]"
+      style={{ perspective: '1000px' }} // needed for 3D rotation
     >
+      
+      {/* CSS Noise Overlay for cinematic texture */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")' }}></div>
 
-      {/* Background dot grid */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 50% 50%, transparent 60%, var(--color-bg) 100%),
-            radial-gradient(circle, var(--color-border) 1px, transparent 1px)
-          `,
-          backgroundSize: '100% 100%, 48px 48px',
-        }}
-      />
+      {/* Interactive Cursor Glow */}
+      <div 
+        ref={glowRef}
+        className="absolute top-1/2 left-1/2 w-[40vw] h-[40vw] bg-white/[0.04] blur-[100px] rounded-full pointer-events-none -translate-x-1/2 -translate-y-1/2 mix-blend-screen"
+      ></div>
 
-      {/* Accent glow blob — top-right */}
-      <div
-        className="absolute top-0 right-0 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          width: '40vw',
-          height: '40vw',
-          background: 'radial-gradient(circle, var(--color-accent-glow) 0%, transparent 70%)',
-          transform: 'translate(20%, -20%)',
-        }}
-      />
+      {/* Subtle faint diagonal line */}
+      <div className="hero-line absolute top-0 left-[60%] w-[1px] h-[120%] bg-gradient-to-b from-white/0 via-white/10 to-white/0 -rotate-[15deg] pointer-events-none"></div>
 
-      {/* Main content — all GSAP targets live inside this container */}
-      <div className="container relative z-10">
-
-        {/* Label */}
-        <p className="mono-label mb-6" data-hero="label">
-          01. Introduction
-        </p>
-
-        <h1
-          className="font-bold leading-none tracking-tight mb-6"
-          style={{ fontSize: 'clamp(3rem, 10vw, 8rem)', letterSpacing: '-0.03em' }}
-          data-hero="headline"
-        >
-     
-          <span className="block overflow-hidden">
-            <span className="block" data-hero="word">Full Stack</span>
-          </span>
-          <span className="block overflow-hidden">
-            <span className="block" style={{ color: 'var(--color-accent)' }} data-hero="word">
-              Developer.
-            </span>
-          </span>
-        </h1>
-
-        {/* Subtitle */}
-        <p
-          className="mb-10 max-w-xl"
-          style={{ fontSize: 'var(--text-lg)', color: 'var(--color-text-secondary)', lineHeight: '1.7' }}
-          data-hero="sub"
-        >
-          {personalInfo.tagline}
-          <br />
-          <span style={{ color: 'var(--color-text-tertiary)', fontSize: 'var(--text-base)' }}>
-            {personalInfo.subTagline}
-          </span>
-        </p>
-
-        {/* CTAs — animated as a group */}
-        <div className="flex flex-wrap items-center gap-4" data-hero="ctas">
-
-          {/* Primary — View Work (filled cyan) */}
-          <button
-            onClick={scrollToWork}
-            className="group flex items-center gap-3 font-mono text-sm tracking-widest uppercase transition-all duration-300"
-            style={{
-              backgroundColor: 'var(--color-accent)',
-              color: '#0a0a0a',
-              fontWeight: 700,
-              padding: '14px 32px',
-              letterSpacing: '0.12em',
-              borderRadius: '6px',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-3px)';
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(35,221,246,0.35)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = 'none';
-            }}
-          >
-            View Work
-            <ExternalLink size={15} strokeWidth={2.5} />
-          </button>
-
-          {/* Secondary — GitHub (outlined) */}
-          <a
-            href={personalInfo.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-3 font-mono text-sm tracking-widest uppercase transition-all duration-300"
-            style={{
-              color: 'var(--color-text-primary)',
-              border: '1px solid var(--color-border)',
-              padding: '14px 32px',
-              letterSpacing: '0.12em',
-              fontWeight: 500,
-              borderRadius: '6px',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-accent)';
-              e.currentTarget.style.color = 'var(--color-accent)';
-              e.currentTarget.style.transform = 'translateY(-3px)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--color-border)';
-              e.currentTarget.style.color = 'var(--color-text-primary)';
-              e.currentTarget.style.transform = 'translateY(0)';
-            }}
-          >
-            <FaGithub size={16} />
-            GitHub
-          </a>
-
+      <div className="container-custom relative z-10 flex flex-col items-center text-center">
+        
+        {/* Main Typography with 3D Parallax */}
+        <div ref={textRef} className="transform-style-preserve-3d">
+          <h1 className="text-[15vw] md:text-[11vw] leading-[0.85] font-heading font-bold tracking-tighter mb-8 uppercase text-white mix-blend-difference">
+            <div className="overflow-hidden pb-2">
+              <SplitText text="FULL STACK" />
+            </div>
+            <div className="overflow-hidden pb-2">
+              <SplitText text="DEVELOPER" />
+            </div>
+          </h1>
         </div>
-      </div>
 
-      {/* Scroll indicator — fades in last, CSS bounce loop after */}
-      <div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
-        data-hero="scroll"
-        aria-label="Scroll down"
-        style={{ color: 'var(--color-text-tertiary)' }}
-      >
-        <span className="font-mono text-xs tracking-widest uppercase">Scroll</span>
-        <ArrowDown size={16} className="hero-bounce" />
-      </div>
+        {/* Supporting Text */}
+        <div className="hero-fade-up flex flex-col items-center gap-4 max-w-xl mt-4">
+          <p className="text-text-muted text-sm md:text-base font-sans font-light leading-relaxed">
+            {personalInfo.tagline} {personalInfo.subTagline}
+          </p>
+        </div>
 
+      </div>
     </section>
   );
 };
