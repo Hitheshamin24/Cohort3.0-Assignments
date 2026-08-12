@@ -1,7 +1,4 @@
-// ============================================================
-//  portfolioData.js — Single source of truth for all content
-//  All text, links, and data live here. Never hardcode in JSX.
-// ============================================================
+
 
 export const personalInfo = {
   name: "Hithesh",
@@ -13,9 +10,8 @@ export const personalInfo = {
   linkedin: "https://www.linkedin.com/in/hithesh-a-720b33297/",
 };
 
-// ────────────────────────────────────────────────────────────
-// ABOUT
-// ────────────────────────────────────────────────────────────
+
+
 export const aboutText = [
   "Hi! I'm Hithesh, a passionate student diving deep into the world of web development. My journey started with curiosity and has grown into a serious pursuit of building meaningful digital experiences.",
   "I'm currently pursuing my MCA while actively building real-world projects. I believe in learning by doing — every project teaches me something new about architecture, performance, and user experience.",
@@ -40,9 +36,7 @@ export const aboutCards = [
   },
 ];
 
-// ────────────────────────────────────────────────────────────
-// SKILLS
-// ────────────────────────────────────────────────────────────
+
 export const skills = [
   // Frontend
   { name: "React / Next.js",   level: "Intermediate", category: "Frontend" },
@@ -59,9 +53,7 @@ export const skills = [
   { name: "Git / GitHub Actions / Docker / Vercel", level: "Intermediate", category: "Tools" },
 ];
 
-// ────────────────────────────────────────────────────────────
-// PROJECTS
-// ────────────────────────────────────────────────────────────
+
 export const projects = [
   {
     id: "rhythmflow",
@@ -123,9 +115,7 @@ export const projects = [
   },
 ];
 
-// ────────────────────────────────────────────────────────────
-// EDUCATION / EXPERIENCE
-// ────────────────────────────────────────────────────────────
+
 export const education = [
   {
     id: "mca",
@@ -136,9 +126,7 @@ export const education = [
   },
 ];
 
-// ────────────────────────────────────────────────────────────
-// NAVIGATION
-// ────────────────────────────────────────────────────────────
+
 export const navLinks = [
   { name: "Work",    href: "#projects"   },
   { name: "About",   href: "#about"      },
