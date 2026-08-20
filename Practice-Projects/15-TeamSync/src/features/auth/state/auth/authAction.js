@@ -8,7 +8,7 @@ export let loginEmployee = createAsyncThunk(
     try {
       let response = await axiosInstance.post("/auth/login", credentials);
       const { password, ...restData } = await response.data;
-      return restData;
+      return {...restData,role:'admin'};
     } catch (error) {
       console.log(error);
       return thunkApi.rejectWithValue(error);
@@ -26,7 +26,9 @@ export let currentLoggedEmployee = createAsyncThunk(
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("accessToken"))}`,
         },
       });
-      return res.data;
+      const employee=res.data
+      employee.role='admin'
+      return employee;
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }

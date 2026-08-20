@@ -22,6 +22,7 @@ export const useAuth = () => {
       JSON.stringify(employee.payload.accessToken),
     );
     localStorage.setItem("refreshToken",JSON.stringify(employee.payload.refreshToken))
+    localStorage.setItem("employee",employee)
   };
   return {
     register,

@@ -15,8 +15,8 @@ const TopNav = () => {
         ml-60
         flex h-12 w-[calc(100%-15rem)]
         items-center justify-between
-        border-b border-[var(--outline-variant)]
-        bg-[var(--surface-container-lowest)]
+        border-b border-(--outline-variant)
+        bg-(--surface-container-lowest)
         px-4
       "
     >
@@ -27,7 +27,7 @@ const TopNav = () => {
           className="
             absolute left-2.5 top-1/2
             -translate-y-1/2
-            text-[var(--on-surface-variant)]
+            text-(--on-surface-variant)
           "
         />
 
@@ -37,14 +37,14 @@ const TopNav = () => {
           className="
             h-7 w-full
             rounded-md
-            border border-[var(--outline-variant)]
-            bg-[var(--surface-container)]
+            border border-(--outline-variant)
+            bg-(--surface-container)
             pl-8 pr-2
             text-[11px]
-            text-[var(--on-surface)]
+            text-(--on-surface)
             outline-none
-            placeholder:text-[var(--on-surface-variant)]
-            focus:border-[var(--primary)]
+            placeholder:text-(--on-surface-variant)
+            focus:border-(--primary)
           "
         />
       </div>

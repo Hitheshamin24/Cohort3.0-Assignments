@@ -9,8 +9,11 @@ import { currentLoggedEmployee } from "../../features/auth/state/auth/authAction
 import PublicRoute from "../ProtectedRoutes/PublicRoute";
 import ProtectedRoute from "../ProtectedRoutes/ProtectedRoute";
 import HomePage from "../../features/dashboard/ui/pages/HomePage";
+import { commonRoutes } from "./commonRoutes";
+import RoleBasedRoute from "../ProtectedRoutes/RolebasedRoute";
+import { adminRoutes } from "./adminRoutes";
+import { employeeRoutes } from "./employeeRoute";
 
-// ✅ Created ONCE outside the component — never recreated on re-render
 const router = createBrowserRouter([
   {
     path: "/",
@@ -44,9 +47,14 @@ const router = createBrowserRouter([
         path: "",
         element: <DashboardLayout />,
         children: [
+          ...commonRoutes,
           {
-            path: "",
-            element: <HomePage />,
+            element: <RoleBasedRoute allowedRoles={"admin"} />,
+            children: adminRoutes,
+          },
+          {
+            element: <RoleBasedRoute allowedRoles={"employee"} />,
+            children: employeeRoutes,
           },
         ],
       },
