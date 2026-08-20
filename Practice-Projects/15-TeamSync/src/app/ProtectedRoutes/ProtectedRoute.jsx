@@ -3,9 +3,9 @@ import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router";
 
 const ProtectedRoute = () => {
-    let { employee, isLoading } = useSelector((store) => store.auth);
+    let { employee, isHydrating } = useSelector((store) => store.auth);
 
-    if (isLoading) return null;
+    if (isHydrating) return null;
 
     if (!employee) {
         return <Navigate to="/" />;

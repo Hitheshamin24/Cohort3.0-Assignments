@@ -51,7 +51,7 @@ const RegisterPage = () => {
               </div>
 
               <span className="text-lg font-bold tracking-tight">
-                Synthetix
+                TeamSync
                 <span className="text-violet-400"> AI</span>
               </span>
             </div>
@@ -73,7 +73,7 @@ const RegisterPage = () => {
 
               <p className="mt-5 max-w-md text-sm leading-6 text-gray-400">
                 Build smarter applications, automate workflows, and unlock the
-                power of artificial intelligence with Synthetix AI.
+                power of artificial intelligence with TeamSync AI.
               </p>
 
               {/* Small stats */}
@@ -97,7 +97,7 @@ const RegisterPage = () => {
 
             {/* Bottom */}
             <div className="flex items-center justify-between text-[10px] text-gray-600">
-              <span>© 2026 Synthetix AI</span>
+              <span>© 2026 TeamSync AI</span>
 
               <div className="flex gap-5">
                 <span>Privacy</span>
@@ -120,7 +120,7 @@ const RegisterPage = () => {
               </div>
 
               <span className="font-bold">
-                Synthetix <span className="text-violet-400">AI</span>
+                TeamSync <span className="text-violet-400">AI</span>
               </span>
             </div>
 
@@ -131,7 +131,7 @@ const RegisterPage = () => {
               </h2>
 
               <p className="mt-2 text-sm text-gray-500">
-                Join Synthetix AI and start building smarter.
+                Join TeamSync AI and start building smarter.
               </p>
             </div>
 

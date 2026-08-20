@@ -5,15 +5,16 @@ let authSlice = createSlice({
   name: "auth",
   initialState: {
     employee: null,
-    isLoading: true,
+    isHydrating: true,
+    isLoading: false,
   },
   reducers: {
     addEmployee: (state, action) => {
       state.employee = action.payload;
       state.isLoading = false;
     },
-    removeEmployee: (state, action) => {
-      state.employee = action.payload;
+    removeEmployee: (state) => {
+      state.employee = null;
       state.isLoading = false;
     },
   },
@@ -21,20 +22,27 @@ let authSlice = createSlice({
     builder
       .addCase(loginEmployee.pending, (state) => {
         state.isLoading = true;
+        state.isHydrating = false;
       })
       .addCase(loginEmployee.fulfilled, (state, action) => {
         state.employee = action.payload;
         state.isLoading = false;
+        state.isHydrating = false;
       })
-      .addCase(loginEmployee.rejected, (state) => (state.isLoading = false))
+      .addCase(loginEmployee.rejected, (state) => {
+        state.isLoading = false;
+        state.isHydrating = false;
+      })
       .addCase(currentLoggedEmployee.pending, (state) => {
-        state.isLoading = true;
+        state.isHydrating = true;
       })
       .addCase(currentLoggedEmployee.fulfilled, (state, action) => {
         state.employee = action.payload;
-        state.isLoading = false;
+        state.isHydrating = false;
       })
-      .addCase(currentLoggedEmployee.rejected, (state) => (state.isLoading = false));
+      .addCase(currentLoggedEmployee.rejected, (state) => {
+        state.isHydrating = false;
+      });
   },
 });
 export let { addEmployee, removeEmployee } = authSlice.actions;

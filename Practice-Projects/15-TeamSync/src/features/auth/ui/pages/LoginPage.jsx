@@ -43,7 +43,7 @@ const LoginPage = () => {
             </div>
 
             <h1 className="text-lg font-bold tracking-tight">
-              Synthetix
+              TeamSync
               <span className="text-violet-400"> AI</span>
             </h1>
 
@@ -208,7 +208,8 @@ const LoginPage = () => {
 
           <p className="mt-6 text-center text-[10px] text-gray-600">
             Don't have an account?{" "}
-            <NavLink to={"/register"}
+            <NavLink
+              to={"/register"}
               href="/register"
               className="font-medium text-violet-400 transition hover:text-violet-300"
             >
