@@ -96,34 +96,29 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
         className={cn(carouselVariants({ variant, size }), className)}
         {...props}
       >
-        {/* Slide track */}
         <div ref={trackRef} className="w-full h-full">
           {slides[current]}
         </div>
 
-        {/* Navigation arrows */}
         {showArrows && (
           <>
             <button
               onClick={prev}
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 
-                         bg-white/80 hover:bg-white rounded-full p-2 shadow-md 
-                         transition-all hover:scale-110"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-10 rounded-full p-2 shadow-md transition-all hover:scale-110"
+              style={{ backgroundColor: 'var(--surface)', color: 'var(--text-color)', border: '1px solid var(--border-color)' }}
             >
               <ChevronLeft size={20} />
             </button>
             <button
               onClick={next}
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 
-                         bg-white/80 hover:bg-white rounded-full p-2 shadow-md 
-                         transition-all hover:scale-110"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-10 rounded-full p-2 shadow-md transition-all hover:scale-110"
+              style={{ backgroundColor: 'var(--surface)', color: 'var(--text-color)', border: '1px solid var(--border-color)' }}
             >
               <ChevronRight size={20} />
             </button>
           </>
         )}
 
-        {/* Dot indicators */}
         {showDots && (
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
             {slides.map((_, i) => (
@@ -131,9 +126,10 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
                 key={i}
                 onClick={() => goTo(i)}
                 className={cn(
-                  "w-2 h-2 rounded-full transition-all duration-300",
-                  i === current ? "bg-indigo-600 w-5" : "bg-gray-300"
+                  "h-2 rounded-full transition-all duration-300",
+                  i === current ? "w-5" : "w-2"
                 )}
+                style={{ backgroundColor: i === current ? 'var(--primary-color)' : 'var(--border-color)' }}
               />
             ))}
           </div>

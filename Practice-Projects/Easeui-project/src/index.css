@@ -1,16 +1,45 @@
 @import "tailwindcss";
+
 :root {
-  --bg-color: #ffffff;
-  --text-color: #000000;
-  --primary-color: #2563eb;
-  /* --card-bg: #f3f4f6; */
+  --bg-color: #f8f7ff;
+  --bg-secondary: #edeaf8;
+  --surface: #ffffff;
+  --surface-hover: #f0eefe;
+
+  --text-color: #1a1333;
+  --text-muted: #6b7280;
+  --text-subtle: #9ca3af;
+
+  --primary-color: #5b21b6;
+  --primary-hover: #4c1d95;
+  --primary-subtle: #ede9fe;
+
+  --border-color: #ddd6fe;
+  --shadow-color: rgba(91, 33, 182, 0.1);
+
+  --card-bg: #ffffff;
+  --card-border: #ede9fe;
 }
 
 [data-theme="dark"] {
-  --bg-color: #18181b;
-  --text-color: #f4f4f5;
-  --primary-color: #3b82f6;
-  --card-bg: #27272a;
+  --bg-color: #0d0c1a;
+  --bg-secondary: #131225;
+  --surface: #1a1830;
+  --surface-hover: #221e3e;
+
+  --text-color: #e9e3ff;
+  --text-muted: #8b83b8;
+  --text-subtle: #5d5584;
+
+  --primary-color: #7c3aed;
+  --primary-hover: #8b5cf6;
+  --primary-subtle: #1e1040;
+
+  --border-color: #2e2952;
+  --shadow-color: rgba(124, 58, 237, 0.2);
+
+  --card-bg: #1a1830;
+  --card-border: #2e2952;
 }
 
 body {

@@ -22,28 +22,41 @@ const ComponentLayout = ({}: Props) => {
   ];
 
   return (
-    <div className="flex min-h-screen text-gray-900">
+    <div className="flex min-h-screen" style={{ color: 'var(--text-color)' }}>
       <aside
         className={`
           w-64 p-6 flex flex-col
-          border-r border-gray-200
           fixed md:static top-0 left-0 h-full z-20
           transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} 
           transition-transform duration-300 ease-in-out
           md:translate-x-0
         `}
+
       >
-        <h2 className="text-md font-bold mb-6">Components</h2>
+        <h2 className="text-md font-bold mb-6" style={{ color: 'var(--text-color)' }}>Components</h2>
         <ul className="flex flex-col gap-2">
           {components.map((item) => (
             <li
               onClick={() => navigate(item.toLowerCase())}
               key={item}
-              className={`cursor-pointer hover:text-black text-md hover:translate-x-1 transition-all duration-200 ease-in-out ${
-                location.pathname === `/components/${item.toLowerCase()}`
-                  ? "text-black"
-                  : "text-gray-400"
-              }`}
+              className="cursor-pointer text-md hover:translate-x-1 transition-all duration-200 ease-in-out"
+              style={{
+                color:
+                  location.pathname === `/components/${item.toLowerCase()}`
+                    ? 'var(--primary-color)'
+                    : 'var(--text-muted)',
+                fontWeight:
+                  location.pathname === `/components/${item.toLowerCase()}`
+                    ? '600'
+                    : '400',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'var(--primary-hover)')}
+              onMouseLeave={e => (
+                e.currentTarget.style.color =
+                  location.pathname === `/components/${item.toLowerCase()}`
+                    ? 'var(--primary-color)'
+                    : 'var(--text-muted)'
+              )}
             >
               {item}
             </li>

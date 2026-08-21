@@ -12,22 +12,48 @@ const ComponentDemo = ({ children, code }: ComponentDemoProps) => {
   const [isCodeVisible, setIsCodeVisible] = useState(false);
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm bg-gray-200">
-      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 bg-gray-50">
-        <span className="text-sm font-medium text-gray-700">Preview</span>
+    <div
+      className="rounded-lg overflow-hidden shadow-sm"
+      style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--surface)' }}
+    >
+      <div
+        className="flex items-center justify-between px-4 py-2"
+        style={{ borderBottom: '1px solid var(--border-color)', backgroundColor: 'var(--bg-secondary)' }}
+      >
+        <span className="text-sm font-medium" style={{ color: 'var(--text-muted)' }}>
+          Preview
+        </span>
         <button
           onClick={() => setIsCodeVisible(!isCodeVisible)}
-          className="flex items-center gap-1 px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+          className="flex items-center gap-1 px-3 py-1 text-sm rounded transition-colors duration-200"
+          style={{
+            backgroundColor: 'var(--primary-subtle)',
+            color: 'var(--primary-color)',
+            border: '1px solid var(--border-color)',
+          }}
+          onMouseEnter={e => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--primary-color)';
+            (e.currentTarget as HTMLButtonElement).style.color = '#fff';
+          }}
+          onMouseLeave={e => {
+            (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--primary-subtle)';
+            (e.currentTarget as HTMLButtonElement).style.color = 'var(--primary-color)';
+          }}
         >
           <Code size={14} />
           {isCodeVisible ? "Hide Code" : "View Code"}
         </button>
       </div>
 
-      <div className="py-20 px-4 flex items-center justify-center">{children}</div>
+      <div
+        className="py-20 px-4 flex items-center justify-center"
+        style={{ backgroundColor: 'var(--bg-color)' }}
+      >
+        {children}
+      </div>
 
       {isCodeVisible && (
-        <div className="border-t border-gray-200">
+        <div style={{ borderTop: '1px solid var(--border-color)' }}>
           <CodeBlock code={code} />
         </div>
       )}

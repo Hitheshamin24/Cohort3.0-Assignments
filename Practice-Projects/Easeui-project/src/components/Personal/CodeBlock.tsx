@@ -17,18 +17,27 @@ const CodeBlock = ({ code, language = "tsx" }: CodeBlockProps) => {
 
   return (
     <div className="relative">
-      <div className="flex items-center justify-between bg-gray-900 text-gray-100 px-4 py-2 rounded-t-md">
-        <span className="text-xs font-mono uppercase">{language}</span>
+      <div
+        className="flex items-center justify-between px-4 py-2 rounded-t-md"
+        style={{ backgroundColor: '#1a1830', borderBottom: '1px solid var(--border-color)' }}
+      >
+        <span className="text-xs font-mono uppercase" style={{ color: '#8b83b8' }}>{language}</span>
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-2 px-2 py-1 text-xs bg-gray-800 hover:bg-gray-700 rounded transition-colors"
+          className="flex items-center gap-2 px-2 py-1 text-xs rounded transition-colors duration-200"
+          style={{ backgroundColor: '#2e2952', color: '#e9e3ff' }}
+          onMouseEnter={e => ((e.currentTarget as HTMLButtonElement).style.backgroundColor = 'var(--primary-color)')}
+          onMouseLeave={e => ((e.currentTarget as HTMLButtonElement).style.backgroundColor = '#2e2952')}
         >
           {copied ? <Check size={14} /> : <Copy size={14} />}
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
-      <pre className="bg-gray-50 border border-t-0 border-gray-200 p-4 rounded-b-md overflow-x-auto">
-        <code className="text-sm text-gray-800">{code}</code>
+      <pre
+        className="overflow-x-auto p-4 rounded-b-md"
+        style={{ backgroundColor: '#0d0c1a', border: '1px solid var(--border-color)', borderTop: 'none' }}
+      >
+        <code className="text-sm" style={{ color: '#c4b5fd' }}>{code}</code>
       </pre>
     </div>
   );
