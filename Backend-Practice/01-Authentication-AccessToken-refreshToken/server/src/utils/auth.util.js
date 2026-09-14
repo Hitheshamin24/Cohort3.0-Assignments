@@ -9,3 +9,13 @@ export const generateTokens = (userId) => {
   });
   return { accessToken, refreshToken };
 };
+
+
+export const verifyAccessToken=(token)=>{
+    const decoded=jwt.verify(token,config.ACCESS_SECRET)
+    return decoded
+}
+export const verifyRefreshToken=(token)=>{
+    const decoded=jwt.verify(token,config.REFRESH_SECRET)
+    return decoded
+}
