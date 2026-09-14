@@ -48,6 +48,31 @@ export const authRegister = async (req, res) => {
 };
 
 /**
+ * @POST /api/auth/login
+ */
+export const authLogin = async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+
+    const user = await userModel.findOne({ userName });
+    if (!user) return res.status(404).json({ message: "user not found" });
+    if (password === user.password)
+      return res.status(404).json({ message: "Incorrect password " });
+    const { accessToken, refreshToken } = generateTokens(user._id);
+    res.cookie("refreshToken", refreshToken);
+    user.refreshToken = refreshToken;
+    await user.save()
+    return res.status(200).json({ message: "login successful ",
+      data:{
+        userName
+      },
+      accessToken
+     });
+  } catch (error) {
+    return res.status(500).json({message:`error while login ${error.message}`})
+  }
+};
+/**
  * @GET /api/auth/me
  */
 export const getMe = async (req, res) => {
@@ -90,17 +115,19 @@ export const refreshUser = async (req, res) => {
       return res.status(400).json({ message: "token mismatch login again " });
     }
 
-    const {accessToken,refreshToken:newRefreshToken}=generateTokens(user._id)
-    res.cookie("refreshToken",newRefreshToken)
-    user.refreshToken=newRefreshToken
-    await user.save()
-    
-    return res.status(200).json({message:"token refreshed successfully",
-        accessToken
-    })
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+      user._id,
+    );
+    res.cookie("refreshToken", newRefreshToken);
+    user.refreshToken = newRefreshToken;
+    await user.save();
+
+    return res
+      .status(200)
+      .json({ message: "token refreshed successfully", accessToken });
   } catch (error) {
     return res.status(500).json({
-        message:`error in token refreshing ${error.message}`
-    })
+      message: `error in token refreshing ${error.message}`,
+    });
   }
 };
