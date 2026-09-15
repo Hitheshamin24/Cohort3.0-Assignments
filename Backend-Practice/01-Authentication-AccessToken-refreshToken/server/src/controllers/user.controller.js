@@ -61,15 +61,18 @@ export const authLogin = async (req, res) => {
     const { accessToken, refreshToken } = generateTokens(user._id);
     res.cookie("refreshToken", refreshToken);
     user.refreshToken = refreshToken;
-    await user.save()
-    return res.status(200).json({ message: "login successful ",
-      data:{
-        userName
+    await user.save();
+    return res.status(200).json({
+      message: "login successful ",
+      data: {
+        userName,
       },
-      accessToken
-     });
+      accessToken,
+    });
   } catch (error) {
-    return res.status(500).json({message:`error while login ${error.message}`})
+    return res
+      .status(500)
+      .json({ message: `error while login ${error.message}` });
   }
 };
 /**
@@ -91,9 +94,7 @@ export const getMe = async (req, res) => {
     return res.status(200).json({
       message: "found successfully",
       data: {
-        userId: user._id,
         userName: user.userName,
-        refreshToken: user.refreshToken,
       },
     });
   } catch (error) {

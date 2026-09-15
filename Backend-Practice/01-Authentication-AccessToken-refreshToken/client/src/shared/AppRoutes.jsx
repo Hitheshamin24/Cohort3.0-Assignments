@@ -3,28 +3,35 @@ import PublicLayout from '../app/layout/PublicLayout'
 import ProtectedLayout from '../app/layout/ProtectedLayout'
 import LoginPage from '../features/auth/ui/pages/LoginPage'
 import RegisterPage from '../features/auth/ui/pages/RegisterPage'
+import DashboardPage from '../features/dashboard/ui/pages/DashboardPage'
 const router = createBrowserRouter([
     {
         path: "/",
         element: <PublicLayout />,
-        children:[
+        children: [
             {
-                index:true,
-                element:<Navigate to={"/login"} ></Navigate>
+                index: true,
+                element: <Navigate to={"/login"} ></Navigate>
             },
             {
-                path:"/login",
-                element:<LoginPage/>
+                path: "/login",
+                element: <LoginPage />
             },
             {
-                path:"/register",
-                element:<RegisterPage/>
+                path: "/register",
+                element: <RegisterPage />
             },
         ]
     },
     {
         path: "/profile",
-        element: <ProtectedLayout />
+        element: <ProtectedLayout />,
+        children: [
+            {
+                index:true,
+                element:<DashboardPage/>
+            }
+        ]
     }
 ]
 )
