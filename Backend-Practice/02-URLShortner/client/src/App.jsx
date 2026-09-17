@@ -1,4 +1,3 @@
-import { useContext } from "react"
 import { useURLContext } from "./context/urlContext"
 import { useUrlHook } from "./hooks/useUrlHook"
 import { useEffect } from "react"
